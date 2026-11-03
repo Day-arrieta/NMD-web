@@ -1,0 +1,55 @@
+/* ============================================================
+   NMD19 — FUENTES REALES DEL FIGMA
+   ------------------------------------------------------------
+   El sitio entero está escrito con los nombres de los substitutos
+   gratuitos ('Anton' y 'Space Grotesk'). En vez de editar cientos
+   de lugares, este archivo REDEFINE esos dos nombres para que
+   apunten a las fuentes reales que compraste:
+
+     'Anton'         →  Mānuka  (Klim Type Foundry)   — títulos
+     'Space Grotesk' →  Radio Grotesk (Pangram Pangram) — texto/UI
+
+   IMPORTANTE: este CSS solo se enlaza en las páginas CUANDO los
+   archivos .woff2 ya están en esta carpeta. Si se enlaza sin los
+   archivos, las fuentes fallarían a Impact/sans-serif y se vería mal.
+   Por eso la integración (inyectar el <link>) la hago yo cuando
+   confirmes que los archivos ya están aquí.
+
+   Nombres de archivo esperados (ponlos exactos, o déjalos y los renombro):
+     Manuka-Black.woff2
+     RadioGrotesk-Regular.woff2
+     RadioGrotesk-Medium.woff2   (opcional; si no, 500/600 usa Regular)
+     RadioGrotesk-Bold.woff2
+   ============================================================ */
+
+/* ---------- Mānuka  (sustituye a 'Anton' — los titulares grandes) ---------- */
+@font-face{
+  font-family:'Anton';
+  src:url('Manuka-Black.woff2') format('woff2');
+  font-weight:100 900;      /* cubre cualquier peso que pida 'Anton' */
+  font-style:normal;
+  font-display:swap;
+}
+
+/* ---------- Radio Grotesk  (sustituye a 'Space Grotesk' — texto/UI) ---------- */
+@font-face{
+  font-family:'Space Grotesk';
+  src:url('RadioGrotesk-Regular.woff2') format('woff2');
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  src:url('RadioGrotesk-Medium.woff2') format('woff2');
+  font-weight:500 600;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  src:url('RadioGrotesk-Bold.woff2') format('woff2');
+  font-weight:700;
+  font-style:normal;
+  font-display:swap;
+}

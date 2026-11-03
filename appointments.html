@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appointments — NMD19®</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#2b2b2b;--yellow:#FDDE36;--ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+.top{position:fixed;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 28px;z-index:10}
+.brand{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:.02em;color:#fff;text-decoration:none}
+.brand sup{font-size:.5em;vertical-align:super}
+.top a.home{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.top a.home:hover{color:#fff}
+.wrap{max-width:720px;margin:0 auto;padding:120px 28px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+/* intro */
+.intro{text-align:left;animation:fade .6s var(--ease) both}
+.intro h1{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(56px,12vw,150px);line-height:.85;letter-spacing:.01em}
+.intro h1 .y{color:var(--yellow)}
+.intro p{color:var(--muted);font-size:clamp(15px,1.7vw,19px);line-height:1.55;max-width:54ch;margin-top:26px;text-transform:uppercase;letter-spacing:.02em}
+.intro .lead{color:#cfcfcf;text-transform:none;font-size:16px;margin-top:18px}
+/* progress */
+.progress{height:3px;background:#222;border-radius:2px;overflow:hidden;margin-bottom:48px}
+.progress__bar{height:100%;background:var(--yellow);width:0;transition:width .5s var(--ease)}
+.count{font-size:13px;color:var(--muted);letter-spacing:.05em}
+/* question */
+.step{animation:fade .45s var(--ease) both}
+.q{font-size:clamp(24px,3.4vw,40px);font-weight:500;line-height:1.12;margin:10px 0 6px}
+.req{color:var(--yellow)}
+.hint{color:var(--muted);font-size:15px;line-height:1.5;margin:8px 0 26px;max-width:52ch}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opts.multi,.opts.grid{flex-direction:row;flex-wrap:wrap}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:transparent;border:1.5px solid var(--line);color:#fff;font-family:inherit;font-size:18px;padding:18px 22px;border-radius:12px;cursor:pointer;transition:.2s var(--ease)}
+.opts.multi .opt,.opts.grid .opt{width:auto}
+.opt:hover{border-color:#666}
+.opt .dot{width:18px;height:18px;border-radius:50%;border:1.5px solid #666;flex:0 0 auto;transition:.2s}
+.opts.multi .opt .dot{border-radius:5px}
+.opt.sel{border-color:var(--yellow)}
+.opt.sel .dot{background:var(--yellow);border-color:var(--yellow);box-shadow:inset 0 0 0 3px var(--bg)}
+.field{width:100%;background:#151515;border:1.5px solid var(--line);border-radius:12px;color:#fff;font-family:inherit;font-size:18px;padding:18px 20px;transition:.2s}
+.field:focus{outline:none;border-color:var(--yellow)}
+textarea.field{min-height:140px;resize:vertical;line-height:1.5}
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:40px}
+.btn{font-family:inherit;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:14px;border-radius:100px;padding:15px 30px;cursor:pointer;border:1.5px solid #fff;transition:.2s var(--ease)}
+.btn.next{background:#fff;color:#000}
+.btn.next:hover{background:var(--yellow);border-color:var(--yellow)}
+.btn.back{background:transparent;color:var(--muted);border-color:transparent;padding-left:0}
+.btn.back:hover{color:#fff}
+.btn.back[hidden]{visibility:hidden}
+.err{color:var(--yellow);font-size:14px;margin-top:14px;min-height:18px}
+/* done */
+.done{display:none;text-align:left;animation:fade .6s var(--ease) both}
+.done.show{display:block}
+.done h2{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(48px,9vw,110px);line-height:.85}
+.done p{color:var(--muted);font-size:17px;margin:20px 0 30px;max-width:48ch;line-height:1.5}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="brand" href="index.html">NMD<sup>19®</sup></a>
+  <a class="home" href="index.html">Close ✕</a>
+</div>
+
+<!-- Formulario real (Netlify Forms lo detecta por estos campos ocultos) -->
+<form name="appointments" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden id="netlifyForm">
+  <input type="hidden" name="form-name" value="appointments">
+  <p hidden><label>No llenar: <input name="bot-field"></label></p>
+  <input type="hidden" name="idea"><input type="hidden" name="when"><input type="hidden" name="artist">
+  <input type="hidden" name="price"><input type="hidden" name="description"><input type="hidden" name="styles">
+  <input type="hidden" name="elements"><input type="hidden" name="color"><input type="hidden" name="placement">
+  <input type="hidden" name="placement_detail"><input type="hidden" name="size"><input type="hidden" name="travel">
+  <input type="hidden" name="name"><input type="hidden" name="contact">
+</form>
+
+<div class="wrap" id="wrap">
+  <!-- INTRO -->
+  <section class="intro" id="intro">
+    <h1>Book<br>an<br><span class="y">appointment</span></h1>
+    <p>We're excited to help bring your tattoo to life.</p>
+    <p class="lead">This form adapts to you: if you know exactly what you want, you'll move through it quickly. If you're still exploring, we'll guide you with a few extra prompts to help us make the best artistic match and provide an accurate estimate.</p>
+    <div class="nav" style="justify-content:flex-start"><button class="btn next" id="start">Get Started →</button></div>
+  </section>
+
+  <!-- STEPS host -->
+  <section id="form" style="display:none">
+    <div class="progress"><div class="progress__bar" id="bar"></div></div>
+    <div id="host"></div>
+    <div class="err" id="err"></div>
+    <div class="nav">
+      <button class="btn back" id="back">← Back</button>
+      <span class="count" id="count"></span>
+      <button class="btn next" id="next">Next →</button>
+    </div>
+  </section>
+
+  <!-- DONE -->
+  <section class="done" id="done">
+    <h2>Thank you</h2>
+    <p>We've received your request. Our booking team will reach out with artist recommendations, availability and an estimate.</p>
+    <a class="btn next" href="index.html" style="display:inline-block;text-decoration:none">Back to Home</a>
+  </section>
+</div>
+
+<script>
+/* Pasos del formulario — copy fiel del Figma donde existe.
+   (styles/elements/size: etiquetas a confirmar con la lista real del estudio) */
+const STEPS=[
+ {key:'idea',req:1,type:'single',q:'Do you already have a clear idea of your tattoo, including: design, size, and placement?',
+  options:['Yes, i know what i want','No, I need help & guidance']},
+ {key:'when',req:1,type:'single',q:'When do you want your new tattoo?',
+  options:['As soon as possible','Within the next few weeks','Within the next 2-3 months','Within the next 4-5 months','More than 6 months from now']},
+ {key:'artist',req:1,type:'single',q:'Which artist do you prefer?',
+  hint:"Not sure which artist you'd like to work with? Don't worry, our experienced studio booking team will gladly make recommendations based on your design details.",
+  options:['Recommend me an Artist','Rubén','Zionele','Marisa','Guest Artists']},
+ {key:'price',req:1,type:'single',q:'Do you have a preferred price range in mind?',
+  options:['Yes, I do',"No, I don't","I'm Flexible"]},
+ {key:'description',req:1,type:'textarea',q:'Please share a brief description of your tattoo idea and any thoughts you have on your inspirations.',
+  placeholder:'Tell us about your idea, references, story…'},
+ {key:'styles',type:'multi',q:'What tattoo styles do you like?',hint:'Choose as many as you like.',
+  options:['Fine line','Black & grey','Traditional','Neo-traditional','Realism','Lettering','Ornamental','Blackwork','Japanese','Illustrative']},
+ {key:'elements',type:'multi',q:'What elements do you want in your tattoo?',hint:'Choose as many as you like.',
+  options:['Florals','Animals','Figures','Geometry','Lettering','Symbols','Abstract']},
+ {key:'color',req:1,type:'single',q:'Do you want your tattoo in color or black/grey?',
+  options:['Color','Black and grey']},
+ {key:'placement',req:1,type:'single',q:'Where on your body do you want the tattoo?',
+  options:['Arm','Leg','Torso','Back','Chest','Hand','Neck','Other']},
+ {key:'placement_detail',req:1,type:'single',q:'Where exactly on your Torso?',
+  hint:'(Placement can be reviewed and adjusted before your session begins)',
+  options:['Upper abdomen (just below ribs)','Upper abdomen (near to the hip bone)','Ribs (left side)','Ribs (right side)']},
+ {key:'size',req:1,type:'single',q:'What approximate size are you thinking?',
+  hint:'Choose the range that most closely matches your idea.',
+  options:['Small (under 8 cm)','Medium (8–15 cm)','Large (15–25 cm)','Extra large / sleeve or back']},
+ {key:'travel',req:1,type:'single',q:'Will you be traveling for this appointment?',
+  options:["No, I'm local to CDMX","Yes, I'm from elsewhere in Mexico","Yes, I'm from out of the country"]},
+ {key:'name',req:1,type:'text',q:'Last step — what should we call you?',placeholder:'Your name'},
+ {key:'contact',req:1,type:'text',q:'Best email or WhatsApp to reach you?',placeholder:'email@example.com  /  +52…'},
+];
+
+let i=0; const A={};
+const $=id=>document.getElementById(id);
+const host=$('host'),bar=$('bar'),count=$('count'),back=$('back'),next=$('next'),err=$('err');
+
+$('start').onclick=()=>{ $('intro').style.display='none'; $('form').style.display='block'; draw(); };
+
+function draw(){
+  const s=STEPS[i]; err.textContent='';
+  let body='';
+  if(s.type==='single'||s.type==='multi'){
+    const sel=A[s.key]||(s.type==='multi'?[]:null);
+    const cls=s.type==='multi'?'opts multi':'opts';
+    body=`<div class="${cls}">`+s.options.map(o=>{
+      const on=s.type==='multi'?sel.includes(o):sel===o;
+      return `<button type="button" class="opt ${on?'sel':''}" data-v="${o.replace(/"/g,'&quot;')}"><span class="dot"></span>${o}</button>`;
+    }).join('')+`</div>`;
+  } else if(s.type==='textarea'){
+    body=`<textarea class="field" placeholder="${s.placeholder||''}">${A[s.key]||''}</textarea>`;
+  } else {
+    body=`<input class="field" type="text" placeholder="${s.placeholder||''}" value="${(A[s.key]||'').replace(/"/g,'&quot;')}">`;
+  }
+  host.innerHTML=`<div class="step"><h2 class="q">${s.q} ${s.req?'<span class="req">*</span>':''}</h2>${s.hint?`<p class="hint">${s.hint}</p>`:''}${body}</div>`;
+  bar.style.width=(i/STEPS.length*100)+'%';
+  count.textContent=`${i+1} / ${STEPS.length}`;
+  back.hidden=i===0;
+  next.textContent=i===STEPS.length-1?'Submit':'Next →';
+
+  host.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v;
+    if(s.type==='multi'){
+      const arr=A[s.key]||[]; A[s.key]=arr.includes(v)?arr.filter(x=>x!==v):[...arr,v]; b.classList.toggle('sel');
+    } else { A[s.key]=v; host.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); }
+  });
+  const fld=host.querySelector('.field'); if(fld) fld.oninput=()=>A[s.key]=fld.value;
+}
+function valid(){ const s=STEPS[i]; if(!s.req) return true; const a=A[s.key]; return s.type==='multi'?(a&&a.length):(a&&String(a).trim()); }
+
+next.onclick=()=>{
+  if(!valid()){ err.textContent='This question is required.*'; return; }
+  if(i<STEPS.length-1){ i++; draw(); } else submit();
+};
+back.onclick=()=>{ if(i>0){ i--; draw(); } };
+
+function submit(){
+  // poblar el formulario oculto de Netlify
+  const f=$('netlifyForm');
+  STEPS.forEach(s=>{ const inp=f.elements[s.key]; if(inp) inp.value=Array.isArray(A[s.key])?(A[s.key]||[]).join(', '):(A[s.key]||''); });
+  const data=new URLSearchParams(new FormData(f)).toString();
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
+    .catch(()=>{}) // en local Netlify Forms no responde; mostramos gracias igual
+    .finally(showDone);
+  // respaldo: si tarda, mostrar de todos modos
+  setTimeout(showDone,1200);
+}
+let done=false;
+function showDone(){ if(done) return; done=true; $('form').style.display='none'; $('intro').style.display='none'; bar.style.width='100%'; $('done').classList.add('show'); console.log('Respuestas:',A); }
+</script>
+</body>
+</html>
