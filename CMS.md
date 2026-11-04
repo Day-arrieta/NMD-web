@@ -4,7 +4,7 @@ El panel es Pages CMS: https://app.pagescms.org/. Usa la cuenta GitHub **Day-arr
 
 ## Artistas y trabajos
 
-Abre **Artistas y trabajos**. Cada ficha tiene nombre, foto, categoría, visibilidad, orden, biografía, Instagram y otro enlace. El identificador se genera automáticamente: no lo cambies, mantiene estable el enlace del perfil.
+Abre **Artistas y trabajos**. Cada ficha tiene nombre, foto, categoría, visibilidad, orden, especialidad, Instagram y otro enlace. El identificador se genera automáticamente: no lo cambies, mantiene estable el enlace del perfil.
 
 Dentro de **Trabajos del artista**, agrega imágenes y un título descriptivo. Activa **Mostrar en Featured Work** para mostrarlas en su perfil. Desactivar **Visible en la web** oculta la ficha o el trabajo, conservando sus datos.
 

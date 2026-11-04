@@ -41,7 +41,7 @@ content:
         type: number
         default: 0
       - name: bio
-        label: Biografía y especialidad
+        label: Especialidad
         type: text
       - name: instagram
         label: Enlace de Instagram

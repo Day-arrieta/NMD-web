@@ -48,3 +48,6 @@
 #team-carousel .team-card__photo{display:block;margin:0;padding:0;border:0;line-height:0;cursor:pointer}
 #team-carousel .team-card__photo:focus-visible{outline:2px solid #FDDE36;outline-offset:5px}
 #team-carousel.is-dragging .team-card__photo{cursor:grabbing}
+
+.team-card__specialty{margin:10px 0 0;color:#aaa;font:24px/28px 'Radio Grotesk',sans-serif;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.team-card__specialty + a{margin-top:16px}

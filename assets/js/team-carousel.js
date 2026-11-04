@@ -25,7 +25,15 @@
     photoLink.className = 'team-card__photo'; photoLink.href = link.href; photoLink.draggable = false;
     photoLink.setAttribute('aria-label', 'View profile: ' + artist.name);
     photoLink.append(img);
-    inner.append(photoLink, meta, link); card.append(inner); track.append(card); return card;
+    inner.append(photoLink, meta);
+    const specialty = typeof artist.bio === 'string' ? artist.bio.trim() : '';
+    if (specialty) {
+      const description = document.createElement('p');
+      description.className = 'team-card__specialty';
+      description.textContent = specialty;
+      inner.append(description);
+    }
+    inner.append(link); card.append(inner); track.append(card); return card;
   });
   const controls = root.querySelector('.team-controls');
   const bar = document.createElement('input');
