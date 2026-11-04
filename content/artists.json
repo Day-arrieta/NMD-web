@@ -54,11 +54,12 @@
   },
   {
     "id": "5bc4ae72-4e8d-4fd5-86d6-8542635f7708",
-    "name": "Zionele",
+    "name": "Ivan Shondin",
     "image": "/assets/team/DSC05951.jpg",
     "role": "Guest",
     "published": true,
-    "order": 6
+    "order": 6,
+    "instagram": "https://www.instagram.com/shon.tattooer/"
   },
   {
     "id": "ad7cf38f-8ffd-4a62-aa79-62ac4acf8927",
