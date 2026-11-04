@@ -40,6 +40,10 @@ content:
         description: Los números menores aparecen primero.
         type: number
         default: 0
+      - name: location
+        label: Ubicación
+        type: string
+        description: Por ejemplo, CDMX / NYC. Aparece arriba de la especialidad en el perfil.
       - name: bio
         label: Especialidad
         type: text

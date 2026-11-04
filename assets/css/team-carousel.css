@@ -7,12 +7,12 @@
 .team-card:hover,.team-card:focus-within{z-index:2;opacity:1}
 .team-card img{display:block;width:450px;height:540px;object-fit:cover;object-position:center 25%;border-radius:8px;pointer-events:none;filter:grayscale(1);transition:filter .3s ease}
 .team-card__meta{display:flex;justify-content:space-between;align-items:center;margin-top:40px}
-.team-card h3{font-family:Manuka,Impact,sans-serif;font-size:42px;line-height:40px;margin:0;font-weight:900}
+.team-card h3{font-family:Manuka,Impact,sans-serif;font-size:42px;line-height:40px;margin:0;font-weight:900;letter-spacing:0.03em;}
 .team-card__role{font:14px/18px 'Radio Grotesk',sans-serif;border:1px solid #727272;border-radius:8px;padding:6px 14px}
 .team-card a{display:block;color:#999;font:20px/24px 'Radio Grotesk',sans-serif;margin-top:40px;padding:12px 0;border-bottom:1px solid #484848;text-decoration:none}
 .team-card a:hover,.team-card a:focus-visible{color:#fff}
 .team-controls{display:flex;justify-content:center;align-items:center;gap:32px;margin-top:40px}
-.team-count{font:900 42px/40px Manuka,Impact,sans-serif;min-width:100px;text-align:center}
+.team-count{font:900 42px/40px Manuka,Impact,sans-serif;min-width:100px;text-align:center;letter-spacing:0.03em;}
 @media(prefers-reduced-motion:reduce){.team-card,.team-card__inner{transition:none}}
 
 .team-card:hover img,.team-card:focus-within img{filter:grayscale(0)}
@@ -49,5 +49,5 @@
 #team-carousel .team-card__photo:focus-visible{outline:2px solid #FDDE36;outline-offset:5px}
 #team-carousel.is-dragging .team-card__photo{cursor:grabbing}
 
-.team-card__specialty{margin:10px 0 0;color:#aaa;font:24px/28px 'Radio Grotesk',sans-serif;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.team-card__specialty{margin:10px 0 0;color:#aaa;font:19px/24px 'Radio Grotesk',sans-serif;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .team-card__specialty + a{margin-top:16px}

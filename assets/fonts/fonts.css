@@ -10,8 +10,7 @@
 /* Includes headings created dynamically by the shop, cart and booking form. */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Manuka', Impact, sans-serif;
-  font-weight: 900;
-}
+  font-weight: 900;letter-spacing:0.03em;}
 
 /* Figma: Radio Grotesk / Regular — body, labels, product names and prices. */
 @font-face {
@@ -30,6 +29,7 @@ h1, h2, h3, h4, h5, h6 {
 .product-card__meta h3 {
   font-family: 'Radio Grotesk', Arial, sans-serif;
   font-weight: 400;
+  letter-spacing: 0;
 }
 
 /* Figma: Desktop/H4 Condensed and Mobile/H4 Condensed use Medium (500). */
@@ -45,4 +45,11 @@ h1, h2, h3, h4, h5, h6 {
 .note .product-material {
   font-family: 'Lunchtype25', 'Arial Narrow', sans-serif;
   font-weight: 500;
+}
+
+/* Preserve the supplied typeface outlines; never synthesize bold or italic. */
+h1, h2, h3, h4, h5, h6,
+[style*="Manuka"],
+.display, .team-count {
+  font-synthesis: none;
 }

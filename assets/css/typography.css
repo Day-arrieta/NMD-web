@@ -21,7 +21,7 @@
   font-size: 24px;
   font-weight: 900;
   line-height: 22px;
-  letter-spacing: 0;
+  letter-spacing:0.03em;
 }
 .page-shop .card__row h3,
 .page-product .reco-card h3,
@@ -40,8 +40,7 @@
   font-family: 'Manuka', Impact, sans-serif;
   font-size: 24px;
   font-weight: 900;
-  line-height: 22px;
-}
+  line-height: 22px;letter-spacing:0.03em;}
 .page-product .label,
 .page-product .label a,
 .page-product .sizes button,
@@ -58,7 +57,7 @@
   font-size: 32px;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: 0;
+  letter-spacing:0.03em;
 }
 .page-product .note .product-material {
   font-family: 'Lunchtype25', 'Arial Narrow', sans-serif;
@@ -68,6 +67,7 @@
 }
 .page-product .pinfo h2 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
   font-size: var(--type-sans-heading);
   font-weight: 500;
   line-height: 1;
@@ -78,6 +78,7 @@
 .page-appointments .wrap { max-width: 1280px; }
 .page-appointments .intro h1 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
   font-size: var(--type-sans-hero);
   font-weight: 500;
   line-height: 1;
@@ -87,14 +88,13 @@
   font-family: 'Manuka', Impact, sans-serif;
   font-size: var(--type-display);
   font-weight: 900;
-  line-height: .8;
-}
+  line-height: .8;letter-spacing:0.03em;}
 .page-appointments .intro > p:not(.lead) {
   font-family: 'Manuka', Impact, sans-serif;
   font-size: var(--type-label);
   font-weight: 900;
   line-height: .952381;
-  letter-spacing: 0;
+  letter-spacing:0.03em;
 }
 .page-appointments .intro .lead {
   font-size: var(--type-copy);
@@ -103,6 +103,7 @@
 }
 .page-appointments .q {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
   font-size: var(--type-sans-heading);
   font-weight: 500;
   line-height: 1;

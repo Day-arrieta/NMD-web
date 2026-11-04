@@ -10,7 +10,10 @@
       return;
     }
     document.title = artist.name + ' — NMD19';
-    ['name', 'role', 'bio'].forEach(key => { field(key).textContent = artist[key] || ''; });
+    ['name', 'role'].forEach(key => { field(key).textContent = artist[key] || ''; });
+    field('bio').textContent = [artist.location, artist.bio]
+      .filter(value => typeof value === 'string' && value.trim())
+      .map(value => value.trim()).join('\n');
     field('portrait').style.backgroundImage = `url(${JSON.stringify(artist.image)})`;
     field('portrait').setAttribute('role', 'img');
     field('portrait').setAttribute('aria-label', artist.name);

@@ -4,7 +4,7 @@ El panel es Pages CMS: https://app.pagescms.org/. Usa la cuenta GitHub **Day-arr
 
 ## Artistas y trabajos
 
-Abre **Artistas y trabajos**. Cada ficha tiene nombre, foto, categoría, visibilidad, orden, especialidad, Instagram y otro enlace. El identificador se genera automáticamente: no lo cambies, mantiene estable el enlace del perfil.
+Abre **Artistas y trabajos**. Cada ficha tiene nombre, foto, categoría, visibilidad, orden, ubicación, especialidad, Instagram y otro enlace. El identificador se genera automáticamente: no lo cambies, mantiene estable el enlace del perfil.
 
 Dentro de **Trabajos del artista**, agrega imágenes y un título descriptivo. Activa **Mostrar en Featured Work** para mostrarlas en su perfil. Desactivar **Visible en la web** oculta la ficha o el trabajo, conservando sus datos.
 
@@ -24,3 +24,5 @@ Guardar en Pages CMS crea un cambio en GitHub. La web publicada lo recibe cuando
 4. Configurar el alojamiento para publicar esa misma rama si todavía no lo hace.
 
 Los retratos y trabajos publicados son contenido público: no guardar información privada en estas fichas.
+
+La ubicación es opcional y aparece en una línea encima de la especialidad en el perfil. Por ejemplo: `CDMX / NYC`. Si se deja vacía, solo se muestra la especialidad.
