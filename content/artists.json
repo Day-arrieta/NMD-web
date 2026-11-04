@@ -5,35 +5,25 @@
     "image": "/assets/team/DSC05162.jpg",
     "role": "Resident",
     "published": true,
-    "order": 0,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "order": 0
   },
   {
     "id": "558a4313-354e-474b-840e-abb2c03a45a6",
-    "name": "Zionele",
+    "name": "Cesar Vaca",
     "image": "/assets/team/DSC05288.jpg",
     "role": "Resident",
     "published": true,
     "order": 1,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "instagram": "https://www.instagram.com/cesarvaca.tt/"
   },
   {
     "id": "9a8be660-917f-4a0a-ad74-4de21d446bf1",
-    "name": "Zionele",
+    "name": "Jalil Abragon",
     "image": "/assets/team/DSC05669.jpg",
     "role": "Resident",
     "published": true,
     "order": 2,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "instagram": "https://www.instagram.com/jalil.abragon/"
   },
   {
     "id": "888b9cad-97a3-40bc-b4c7-adcce356bdf2",
@@ -42,10 +32,9 @@
     "role": "Resident",
     "published": true,
     "order": 3,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "bio": "Fineline tattoos",
+    "instagram": "https://www.instagram.com/zionele/",
+    "website": "Zionele.com"
   },
   {
     "id": "71dd53fd-b418-4161-8bb8-5ef0758479ba",
@@ -53,11 +42,7 @@
     "image": "/assets/team/DSC05468.jpg",
     "role": "Resident",
     "published": true,
-    "order": 4,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "order": 4
   },
   {
     "id": "6865bb80-2953-4119-bc22-9cae38dbbc78",
@@ -65,11 +50,7 @@
     "image": "/assets/team/DSC05726.jpg",
     "role": "Resident",
     "published": true,
-    "order": 5,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "order": 5
   },
   {
     "id": "5bc4ae72-4e8d-4fd5-86d6-8542635f7708",
@@ -77,11 +58,7 @@
     "image": "/assets/team/DSC05951.jpg",
     "role": "Guest",
     "published": true,
-    "order": 6,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "order": 6
   },
   {
     "id": "ad7cf38f-8ffd-4a62-aa79-62ac4acf8927",
@@ -89,10 +66,6 @@
     "image": "/assets/team/DSC05981.jpg",
     "role": "Resident",
     "published": true,
-    "order": 7,
-    "bio": "",
-    "instagram": "",
-    "website": "",
-    "works": []
+    "order": 7
   }
 ]
