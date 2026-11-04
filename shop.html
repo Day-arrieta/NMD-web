@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shop — NMD19®</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#262626;--yellow:#FDDE36;--rail:88px;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--fg);font-family:'Radio Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 /* rail */
 .rail{position:fixed;left:0;top:0;width:var(--rail);height:100vh;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:26px 0;z-index:50}
@@ -24,7 +23,7 @@ a{color:inherit;text-decoration:none}
 .submenu button:last-child{border-right:none}
 .submenu button.on,.submenu button:hover{color:#fff;background:#161616}
 .head{padding:60px clamp(20px,5vw,70px) 10px}
-.head h1{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(70px,16vw,200px);line-height:.85}
+.head h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(70px,16vw,200px);line-height:.85}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:34px clamp(20px,3vw,48px);padding:30px clamp(20px,5vw,70px) 90px;align-items:end}
 .card{cursor:pointer;display:block}
 .card__img{aspect-ratio:1;background:#141414;overflow:hidden}
@@ -32,9 +31,9 @@ a{color:inherit;text-decoration:none}
 .card__img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
 .card:hover .card__img img{transform:scale(1.05)}
 .card__row{display:flex;justify-content:space-between;align-items:flex-start;margin-top:14px;gap:12px}
-.card__row h3{font-size:19px;font-weight:600}
+.card__row h3{font-size:19px;font-weight:400}
 .card__row .sub{color:var(--muted);font-size:13px}
-.card__price{font-size:14px;font-weight:600;white-space:nowrap;text-align:right}
+.card__price{font-size:14px;font-weight:400;white-space:nowrap;text-align:right}
 .card__price .cur{display:block;color:var(--muted);font-size:11px}
 footer{border-top:1px solid var(--line);padding:46px clamp(20px,5vw,70px);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
 footer a:hover{color:#fff}
@@ -46,8 +45,12 @@ footer a:hover{color:#fff}
   .head h1{font-size:clamp(64px,22vw,120px)}
 }
 </style>
+<link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/typography.css">
 </head>
-<body>
+<body class="page-shop">
 <div class="main">
   <div class="submenu" id="submenu">
     <button class="on" data-cat="all">All</button>
@@ -68,7 +71,7 @@ footer a:hover{color:#fff}
 </div>
 
 <script src="assets/js/catalog.js?v=0052"></script>
-<script src="assets/js/commerce.js?v=0052"></script>
+<script src="assets/js/commerce.js?v=shared-2"></script>
 <script>
 const grid = document.getElementById('grid');
 function render(cat){
@@ -89,5 +92,6 @@ document.getElementById('submenu').addEventListener('click', e => {
 });
 render('all');
 </script>
+<script src="assets/js/sticky-rail.js?v=shared-5"></script>
 </body>
 </html>

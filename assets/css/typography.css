@@ -1,0 +1,141 @@
+/* NMD19 — Figma typography for the interactive pages.
+   Reference widths: mobile 440px, desktop 1920px.
+   Exact exported screens keep their per-layer metrics and canvas scaling. */
+:root {
+  --type-display: clamp(72px, calc(57.2973px + 7.4324vw), 200px);
+  --type-section: clamp(60px, calc(57.7297px + 3.2432vw), 120px);
+  --type-sans-hero: clamp(48px, calc(30.2703px + 6.7568vw), 160px);
+  --type-sans-heading: clamp(36px, calc(27.7297px + 3.2432vw), 90px);
+  --type-label: clamp(24px, calc(21.2432px + 1.0811vw), 42px);
+  --type-copy: clamp(20px, calc(18.8108px + .2703vw), 24px);
+  --type-option: clamp(20px, calc(15.2432px + 1.0811vw), 36px);
+}
+
+.page-shop .head h1,
+.page-product .info h1 {
+  font-size: var(--type-display);
+  line-height: .8;
+}
+.page-shop .submenu button {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+.page-shop .card__row h3,
+.page-product .reco-card h3,
+.page-cart .item h3 {
+  font-size: 20px;
+  line-height: 22px;
+}
+.page-shop .card__row .sub,
+.page-product .reco-card .sub,
+.page-cart .item .sub,
+.page-cart .item .sz {
+  font-size: 14px;
+  line-height: 18px;
+}
+.page-product .info .sku {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 22px;
+}
+.page-product .label,
+.page-product .label a,
+.page-product .sizes button,
+.page-product .add,
+.page-product .back {
+  font-size: 20px;
+  line-height: 22px;
+}
+.page-product .qty { min-height: 54px; }
+.page-product .qty span,
+.page-product .qty button { font-size: 24px; line-height: 24px; }
+.page-product .note {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.page-product .note .product-material {
+  font-family: 'Lunchtype25', 'Arial Narrow', sans-serif;
+  font-size: var(--type-copy);
+  font-weight: 500;
+  line-height: 1;
+}
+.page-product .pinfo h2 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--type-sans-heading);
+  font-weight: 500;
+  line-height: 1;
+}
+.page-product .pinfo li { font-size: var(--type-copy); line-height: 1; }
+.page-product .reco h2 { font-size: var(--type-section); line-height: .933333; }
+
+.page-appointments .wrap { max-width: 1280px; }
+.page-appointments .intro h1 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--type-sans-hero);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.page-appointments .intro h1 .y {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-size: var(--type-display);
+  font-weight: 900;
+  line-height: .8;
+}
+.page-appointments .intro > p:not(.lead) {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-size: var(--type-label);
+  font-weight: 900;
+  line-height: .952381;
+  letter-spacing: 0;
+}
+.page-appointments .intro .lead {
+  font-size: var(--type-copy);
+  line-height: 1;
+  max-width: 60ch;
+}
+.page-appointments .q {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--type-sans-heading);
+  font-weight: 500;
+  line-height: 1;
+}
+.page-appointments .hint { font-size: var(--type-copy); line-height: 1.2; }
+.page-appointments .opt,
+.page-appointments .field { font-size: var(--type-option); line-height: 1.1; }
+.page-appointments .btn { font-size: 20px; line-height: 22px; letter-spacing: 0; }
+.page-appointments .count { font-size: 18px; }
+.page-cart h1 { font-size: var(--type-section); line-height: .933333; }
+.page-cart .checkout { font-size: 20px; line-height: 22px; letter-spacing: 0; }
+
+/* The drawer is inserted by commerce.js, so scope these rules to its container. */
+.cart-drawer .cart-drawer__head h2 { font-size: var(--type-section); line-height: .933333; }
+.cart-drawer .cart-it h3 { font-size: 20px; line-height: 22px; }
+.cart-drawer .cart-it .s { font-size: 14px; line-height: 18px; }
+.cart-drawer .cart-row { font-size: 18px; line-height: 20px; }
+.cart-drawer .cart-row.total { font-size: 20px; line-height: 22px; }
+.cart-drawer .cart-checkout { font-size: 20px; line-height: 22px; letter-spacing: 0; }
+
+@media (max-width: 680px) {
+  .page-shop .submenu button { font-size: 26px; line-height: 26px; }
+  .page-shop .card__row h3,
+  .page-product .reco-card h3,
+  .page-cart .item h3,
+  .cart-drawer .cart-it h3 { font-size: 26px; line-height: 26px; }
+  .page-shop .card__row .sub,
+  .page-product .reco-card .sub,
+  .page-cart .item .sub,
+  .cart-drawer .cart-it .s { font-size: 18px; line-height: 20px; }
+  .page-product .note { font-size: 26px; line-height: 26px; }
+  .page-product .info .sku { font-size: 20px; line-height: 20px; }
+  .page-product .reco h2,
+  .page-cart h1,
+  .cart-drawer .cart-drawer__head h2 { line-height: .833333; }
+}

@@ -40,42 +40,34 @@ const CART_CSS = `
 .nmd-ov iframe{width:100%;height:100%;border:0;display:block;background:#000}
 body.nmd-locked{overflow:hidden}
 .rail__cart{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:0}
-.rail__count{position:static;top:auto;right:auto;background:#e8e8e8;color:#000;min-width:0;width:30px;height:30px;border-radius:50%;font-family:'Space Grotesk',Arial,sans-serif;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
-.cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;z-index:90}
+.rail__count{position:static;top:auto;right:auto;background:#e8e8e8;color:#000;min-width:0;width:30px;height:30px;border-radius:50%;font-family:'Radio Grotesk',Arial,sans-serif;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+.cart-backdrop{position:fixed;inset:0;left:var(--nmd-rail-width,0px);background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;z-index:90}
 .cart-backdrop.open{opacity:1;visibility:visible}
-.cart-drawer{position:fixed;left:0;top:0;bottom:0;width:min(480px,92vw);background:#fff;color:#0c0c0c;display:flex;flex-direction:column;transform:translateX(-110%);transition:transform .45s cubic-bezier(.22,1,.36,1);z-index:95;font-family:'Space Grotesk',sans-serif}
+.cart-drawer{position:fixed;left:var(--nmd-rail-width,0px);top:0;bottom:0;box-sizing:border-box;width:min(480px,calc(100vw - var(--nmd-rail-width,0px)));background:#fff;color:#0c0c0c;display:flex;flex-direction:column;transform:translateX(-110%);transition:transform .45s cubic-bezier(.22,1,.36,1);z-index:95;font-family:'Radio Grotesk',sans-serif}
 .cart-drawer.open{transform:translateX(0)}
 .cart-drawer__head{display:flex;align-items:flex-start;justify-content:space-between;padding:28px 30px 16px}
-.cart-drawer__head h2{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(40px,9vw,68px);line-height:.85}
+.cart-drawer__head h2{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(40px,9vw,68px);line-height:.85}
 .cart-drawer__close{background:none;border:none;cursor:pointer;font-size:24px;color:#0c0c0c;line-height:1;padding:6px}
 .cart-drawer__items{flex:1;overflow-y:auto;padding:0 30px}
 .cart-it{display:grid;grid-template-columns:80px 1fr auto;gap:16px;padding:20px 0;border-bottom:1px solid #e6e6e6}
 .cart-it img{width:80px;height:100px;object-fit:cover;background:#f2f2f2}
-.cart-it h3{font-size:17px;font-weight:600}.cart-it .s{color:#888;font-size:12px;margin-top:2px}
+.cart-it h3{font-size:17px;font-weight:400}.cart-it .s{color:#888;font-size:12px;margin-top:2px}
 .cart-it .q{display:inline-flex;align-items:center;border:1px solid #ddd;border-radius:100px;margin-top:10px}
-.cart-it .q button{background:none;border:none;cursor:pointer;padding:5px 12px;font-size:15px}.cart-it .q span{min-width:24px;text-align:center;font-weight:600;font-size:14px}
+.cart-it .q button{background:none;border:none;cursor:pointer;padding:5px 12px;font-size:15px}.cart-it .q span{min-width:24px;text-align:center;font-weight:400;font-size:14px}
 .cart-it .r{text-align:right;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
-.cart-it .r strong{font-size:15px}.cart-it .x{background:none;border:none;color:#999;text-decoration:underline;font-size:11px;cursor:pointer;font-family:inherit}
+.cart-it .r strong{font-size:15px;font-weight:400}.cart-it .x{background:none;border:none;color:#999;text-decoration:underline;font-size:11px;cursor:pointer;font-family:inherit}
 .cart-drawer__foot{border-top:1px solid #e6e6e6;padding:18px 30px 26px;background:#fff}
 .cart-row{display:flex;justify-content:space-between;padding:7px 0;font-size:15px;color:#555}
 .cart-row .c{font-size:11px;color:#aaa;margin-left:4px}
-.cart-row.total{color:#000;font-weight:700;font-size:20px;border-top:1px solid #e6e6e6;margin-top:6px;padding-top:14px}
-.cart-checkout{width:100%;margin-top:16px;background:#0c0c0c;color:#fff;border:none;border-radius:100px;padding:17px;font-family:inherit;font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:14px;cursor:pointer;transition:.2s}
+.cart-row.total{color:#000;font-weight:400;font-size:20px;border-top:1px solid #e6e6e6;margin-top:6px;padding-top:14px}
+.cart-checkout{width:100%;margin-top:16px;background:#0c0c0c;color:#fff;border:none;border-radius:100px;padding:17px;font-family:inherit;font-weight:400;letter-spacing:.04em;text-transform:uppercase;font-size:14px;cursor:pointer;transition:.2s}
 .cart-checkout:hover{background:#FDDE36;color:#000}
 .cart-empty{padding:40px 30px;color:#888}
 .cart-empty a{color:#000;text-decoration:underline}
-@media(max-width:680px){.cart-drawer{width:100%}}`;
+@media(max-width:680px){.cart-drawer{width:calc(100vw - var(--nmd-rail-width,0px))}.cart-drawer__head{padding:24px 18px 16px}.cart-drawer__items{padding:0 18px}.cart-drawer__foot{padding:18px}.cart-drawer__close{flex-shrink:0}}`;
 
 function chromeHTML(){
   return `
-  <nav class="rail">
-    <button class="rail__menu" id="railMenuBtn" aria-label="Menu"><span></span><span></span></button>
-    <a class="rail__logo" href="index.html" aria-label="Home"><svg viewBox="0 0 40 62" width="33" height="51" fill="#000" aria-hidden="true"><path d="M0 8.75L0 25.04L6.59 32.48L0 31.59L0 62L40 57.85L40 36.97L9.31 32.89L12.26 29.27L40 32.8L40 0L0 8.75Z"/></svg></a>
-    <button class="rail__cart" id="cartBtn" aria-label="Cart">
-      <span class="rail__count">0</span>
-      <svg viewBox="0 0 28 30" width="26" height="28" fill="#000" aria-hidden="true"><path d="M2.62 0C3.68 0 4.34 .6 4.72 1.21L4.87 1.47L4.92 1.58L4.95 1.69L5.61 4.12L25.57 4.12C27.14 4.12 28.36 5.63 27.9 7.13L25.17 17.13L25.14 17.24L25.09 17.35C24.74 18.04 24.05 18.82 22.83 18.82L9.62 18.82L10.43 21.76L22.6 21.76C24.89 21.76 26.76 23.61 26.76 25.88C26.76 28.16 24.89 30 22.6 30C20.3 30 18.43 28.16 18.43 25.88C18.43 25.25 18.58 24.65 18.83 24.12L14.46 24.12C14.72 24.65 14.87 25.25 14.87 25.88C14.87 28.16 13 30 10.7 30C8.4 30 6.54 28.16 6.54 25.88C6.54 24.54 7.19 23.35 8.19 22.6L2.7 2.45C2.66 2.4 2.64 2.37 2.63 2.35L0 2.35L0 0L2.62 0ZM10.7 24.12C9.72 24.12 8.92 24.91 8.92 25.88C8.92 26.86 9.72 27.65 10.7 27.65C11.69 27.65 12.49 26.86 12.49 25.88C12.49 24.91 11.69 24.12 10.7 24.12ZM22.6 24.12C21.61 24.12 20.81 24.91 20.81 25.88C20.81 26.86 21.61 27.65 22.6 27.65C23.58 27.65 24.38 26.86 24.38 25.88C24.38 24.91 23.58 24.12 22.6 24.12ZM8.98 16.47L22.84 16.47C22.86 16.46 22.88 16.43 22.91 16.37L25.61 6.52L25.61 6.5C25.6 6.49 25.59 6.48 25.58 6.47L25.57 6.47L6.26 6.47L8.98 16.47Z"/></svg>
-    </button>
-  </nav>
   <div class="cart-backdrop" id="cartBackdrop"></div>
   <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
     <div class="cart-drawer__head"><h2>My Cart</h2><button class="cart-drawer__close" id="cartClose" aria-label="Close">✕</button></div>
@@ -145,11 +137,8 @@ function mountChrome(){
   const st = document.createElement('style'); st.textContent = CART_CSS; document.head.appendChild(st);
   document.body.insertAdjacentHTML('afterbegin', chromeHTML());
   updateCount();
-  document.getElementById('cartBtn').addEventListener('click', openCart);
   document.getElementById('cartClose').addEventListener('click', closeCart);
   document.getElementById('cartBackdrop').addEventListener('click', closeCart);
-  ensureMenuOverlay();
-  document.getElementById('railMenuBtn').addEventListener('click', toggleMenu);
   document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeCart(); if(menuOpen) closeMenu(); } });
   // delegación de acciones dentro del drawer
   document.getElementById('cartItems').addEventListener('click', e=>{

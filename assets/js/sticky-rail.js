@@ -135,6 +135,7 @@
 
   function build(W){
     W = Math.round(Math.max(40, Math.min(W, 280)));
+    document.documentElement.style.setProperty('--nmd-rail-width', W + 'px');
     var hamW = Math.round(W*0.40), barT = Math.max(2, Math.round(hamW*0.10)), hamG = Math.max(4, Math.round(hamW*0.18)), hamH = hamG*2 + barT;
     var logoW= Math.round(W*0.375), logoH= Math.round(logoW*62/40);
     var cartW= Math.round(W*0.30),  cartH= Math.round(cartW*30/28);
@@ -160,7 +161,7 @@
       + '#'+RAIL_ID+' .nmd-cart{flex-direction:column;gap:'+Math.round(badgeD*0.28)+'px}'
       + '#'+RAIL_ID+' .nmd-badge{width:'+badgeD+'px;height:'+badgeD+'px;border-radius:50%;background:#e8e8e8;'
       +   'color:#000;display:flex;align-items:center;justify-content:center;font-size:'+badgeF+'px;'
-      +   "font-family:'Space Grotesk',Arial,sans-serif;line-height:1}";
+      +   "font-family:'Radio Grotesk',Arial,sans-serif;line-height:1}";
 
     var st = document.getElementById('nmd-rail-style');
     if (!st){ st = document.createElement('style'); st.id='nmd-rail-style'; document.head.appendChild(st); }
@@ -178,6 +179,10 @@
       + '<a class="nmd-cart" href="cart.html" aria-label="Cart"><span class="nmd-badge">0</span>'+svg(IC.cartVB,IC.cart,cartW,cartH)+'</a>';
 
     document.getElementById('nmdMenuBtn').addEventListener('click', toggleMenu);
+    rail.querySelector('.nmd-cart').addEventListener('click', function(e){
+      if (typeof window.openCart === 'function') { e.preventDefault(); closeMenu(); window.openCart(); }
+    });
+    updateBadge();
   }
 
   // ---------- overlay con iframe del menú ----------
@@ -199,7 +204,7 @@
     ov.className = 'nmd-ov'; ov.id = 'nmdOverlay';
     var fr = document.createElement('iframe');
     fr.id = 'nmdMenuFrame'; fr.setAttribute('title','Menu'); fr.setAttribute('loading','eager');
-    fr.src = 'exact-desktop-menu.html?embed=1';
+    fr.src = 'exact-desktop-menu.html?embed=1&layout=map-1';
     ov.appendChild(fr);
     document.body.appendChild(ov);
 
@@ -232,10 +237,31 @@
   function toggleMenu(e){ if (e) e.preventDefault(); isOpen ? closeMenu() : openMenu(); }
   document.addEventListener('keydown', function(e){ if (e.key==='Escape' && isOpen) closeMenu(); });
 
+  function updateBadge(){
+    var badge = document.querySelector('#'+RAIL_ID+' .nmd-badge');
+    if (!badge) return;
+    try {
+      var items = JSON.parse(localStorage.getItem('nmd_cart') || '[]');
+      badge.textContent = items.reduce(function(total, item){ return total + (Number(item.qty) || 0); }, 0);
+    } catch(e) { badge.textContent = '0'; }
+  }
+  document.addEventListener('cart:change', updateBadge);
+  window.addEventListener('storage', updateBadge);
   var raf = null;
   function run(){
     layoutFix();
-    var bar = findBar();
+    var stage = document.getElementById('stage');
+    var width = Math.max(40, Math.round(108 * Math.min(1, window.innerWidth / 1920)));
+    var bar = stage ? findBar() : { width: width };
+    if (!stage) {
+      document.documentElement.style.setProperty('--rail', width+'px');
+      document.body.classList.add('nmd-shared-navigation');
+      if (!document.getElementById('nmd-page-layout')) {
+        var layout = document.createElement('style'); layout.id = 'nmd-page-layout';
+        layout.textContent = 'body.nmd-shared-navigation .main{margin-left:var(--rail);margin-top:0}body.page-appointments.nmd-shared-navigation{padding-left:var(--rail)}';
+        document.head.appendChild(layout);
+      }
+    }
     if (!bar){ var ex=document.getElementById(RAIL_ID); if(ex) ex.remove(); return; }
     build(bar.width);
     ensureOverlay();

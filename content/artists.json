@@ -1,0 +1,98 @@
+[
+  {
+    "id": "0db368dd-bf70-4890-846a-a335fcfdea88",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05162.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "558a4313-354e-474b-840e-abb2c03a45a6",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05288.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 1,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "9a8be660-917f-4a0a-ad74-4de21d446bf1",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05669.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 2,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "888b9cad-97a3-40bc-b4c7-adcce356bdf2",
+    "name": "Zionele",
+    "image": "/assets/team/portrait.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 3,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "71dd53fd-b418-4161-8bb8-5ef0758479ba",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05468.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 4,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "6865bb80-2953-4119-bc22-9cae38dbbc78",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05726.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 5,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "5bc4ae72-4e8d-4fd5-86d6-8542635f7708",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05951.jpg",
+    "role": "Guest",
+    "published": true,
+    "order": 6,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  },
+  {
+    "id": "ad7cf38f-8ffd-4a62-aa79-62ac4acf8927",
+    "name": "Zionele",
+    "image": "/assets/team/DSC05981.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 7,
+    "bio": "",
+    "instagram": "",
+    "website": "",
+    "works": []
+  }
+]

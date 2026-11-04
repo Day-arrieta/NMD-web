@@ -1,7 +1,7 @@
 /* ============================================================
    NMD19 — Nomad Studio · Sistema de diseño
    Paleta: negro / blanco / amarillo de marca + grises
-   Tipos:  Anton (display, ~Impact) · Space Grotesk (texto, ~Radio Grotesk)
+   Tipos:  Manuka Black (display) · Radio Grotesk Regular (texto)
    ============================================================ */
 
 :root{
@@ -15,8 +15,8 @@
   --gray-light:#D9D9D9;
   --gray-bg:#E8E8E8;
 
-  --font-display:'Anton','Impact','Haettenschweiler',sans-serif;
-  --font-body:'Space Grotesk','Helvetica Neue',Arial,sans-serif;
+  --font-display:'Manuka','Impact','Haettenschweiler',sans-serif;
+  --font-body:'Radio Grotesk','Helvetica Neue',Arial,sans-serif;
 
   --maxw:1500px;
   --pad:clamp(20px,5vw,80px);

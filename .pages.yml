@@ -1,0 +1,76 @@
+media:
+  input: assets/uploads
+  output: /assets/uploads
+  rename: random
+  extensions: [jpg, jpeg, png, webp]
+content:
+  - name: artists
+    label: Artistas y trabajos
+    type: file
+    path: content/artists.json
+    format: json
+    list: true
+    fields:
+      - name: id
+        label: Identificador del perfil
+        type: uuid
+        options:
+          editable: false
+          generate: false
+      - name: name
+        label: Nombre
+        type: string
+        required: true
+      - name: image
+        label: Foto del artista
+        type: image
+        required: true
+      - name: role
+        label: Categoría
+        type: select
+        default: Resident
+        options:
+          values: [Resident, Guest]
+      - name: published
+        label: Visible en la web
+        type: boolean
+        default: true
+      - name: order
+        label: Orden en TEAM
+        description: Los números menores aparecen primero.
+        type: number
+        default: 0
+      - name: bio
+        label: Biografía y especialidad
+        type: text
+      - name: instagram
+        label: Enlace de Instagram
+        type: string
+        description: Pega el enlace completo, comenzando con https://
+      - name: website
+        label: Otra red o página web
+        type: string
+      - name: works
+        label: Trabajos del artista
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{title}'
+        fields:
+          - name: title
+            label: Título o descripción de la foto
+            type: string
+            required: true
+          - name: image
+            label: Imagen del trabajo
+            type: image
+            required: true
+          - name: featured
+            label: Mostrar en Featured Work
+            type: boolean
+            default: true
+          - name: published
+            label: Visible en la web
+            type: boolean
+            default: true

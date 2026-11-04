@@ -1,55 +1,48 @@
-/* ============================================================
-   NMD19 — FUENTES REALES DEL FIGMA
-   ------------------------------------------------------------
-   El sitio entero está escrito con los nombres de los substitutos
-   gratuitos ('Anton' y 'Space Grotesk'). En vez de editar cientos
-   de lugares, este archivo REDEFINE esos dos nombres para que
-   apunten a las fuentes reales que compraste:
-
-     'Anton'         →  Mānuka  (Klim Type Foundry)   — títulos
-     'Space Grotesk' →  Radio Grotesk (Pangram Pangram) — texto/UI
-
-   IMPORTANTE: este CSS solo se enlaza en las páginas CUANDO los
-   archivos .woff2 ya están en esta carpeta. Si se enlaza sin los
-   archivos, las fuentes fallarían a Impact/sans-serif y se vería mal.
-   Por eso la integración (inyectar el <link>) la hago yo cuando
-   confirmes que los archivos ya están aquí.
-
-   Nombres de archivo esperados (ponlos exactos, o déjalos y los renombro):
-     Manuka-Black.woff2
-     RadioGrotesk-Regular.woff2
-     RadioGrotesk-Medium.woff2   (opcional; si no, 500/600 usa Regular)
-     RadioGrotesk-Bold.woff2
-   ============================================================ */
-
-/* ---------- Mānuka  (sustituye a 'Anton' — los titulares grandes) ---------- */
-@font-face{
-  font-family:'Anton';
-  src:url('Manuka-Black.woff2') format('woff2');
-  font-weight:100 900;      /* cubre cualquier peso que pida 'Anton' */
-  font-style:normal;
-  font-display:swap;
+/* NMD19 — Local typefaces shared by desktop and mobile pages. */
+@font-face {
+  font-family: 'Manuka';
+  src: url('./manuka-black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* ---------- Radio Grotesk  (sustituye a 'Space Grotesk' — texto/UI) ---------- */
-@font-face{
-  font-family:'Space Grotesk';
-  src:url('RadioGrotesk-Regular.woff2') format('woff2');
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
+/* Includes headings created dynamically by the shop, cart and booking form. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Manuka', Impact, sans-serif;
+  font-weight: 900;
 }
-@font-face{
-  font-family:'Space Grotesk';
-  src:url('RadioGrotesk-Medium.woff2') format('woff2');
-  font-weight:500 600;
-  font-style:normal;
-  font-display:swap;
+
+/* Figma: Radio Grotesk / Regular — body, labels, product names and prices. */
+@font-face {
+  font-family: 'Radio Grotesk';
+  src: url('./PPRadioGrotesk-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
-@font-face{
-  font-family:'Space Grotesk';
-  src:url('RadioGrotesk-Bold.woff2') format('woff2');
-  font-weight:700;
-  font-style:normal;
-  font-display:swap;
+
+/* Product names are Radio Grotesk in Figma, including dynamic cards/drawers. */
+.card__row h3,
+.reco-card h3,
+.item h3,
+.cart-it h3,
+.product-card__meta h3 {
+  font-family: 'Radio Grotesk', Arial, sans-serif;
+  font-weight: 400;
+}
+
+/* Figma: Desktop/H4 Condensed and Mobile/H4 Condensed use Medium (500). */
+@font-face {
+  font-family: 'Lunchtype25';
+  src: url('./Lunchtype25-Medium-Condensed.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.intro .lead,
+.note .product-material {
+  font-family: 'Lunchtype25', 'Arial Narrow', sans-serif;
+  font-weight: 500;
 }

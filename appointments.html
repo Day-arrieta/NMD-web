@@ -5,21 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Appointments — NMD19®</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#2b2b2b;--yellow:#FDDE36;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{background:var(--bg);color:var(--fg);font-family:'Radio Grotesk',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
 .top{position:fixed;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 28px;z-index:10}
-.brand{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:.02em;color:#fff;text-decoration:none}
+.brand{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:.02em;color:#fff;text-decoration:none}
 .brand sup{font-size:.5em;vertical-align:super}
 .top a.home{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
 .top a.home:hover{color:#fff}
 .wrap{max-width:720px;margin:0 auto;padding:120px 28px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
 /* intro */
 .intro{text-align:left;animation:fade .6s var(--ease) both}
-.intro h1{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(56px,12vw,150px);line-height:.85;letter-spacing:.01em}
+.intro h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px,12vw,150px);line-height:.85;letter-spacing:.01em}
 .intro h1 .y{color:var(--yellow)}
 .intro p{color:var(--muted);font-size:clamp(15px,1.7vw,19px);line-height:1.55;max-width:54ch;margin-top:26px;text-transform:uppercase;letter-spacing:.02em}
 .intro .lead{color:#cfcfcf;text-transform:none;font-size:16px;margin-top:18px}
@@ -46,7 +45,7 @@ body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif
 textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 /* nav */
 .nav{display:flex;align-items:center;justify-content:space-between;margin-top:40px}
-.btn{font-family:inherit;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:14px;border-radius:100px;padding:15px 30px;cursor:pointer;border:1.5px solid #fff;transition:.2s var(--ease)}
+.btn{font-family:inherit;font-weight:400;letter-spacing:.04em;text-transform:uppercase;font-size:14px;border-radius:100px;padding:15px 30px;cursor:pointer;border:1.5px solid #fff;transition:.2s var(--ease)}
 .btn.next{background:#fff;color:#000}
 .btn.next:hover{background:var(--yellow);border-color:var(--yellow)}
 .btn.back{background:transparent;color:var(--muted);border-color:transparent;padding-left:0}
@@ -56,13 +55,17 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 /* done */
 .done{display:none;text-align:left;animation:fade .6s var(--ease) both}
 .done.show{display:block}
-.done h2{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(48px,9vw,110px);line-height:.85}
+.done h2{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(48px,9vw,110px);line-height:.85}
 .done p{color:var(--muted);font-size:17px;margin:20px 0 30px;max-width:48ch;line-height:1.5}
 @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/typography.css">
 </head>
-<body>
+<body class="page-appointments">
 <div class="top">
   <a class="brand" href="index.html">NMD<sup>19®</sup></a>
   <a class="home" href="index.html">Close ✕</a>
@@ -200,5 +203,6 @@ function submit(){
 let done=false;
 function showDone(){ if(done) return; done=true; $('form').style.display='none'; $('intro').style.display='none'; bar.style.width='100%'; $('done').classList.add('show'); console.log('Respuestas:',A); }
 </script>
+<script src="assets/js/sticky-rail.js?v=shared-5"></script>
 </body>
 </html>
