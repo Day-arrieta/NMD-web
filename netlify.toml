@@ -1,0 +1,4 @@
+# Keep exported links and their inline typography unchanged.
+# https://docs.netlify.com/build/configure-builds/file-based-configuration/
+[build.processing.html]
+  pretty_urls = false
