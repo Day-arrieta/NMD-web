@@ -1,7 +1,7 @@
 (async () => {
   const root = document.getElementById('team-carousel');
   if (!root) return;
-  root.innerHTML = '<div class="team-track"></div><div class="team-controls"><span aria-live="polite" class="team-count"></span></div>';
+  root.innerHTML = '<div class="team-track"></div>';
   let artists;
   try { artists = await NMDContent.artists(); }
   catch (error) { root.textContent = 'No se pudo cargar TEAM. Recarga la página.'; console.error(error); return; }
@@ -35,33 +35,59 @@
     }
     inner.append(link); card.append(inner); track.append(card); return card;
   });
-  const controls = root.querySelector('.team-controls');
-  const bar = document.createElement('input');
-  bar.type = 'range'; bar.min = 0; bar.max = cards.length - 1; bar.step = 'any';
-  bar.className = 'team-progress'; bar.setAttribute('aria-label', 'Scroll team');
-  controls.prepend(bar);
   let visibleCards = cards;
+  let renderedCards = [];
+  let cycleWidth = 0, loopStart = 0;
+  let start = null, origin = 0, dragged = false;
+  const step = 500;
+  const modulo = (value, length) => ((value % length) + length) % length;
+
+  function rebuildLoop(index = 0) {
+    track.replaceChildren();
+    renderedCards = [];
+    cycleWidth = visibleCards.length * step;
+    // Keep at least four cards on either side, even for a single guest.
+    const sideCycles = visibleCards.length ? Math.ceil(4 / visibleCards.length) : 0;
+    loopStart = sideCycles * cycleWidth;
+    for (let cycle = 0; cycle < sideCycles * 2 + 1; cycle++) {
+      visibleCards.forEach(card => {
+        const copy = card.cloneNode(true);
+        copy.hidden = false;
+        track.append(copy);
+        renderedCards.push(copy);
+      });
+    }
+    start = null;
+    root.classList.remove('is-dragging');
+    track.scrollLeft = loopStart + index * step;
+    render();
+  }
   function render() {
-    current = Math.min(visibleCards.length - 1, Math.round(track.scrollLeft / 500));
-    cards.forEach(card => card.classList.remove('is-active'));
-    visibleCards.forEach((card, i) => card.classList.toggle('is-active', i === current));
-    bar.value = track.scrollLeft / 500;
-    root.querySelector('.team-count').textContent = `${String(current + 1).padStart(2, '0')}/${String(visibleCards.length).padStart(2, '0')}`;
+    if (!cycleWidth) {
+      return;
+    }
+    const previous = track.scrollLeft;
+    const wrapped = loopStart + modulo(previous - loopStart, cycleWidth);
+    if (Math.abs(wrapped - previous) > 1) {
+      track.scrollLeft = wrapped;
+      // Preserve the pointer's position when wrapping during a drag.
+      if (start !== null) origin += wrapped - previous;
+    }
+    const position = (track.scrollLeft - loopStart) / step;
+    current = modulo(Math.round(position), visibleCards.length);
+    const physicalIndex = Math.round(track.scrollLeft / step);
+    renderedCards.forEach((card, i) => card.classList.toggle('is-active', i === physicalIndex));
   }
   const filters = [...document.querySelectorAll('[data-team-filter]')];
   function filterBy(value) {
-    cards.forEach(card => { card.hidden = value !== 'all' && card.dataset.role !== value; });
-    visibleCards = cards.filter(card => !card.hidden);
+    visibleCards = cards.filter(card => value === 'all' || card.dataset.role === value);
     filters.forEach(filter => {
       const active = filter.dataset.teamFilter === value;
       filter.setAttribute('aria-pressed', String(active));
       filter.style.color = active ? '#fff' : '#727272';
       filter.style.textDecoration = active ? 'underline' : 'none';
     });
-    bar.max = Math.max(0, visibleCards.length - 1);
-    bar.disabled = visibleCards.length <= 1;
-    track.scrollLeft = 0;
-    render();
+    rebuildLoop();
   }
   filters.forEach(filter => {
     filter.addEventListener('click', () => filterBy(filter.dataset.teamFilter));
@@ -70,22 +96,20 @@
     });
   });
   track.addEventListener('scroll', render, { passive: true });
-  bar.addEventListener('input', () => { track.scrollLeft = Number(bar.value) * 500; });
   root.addEventListener('keydown', event => {
-    if (event.target === bar) return;
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       event.preventDefault(); track.scrollLeft += event.key === 'ArrowRight' ? 500 : -500;
     }
   });
   track.addEventListener('wheel', event => {
-    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!event.deltaX || Math.abs(event.deltaY) > Math.abs(event.deltaX)) return;
+    const delta = event.deltaX;
     const amount = delta * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? 500 : 1);
     const max = track.scrollWidth - track.clientWidth;
     if ((amount < 0 && track.scrollLeft > 0) || (amount > 0 && track.scrollLeft < max)) {
       event.preventDefault(); track.scrollLeft += amount;
     }
   }, { passive: false });
-  let start = null, origin = 0, dragged = false;
   track.addEventListener('pointerdown', event => {
     if (event.pointerType === 'touch' || event.button !== 0) return;
     start = event.clientX; origin = track.scrollLeft; dragged = false;
@@ -103,6 +127,5 @@
   track.addEventListener('pointercancel', finish);
   track.addEventListener('dragstart', event => event.preventDefault());
   track.addEventListener('click', event => { if (dragged) { event.preventDefault(); event.stopPropagation(); dragged = false; } }, true);
-  track.scrollLeft = current * 500;
-  render();
+  rebuildLoop(current);
 })();

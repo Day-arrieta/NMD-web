@@ -67,6 +67,11 @@
       var hasText = (c.textContent || '').trim().length > 0;
       var hasImg  = cs.backgroundImage !== 'none' || !!c.querySelector('img,[style*="background-image"]');
       if (!hasText && !hasImg) return;
+      c.addEventListener('transitionend', function(event){
+        if (event.target === c && event.propertyName === 'clip-path' && c.style.opacity === '1') {
+          c.style.clipPath = 'none';
+        }
+      });
       items.push({ el: c, x: r.left });
     });
     items.sort(function(a,b){ return a.x - b.x; });
@@ -204,7 +209,7 @@
     ov.className = 'nmd-ov'; ov.id = 'nmdOverlay';
     var fr = document.createElement('iframe');
     fr.id = 'nmdMenuFrame'; fr.setAttribute('title','Menu'); fr.setAttribute('loading','eager');
-    fr.src = 'exact-desktop-menu.html?embed=1&layout=map-1';
+    fr.src = 'exact-desktop-menu.html?embed=1&layout=menu-language-1';
     ov.appendChild(fr);
     document.body.appendChild(ov);
 

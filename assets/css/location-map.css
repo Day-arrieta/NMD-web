@@ -1,0 +1,4 @@
+.nmd-location-map{background:#181818 url('../fig/58117f23bf1e48b6c7048a751abd051b798796df.jpg') center/cover no-repeat!important}
+.nmd-location-map iframe{opacity:0;transition:opacity .3s ease}
+.nmd-location-map iframe.is-loaded{opacity:1}
+@media(prefers-reduced-motion:reduce){.nmd-location-map iframe{transition:none}}

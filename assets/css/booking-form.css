@@ -1,0 +1,19 @@
+body.page-appointments{background:#000;--bg:#000;--muted:#727272}
+.page-appointments .top,.page-appointments #intro,.page-appointments .progress{display:none}
+.page-appointments .wrap{max-width:none;padding:40px max(6.2vw,24px) 48px calc(var(--nmd-rail-width,108px) + 2.2vw)!important;min-height:100vh;justify-content:flex-start}
+.page-appointments .q{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(32px,4.6875vw,90px);line-height:1;font-weight:500;letter-spacing:0;text-transform:uppercase;margin:0 0 56px;font-synthesis:none}
+.q u{text-underline-offset:.12em;text-decoration-thickness:.05em}
+.required{color:#727272;font:clamp(16px,1.25vw,24px)/1.2 'Radio Grotesk',sans-serif;margin-bottom:76px}
+.page-appointments .opts{gap:24px}
+.page-appointments .opt{padding:0;border:0;border-radius:0;font-size:clamp(20px,1.875vw,36px);line-height:1;gap:16px;min-height:36px}
+.page-appointments .opt .dot{width:36px;height:36px;border:1px solid #727272}
+.page-appointments .opt.sel .dot{background:#FDDE36;box-shadow:inset 0 0 0 5px #000;border-color:#727272}
+.page-appointments .opt:focus-visible,.artist-choice:focus-visible{outline:2px solid #FDDE36;outline-offset:6px}
+.page-appointments .field{background:transparent;border:0;border-bottom:1px solid #727272;border-radius:0;font-size:clamp(20px,1.875vw,36px)}
+.page-appointments .nav{margin-top:72px}.page-appointments .hint{margin-bottom:40px}
+.placement-control{margin-top:104px;position:relative}.placement-input{position:relative}.placement-input input{padding-right:70px}.placement-toggle{position:absolute;right:24px;top:50%;transform:translateY(-50%);border:0;background:none;color:#ddd;font-size:32px;cursor:pointer}
+.placement-options{display:flex;flex-direction:column;gap:16px;margin-top:24px}.placement-options[hidden]{display:none}.placement-option{background:#000;border:1px solid #727272;border-radius:8px;color:#fff;padding:22px;font:36px/1 'Radio Grotesk',sans-serif;text-align:left;cursor:pointer}.placement-option:hover,.placement-option:focus-visible,.placement-option.selected{background:#727272}
+.artist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 48px;max-width:1215px;margin:88px auto 0}.artist-choice{border:0;background:none;color:#fff;text-align:left;cursor:pointer;font:36px/1 'Radio Grotesk',sans-serif}.artist-choice img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center 25%;border-radius:8px;display:block;filter:grayscale(1)}.artist-choice.selected img{filter:none;outline:3px dotted #FDDE36;outline-offset:7px}.artist-label{display:flex;gap:16px;margin-top:18px}.artist-label:before{content:'';width:36px;height:36px;border:1px solid #727272;border-radius:50%;flex-shrink:0}.selected .artist-label:before{background:#FDDE36;box-shadow:inset 0 0 0 5px #000}.artist-placeholder{aspect-ratio:1;display:grid;place-items:center;background:#181818;border-radius:8px;font-size:64px}
+@media(max-width:700px){.page-appointments .wrap{padding-top:28px!important}.page-appointments .q{margin-bottom:32px}.required{margin-bottom:42px}.artist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px;margin-top:40px}.artist-choice{font-size:20px}.artist-label{gap:8px}.artist-label:before{width:24px;height:24px}.placement-control{margin-top:50px}.placement-option{font-size:22px}.page-appointments .opt .dot{width:28px;height:28px}}
+body.page-appointments.nmd-shared-navigation{padding-left:0!important}
+.page-appointments .q:focus{outline:none}
