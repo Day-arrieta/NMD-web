@@ -1,9 +1,9 @@
-body.page-appointments{background:#000;--bg:#000;--muted:#727272}
+body.page-appointments{background:#000;--bg:#000;--muted:#767676}
 .page-appointments .top,.page-appointments #intro,.page-appointments .progress{display:none}
 .page-appointments .wrap{max-width:none;padding:40px max(6.2vw,24px) 48px calc(var(--nmd-rail-width,108px) + 2.2vw)!important;min-height:100vh;justify-content:flex-start}
 .page-appointments .q{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(32px,4.6875vw,90px);line-height:1;font-weight:500;letter-spacing:0;text-transform:uppercase;margin:0 0 56px;font-synthesis:none}
 .q u{text-underline-offset:.12em;text-decoration-thickness:.05em}
-.required{color:#727272;font:clamp(16px,1.25vw,24px)/1.2 'Radio Grotesk',sans-serif;margin-bottom:76px}
+.required{color:#767676;font:clamp(16px,1.25vw,24px)/1.2 'Radio Grotesk',sans-serif;margin-bottom:76px}
 .page-appointments .opts{gap:24px}
 .page-appointments .opt{padding:0;border:0;border-radius:0;font-size:clamp(20px,1.875vw,36px);line-height:1;gap:16px;min-height:36px}
 .page-appointments .opt .dot{width:36px;height:36px;border:1px solid #727272}
@@ -17,3 +17,28 @@ body.page-appointments{background:#000;--bg:#000;--muted:#727272}
 @media(max-width:700px){.page-appointments .wrap{padding-top:28px!important}.page-appointments .q{margin-bottom:32px}.required{margin-bottom:42px}.artist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px;margin-top:40px}.artist-choice{font-size:20px}.artist-label{gap:8px}.artist-label:before{width:24px;height:24px}.placement-control{margin-top:50px}.placement-option{font-size:22px}.page-appointments .opt .dot{width:28px;height:28px}}
 body.page-appointments.nmd-shared-navigation{padding-left:0!important}
 .page-appointments .q:focus{outline:none}
+/* Step hint under the question (price, multi-select, placement, size, contact) */
+.page-appointments .q+.hint{margin:-32px 0 24px;color:#bdbdbd;max-width:60ch}
+@media(max-width:700px){.page-appointments .q+.hint{margin:-16px 0 20px}}
+/* Multi-select steps: same column layout as single choice, but square checkboxes with a tick */
+.page-appointments .opts.multi{flex-direction:column;flex-wrap:nowrap}
+.page-appointments .opts.multi .opt{width:100%}
+.page-appointments .opts.multi .opt .dot{border-radius:6px;position:relative}
+.page-appointments .opts.multi .opt.sel .dot{box-shadow:none}
+.page-appointments .opts.multi .opt.sel .dot:after{content:'';position:absolute;left:50%;top:44%;width:28%;height:52%;border:solid #000;border-width:0 3px 3px 0;transform:translate(-50%,-50%) rotate(45deg)}
+/* Neutral tiles ("Recommend me an Artist", "Guest Artists") */
+.artist-placeholder{color:#727272;font-family:'Radio Grotesk',sans-serif}
+.artist-choice.selected .artist-placeholder{outline:3px dotted #FDDE36;outline-offset:7px;color:#fff}
+/* Error / status messages and the contact field error state */
+.page-appointments .err{font:16px/1.4 'Radio Grotesk',sans-serif}
+.page-appointments .field[aria-invalid="true"]{border-bottom-color:#FDDE36}
+/* Privacy / terms notice next to the final Submit */
+.consent{color:#767676;font:16px/1.4 'Radio Grotesk',sans-serif;margin-top:24px;max-width:60ch}
+.consent a{color:#fff;text-decoration:underline;text-underline-offset:.15em}
+.consent a:hover{color:#FDDE36}
+.consent a:focus-visible{outline:2px solid #FDDE36;outline-offset:2px}
+.page-appointments .consent:not([hidden])+.nav{margin-top:40px}
+.done h2:focus{outline:none}
+/* Long words in the big uppercase questions (e.g. "RECOMMENDATIONS") must not push the page sideways on narrow phones */
+.page-appointments .q{overflow-wrap:break-word;hyphens:auto}
+.placement-toggle{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}

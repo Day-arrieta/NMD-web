@@ -505,7 +505,7 @@ window.NMDTranslations = [
   ],
   [
     ", and",
-    ", y"
+    " y"
   ],
   [
     "This question is required.*",
@@ -516,7 +516,7 @@ window.NMDTranslations = [
     "Opcional"
   ],
   [
-    "Yes, i know what i want",
+    "Yes, I know what I want",
     "Sí, sé lo que quiero"
   ],
   [
@@ -608,8 +608,8 @@ window.NMDTranslations = [
     "¿Qué estilos de tatuaje te gustan?"
   ],
   [
-    "Choose as many as you like.",
-    "Elige todos los que quieras."
+    "Select all that apply.",
+    "Selecciona todas las opciones que correspondan."
   ],
   [
     "Fine line",
@@ -812,16 +812,16 @@ window.NMDTranslations = [
     "Sí, vengo de otro país"
   ],
   [
-    "Last step — what should we call you?",
-    "Último paso: ¿cómo te llamas?"
+    "What should we call you?",
+    "¿Cómo quieres que te llamemos?"
   ],
   [
     "Your name",
     "Tu nombre"
   ],
   [
-    "Best email or WhatsApp to reach you?",
-    "¿Qué correo o WhatsApp podemos usar para contactarte?"
+    "Last step — what's the best email or WhatsApp number to reach you?",
+    "Último paso: ¿a qué correo o número de WhatsApp podemos contactarte?"
   ],
   [
     "Next →",
@@ -1058,5 +1058,41 @@ window.NMDTranslations = [
   [
     "Any specific health conditions, skin-related issues, your current place of residence if you’re traveling, and any special requirements or preferences.",
     "Indica cualquier condición de salud o de la piel, tu lugar de residencia si vas a viajar y cualquier necesidad o preferencia especial."
+  ],
+  [
+    "If you have a range in mind, you can mention it in your description on the next step.",
+    "Si tienes un rango en mente, puedes mencionarlo en tu descripción en el siguiente paso."
+  ],
+  [
+    "Choose the closest area. Placement can be reviewed and adjusted before your session begins.",
+    "Elige la zona más cercana. La ubicación puede revisarse y ajustarse antes de comenzar tu sesión."
+  ],
+  [
+    "Enter an email address or a phone/WhatsApp number, including country code.",
+    "Escribe un correo electrónico o un número de teléfono/WhatsApp con código de país."
+  ],
+  [
+    "Please answer this question to continue.",
+    "Responde esta pregunta para continuar."
+  ],
+  [
+    "Please enter a valid email or a phone/WhatsApp number (at least 8 digits).",
+    "Escribe un correo válido o un número de teléfono/WhatsApp (mínimo 8 dígitos)."
+  ],
+  [
+    "By sending this form you agree to our",
+    "Al enviar este formulario aceptas nuestro"
+  ],
+  [
+    "Terms",
+    "Términos"
+  ],
+  [
+    "Site",
+    "Sitio"
+  ],
+  [
+    "NMD19 home",
+    "Inicio de NMD19"
   ]
 ];

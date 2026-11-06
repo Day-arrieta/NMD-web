@@ -11,7 +11,7 @@ const PRODUCTS = [
     sizes:['XS','S','M','L','XL'], sku:'251CWDT-SHM01',
     note:'MADE IN MEXICO · 100% Cotton · Model reference: 182cm · Size: Large',
     info:['Made of mediumweight classic cotton jersey','Using GOTS certified organic cotton','Loose fit · Below hip length','Long sleeves · High turtle neck','Ribbed collar and cuffs','Signature level shoulder seams'] },
-  { id:'coral-heart-tote', name:'Coral Heart', sub:'Totebag', price:1229, cat:'accesories',
+  { id:'coral-heart-tote', name:'Coral Heart', sub:'Totebag', price:1229, cat:'accessories',
     img:IMG('034eff316ff1dcf19afe59e3ec6b48cb7f12071f.jpg'),
     gallery:['034eff316ff1dcf19afe59e3ec6b48cb7f12071f.jpg'].map(IMG),
     sizes:['One Size'], sku:'251CHTB-01', note:'MADE IN MEXICO',
@@ -44,8 +44,13 @@ const PRODUCTS = [
   { id:'giftcard', name:'Giftcard', sub:'From $500', price:500, cat:'giftcards',
     img:IMG('0c37da8ad28cec6dd2dff07d9657a9383059727f.jpg'),
     gallery:['0c37da8ad28cec6dd2dff07d9657a9383059727f.jpg'].map(IMG),
-    sizes:['$500','$1,000','$2,500'], sku:'251GC', note:'Delivered by email',
+    // Each amount is its own price; optionLabel replaces "Size" in the UI and the cart.
+    sizes:['$500','$1,000','$2,500'], prices:{ '$500':500, '$1,000':1000, '$2,500':2500 }, optionLabel:'Amount',
+    sku:'251GC', note:'Delivered by email',
     info:['Digital giftcard','Redeemable in studio & shop'] },
 ];
-const findProduct = id => PRODUCTS.find(p => p.id === id) || PRODUCTS[0];
+// Returns null for a missing or unknown id (product.html shows a "not found" state).
+const findProduct = id => PRODUCTS.find(p => p.id === id) || null;
+// Price of a product for the chosen size/amount (giftcard amounts have their own price).
+const priceFor = (p, size) => (p.prices && p.prices[size] != null) ? p.prices[size] : p.price;
 const money = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });

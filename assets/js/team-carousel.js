@@ -4,7 +4,7 @@
   root.innerHTML = '<div class="team-track"></div>';
   let artists;
   try { artists = await NMDContent.artists(); }
-  catch (error) { root.textContent = 'No se pudo cargar TEAM. Recarga la página.'; console.error(error); return; }
+  catch (error) { root.textContent = 'Could not load TEAM. Please reload the page.'; console.error(error); return; }
   if (!artists.length) { root.hidden = true; return; }
   const track = root.querySelector('.team-track');
   let current = Math.min(2, artists.length - 1);
@@ -22,7 +22,7 @@
     meta.append(name, role);
     const link = document.createElement('a'); link.href = NMDContent.profileURL(artist.id); link.textContent = 'View Profile';
     const photoLink = document.createElement('a');
-    photoLink.className = 'team-card__photo'; photoLink.href = link.href; photoLink.draggable = false;
+    photoLink.className = 'team-card__photo'; photoLink.setAttribute('href', link.getAttribute('href')); photoLink.draggable = false;
     photoLink.setAttribute('aria-label', 'View profile: ' + artist.name);
     photoLink.append(img);
     inner.append(photoLink, meta);
@@ -53,6 +53,8 @@
       visibleCards.forEach(card => {
         const copy = card.cloneNode(true);
         copy.hidden = false;
+        // Only the middle cycle is the "real" list for keyboard and screen readers; the loop copies are visual.
+        if (cycle !== sideCycles) { copy.inert = true; copy.setAttribute('aria-hidden', 'true'); }
         track.append(copy);
         renderedCards.push(copy);
       });
@@ -96,6 +98,11 @@
     });
   });
   track.addEventListener('scroll', render, { passive: true });
+  // Keyboard focus: centre the focused card (Chrome won't scroll a partly visible element into view).
+  track.addEventListener('focusin', event => {
+    const i = renderedCards.findIndex(card => card.contains(event.target));
+    if (i > -1 && Math.round(track.scrollLeft / step) !== i) track.scrollLeft = i * step;
+  });
   root.addEventListener('keydown', event => {
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       event.preventDefault(); track.scrollLeft += event.key === 'ArrowRight' ? 500 : -500;

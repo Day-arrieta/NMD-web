@@ -1,34 +1,92 @@
+/* Artist profile, filled from the CMS by ?artist=<id>.
+   Used by exact-desktop-menu-3.html (desktop) and exact-mobile-work-profile.html (mobile). Each page marks its fields with
+   data-artist="…" and keeps them hidden until #stage gets data-profile ("ready" or "missing"), so Figma placeholders never flash. */
 (async () => {
-  const field = name => document.querySelector(`[data-artist="${name}"]`);
+  const stage = document.getElementById('stage');
+  if (!stage) return;
+  const field = name => stage.querySelector(`[data-artist="${name}"]`);
+  const hide = (...names) => names.forEach(name => { const el = field(name); if (el) el.hidden = true; });
+  // The location/specialty text sits in a bordered box on mobile; hide the box with it so no empty frame is left.
+  const hideBio = () => { const bio = field('bio'); if (bio) (bio.parentElement === stage ? bio : bio.parentElement).hidden = true; };
+  const link = (label, href, external) => {
+    const a = document.createElement('a'); a.href = href; a.textContent = label;
+    if (external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    return a;
+  };
+
+  // Shrinks the name until it fits its box width and data-max-height (e.g. two lines), keeping the Figma line-height ratio.
+  async function fitName() {
+    const el = field('name');
+    if (!el) return;
+    const style = getComputedStyle(el);
+    const base = parseFloat(el.dataset.baseSize || (el.dataset.baseSize = style.fontSize));
+    const ratio = (parseFloat(style.lineHeight) / parseFloat(style.fontSize)) || 0.8;
+    const maxHeight = Number(el.dataset.maxHeight) || base * ratio;
+    try { await document.fonts.load(`900 ${base}px Manuka`, el.textContent); } catch (error) { /* measure with the fallback font */ }
+    const overflow = el.style.overflow;
+    el.style.overflow = 'hidden'; // makes scrollWidth report a word wider than the box
+    for (let size = base; size >= base * 0.3; size -= 2) {
+      el.style.fontSize = size + 'px';
+      el.style.lineHeight = Math.round(size * ratio) + 'px';
+      if (el.scrollWidth <= el.clientWidth + 1 && el.scrollHeight <= maxHeight + 1) break;
+    }
+    el.style.overflow = overflow;
+  }
+
+  async function unavailable(message) {
+    document.title = 'Profile unavailable — NMD19®';
+    field('name').textContent = message;
+    hide('pill', 'portrait', 'works-title', 'works', 'instagram');
+    hideBio();
+    const socials = field('socials');
+    if (socials) socials.replaceChildren(link('Back to Work', stage.dataset.workUrl || 'exact-desktop-work.html'));
+    await fitName();
+    stage.dataset.profile = 'missing';
+  }
+
+  let artist;
   try {
     const artists = await NMDContent.artists();
     const id = new URLSearchParams(location.search).get('artist');
-    const artist = id ? artists.find(a => a.id === id) : artists[0];
-    if (!artist) {
-      field('name').textContent = 'Perfil no disponible';
-      ['role', 'bio', 'socials', 'portrait'].forEach(key => { field(key).hidden = true; });
-      return;
-    }
-    document.title = artist.name + ' — NMD19';
-    ['name', 'role'].forEach(key => { field(key).textContent = artist[key] || ''; });
-    field('bio').textContent = [artist.location, artist.bio]
-      .filter(value => typeof value === 'string' && value.trim())
-      .map(value => value.trim()).join('\n');
-    field('portrait').style.backgroundImage = `url(${JSON.stringify(artist.image)})`;
-    field('portrait').setAttribute('role', 'img');
-    field('portrait').setAttribute('aria-label', artist.name);
-    const socials = field('socials'); socials.replaceChildren();
-    [['Instagram', artist.instagram], ['Website', artist.website]].forEach(([label, href]) => {
-      if (!href) return;
-      const a = document.createElement('a'); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = label; socials.append(a);
-    });
-    const gallery = document.getElementById('artist-works');
-    const works = artist.works.filter(work => work.featured);
-    works.forEach(work => {
-      const img = document.createElement('img'); img.src = work.image; img.alt = work.title || ''; img.loading = 'lazy'; gallery.append(img);
-    });
-    if (!works.length) { const p = document.createElement('p'); p.textContent = 'Próximamente'; gallery.append(p); }
+    artist = id ? artists.find(a => a.id === id) : artists[0];
   } catch (error) {
-    field('name').textContent = 'No se pudo cargar el perfil'; console.error(error);
+    console.error(error);
+    return unavailable('Could not load profile');
   }
+  if (!artist) return unavailable('Profile unavailable');
+
+  document.title = artist.name + ' — NMD19®';
+  field('name').textContent = artist.name;
+  field('role').textContent = artist.role;
+
+  const details = [artist.location, artist.bio].filter(value => typeof value === 'string' && value.trim()).map(value => value.trim());
+  field('bio').textContent = details.join('\n');
+  if (!details.length) hideBio();
+
+  const portrait = field('portrait');
+  portrait.style.backgroundImage = `url(${JSON.stringify(artist.image)})`;
+  portrait.setAttribute('role', 'img');
+  portrait.setAttribute('aria-label', artist.name);
+
+  const socials = field('socials');
+  socials.replaceChildren(...[['Instagram', artist.instagram], ['Website', artist.website]]
+    .filter(([, href]) => href).map(([label, href]) => link(label, href, true)));
+
+  const instagram = field('instagram'); // mobile "View Instagram" bar
+  if (instagram) {
+    if (artist.instagram) { instagram.href = artist.instagram; instagram.setAttribute('aria-label', 'View Instagram: ' + artist.name); }
+    else instagram.hidden = true;
+  }
+
+  const gallery = field('works');
+  const works = artist.works.filter(work => work.featured);
+  gallery.replaceChildren(...works.map(work => {
+    const img = document.createElement('img');
+    img.src = work.image; img.alt = work.title || ''; img.loading = 'lazy'; img.decoding = 'async';
+    return img;
+  }));
+  if (!works.length) { const p = document.createElement('p'); p.textContent = 'Coming soon'; gallery.append(p); }
+
+  await fitName();
+  stage.dataset.profile = 'ready';
 })();

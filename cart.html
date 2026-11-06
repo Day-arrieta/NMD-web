@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Cart — NMD19®</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="description" content="Your NMD19 shop cart.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NMD19®"><meta property="og:title" content="My Cart — NMD19®"><meta property="og:description" content="Your NMD19 shop cart."><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script src="assets/js/device-route.js?v=a60d8c88"></script>
 <style>
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#262626;--yellow:#FDDE36;--rail:88px;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,11 +18,11 @@ a{color:inherit;text-decoration:none}
 .rail__menu{display:flex;flex-direction:column;gap:6px;width:26px;cursor:pointer}.rail__menu span{height:2px;background:#111;width:100%}
 .rail__cart{position:relative}.rail__count{position:absolute;top:-10px;right:-12px;background:#111;color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .main{margin-left:var(--rail);min-height:100vh}
-.wrap{display:grid;grid-template-columns:1.5fr .9fr;gap:clamp(24px,4vw,64px);padding:60px clamp(20px,4vw,60px) 80px;align-items:start}
+.wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.9fr);gap:clamp(24px,4vw,64px);padding:60px clamp(20px,4vw,60px) 80px;align-items:start}
 h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px,9vw,120px);line-height:.85;margin-bottom:28px;letter-spacing:0.03em;}
-.item{display:grid;grid-template-columns:104px 1fr auto;gap:22px;padding:24px 0;border-bottom:1px solid var(--line)}
+.item{display:grid;grid-template-columns:104px minmax(0,1fr) auto;gap:22px;padding:24px 0;border-bottom:1px solid var(--line)}
 .item img{width:104px;height:130px;object-fit:cover;background:#fff}
-.item h3{font-size:21px;font-weight:400}.item .sub,.item .sz{color:var(--muted);font-size:13px;margin-top:2px}
+.item h3{font-size:21px;font-weight:400;overflow-wrap:anywhere}.item .sub,.item .sz{color:var(--muted);font-size:13px;margin-top:2px}
 .iq{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:100px;margin-top:14px}
 .iq button{background:none;border:none;color:#fff;padding:6px 14px;cursor:pointer;font-size:16px}.iq span{min-width:30px;text-align:center;font-weight:400}
 .item-right{text-align:right;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
@@ -26,81 +30,93 @@ h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px
 .summary{position:sticky;top:30px;background:#fff;color:#000;border-radius:16px;padding:32px}
 .summary h2{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:38px;margin-bottom:22px;letter-spacing:0.03em;}
 .row{display:flex;justify-content:space-between;padding:11px 0;font-size:16px;color:#444}
-.row .cur{font-size:11px;color:#999;margin-left:5px}
+.row .cur{font-size:11px;color:#6b6b6b;margin-left:5px}
 .row.total{border-top:1px solid #ddd;margin-top:8px;padding-top:18px;color:#000;font-size:22px;font-weight:400}
 .checkout{width:100%;margin-top:22px;background:#000;color:#fff;border:none;border-radius:100px;padding:18px;font-family:inherit;font-weight:400;letter-spacing:.04em;text-transform:uppercase;font-size:15px;cursor:pointer;transition:.2s var(--ease)}
 .checkout:hover{background:var(--yellow);color:#000}
-.summary .small{font-size:12px;color:#999;text-align:center;margin-top:12px}
+.summary .small{font-size:12px;color:#767676;text-align:center;margin-top:12px}
+.summary .small.cart-notice{font-size:14px;line-height:1.35;color:#555}
 .empty{padding:120px clamp(20px,5vw,60px);text-align:left}
 .empty h1{margin-bottom:14px}.empty p{color:var(--muted);margin-bottom:28px}
 .empty a{display:inline-block;border:1.5px solid #fff;border-radius:100px;padding:15px 30px;text-transform:uppercase;font-size:14px;font-weight:400}
 .empty a:hover{background:#fff;color:#000}
-@media(max-width:820px){.wrap{grid-template-columns:1fr}.summary{position:static}}
-@media(max-width:680px){:root{--rail:0px}.rail{flex-direction:row;width:100%;height:62px;padding:0 20px}.main{margin-top:62px}}
+@media(max-width:820px){.wrap{grid-template-columns:minmax(0,1fr)}.summary{position:static}}
+@media(max-width:680px){:root{--rail:0px}.rail{flex-direction:row;width:100%;height:62px;padding:0 20px}.main{margin-top:62px}
+  /* phones: price + Remove go under the name so long names never push them out */
+  .item{grid-template-columns:88px minmax(0,1fr);column-gap:16px;row-gap:10px}
+  .item img{width:88px;height:110px;grid-row:span 2}
+  .item-right{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+  .summary{padding:24px}
+  /* tap targets >= 40x40 */
+  .iq button{min-width:40px;min-height:40px;padding:0 10px}
+  .rm{min-width:40px;min-height:40px;padding:0 4px}}
 </style>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=tracking-3">
-<link rel="stylesheet" href="assets/css/typography.css">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=ad9a13ed">
+<link rel="stylesheet" href="assets/css/typography.css?v=877c1af5">
 </head>
 <body class="page-cart">
 <div class="main" id="root"></div>
 
-<script src="assets/js/catalog.js?v=0052"></script>
-<script src="assets/js/commerce.js?v=shared-2"></script>
+<script src="assets/js/catalog.js?v=bd89d91f"></script>
+<script src="assets/js/commerce.js?v=ef0b2dea"></script>
 <script>
 const root = document.getElementById('root');
 function render(){
+  const keep = focusedCartAction(root);   // helpers, Cart and totals come from commerce.js
   const items = Cart.read();
   if(!items.length){
     root.innerHTML = `<section class="empty"><h1>Cart<br>Empty</h1><p>You haven't added anything yet.</p><a href="shop.html">Go to Shop</a></section>`;
+    restoreCartAction(root, keep, root.querySelector('a'));
     return;
   }
-  const sub = Cart.subtotal();
-  const discount = Math.round(sub*0.10);
-  const total = sub - discount;
+  const t = Cart.totals();
   root.innerHTML = `
   <section class="wrap">
     <div>
       <h1>My Cart</h1>
-      <div id="items">${items.map(i=>`
+      <div id="items">${items.map(i=>{
+        const data = `data-id="${esc(i.id)}" data-size="${esc(i.size)}"`, n = esc(i.name);
+        return `
         <div class="item">
-          <img src="${i.img}" alt="${i.name}">
+          <img src="${esc(i.img)}" alt="">
           <div>
-            <h3>${i.name}</h3><div class="sub">${i.sub||''}</div><div class="sz">Size: ${i.size}</div>
-            <div class="iq"><button data-act="minus" data-id="${i.id}" data-size="${i.size}">–</button><span>${i.qty}</span><button data-act="plus" data-id="${i.id}" data-size="${i.size}">+</button></div>
+            <h3>${n}</h3>${i.sub ? `<div class="sub">${esc(i.sub)}</div>` : ''}<div class="sz">${esc(i.option || 'Size')}: ${esc(i.size)}</div>
+            <div class="iq"><button type="button" data-act="minus" ${data} aria-label="Decrease quantity of ${n}">–</button><span>${i.qty}</span><button type="button" data-act="plus" ${data} aria-label="Increase quantity of ${n}">+</button></div>
           </div>
           <div class="item-right">
             <strong>${money(i.price*i.qty)} <span style="font-size:11px;color:var(--muted)">MXN</span></strong>
-            <button class="rm" data-act="remove" data-id="${i.id}" data-size="${i.size}">Remove</button>
+            <button type="button" class="rm" data-act="remove" ${data} aria-label="Remove ${n}">Remove</button>
           </div>
-        </div>`).join('')}</div>
+        </div>`; }).join('')}</div>
     </div>
-    <aside class="summary">
+    <aside class="summary" aria-label="Order summary">
       <h2>Summary</h2>
-      <div class="row"><span>Subtotal</span><span>${money(sub)}<span class="cur">MXN</span></span></div>
-      <div class="row"><span>Discount (10%)</span><span>-${money(discount)}<span class="cur">MXN</span></span></div>
-      <div class="row total"><span>Total</span><span>${money(total)}<span class="cur">MXN</span></span></div>
-      <button class="checkout" id="checkout">Checkout Now</button>
-      <p class="small">Pago seguro vía Shopify (se conecta al publicar la tienda).</p>
+      <div class="row"><span>Subtotal</span><span>${money(t.subtotal)}<span class="cur">MXN</span></span></div>
+      ${DISCOUNT_RATE > 0 ? `<div class="row"><span>${discountLabel()}</span><span>-${money(t.discount)}<span class="cur">MXN</span></span></div>` : ''}
+      <div class="row total"><span>Total</span><span>${money(t.total)}<span class="cur">MXN</span></span></div>
+      <button type="button" class="checkout" id="checkout">Checkout Now</button>
+      <p class="small" id="checkoutNotice" role="status">Online payment isn't available yet.</p>
     </aside>
   </section>`;
-  document.getElementById('items').addEventListener('click', e=>{
-    const b = e.target.closest('[data-act]'); if(!b) return;
-    const { act, id, size } = b.dataset;
-    const it = Cart.read().find(i=>i.id===id && i.size===size);
-    if(act==='minus') Cart.setQty(id,size,it.qty-1);
-    if(act==='plus') Cart.setQty(id,size,it.qty+1);
-    if(act==='remove') Cart.remove(id,size);
-    render();
-  });
-  document.getElementById('checkout').onclick = checkout;
+  restoreCartAction(root, keep, root.querySelector('[data-act]'));
 }
-
-/* checkout() y SHOPIFY_DOMAIN los provee commerce.js (declararlos aquí otra vez
-   causaba "Identifier 'SHOPIFY_DOMAIN' has already been declared" y rompía el render). */
+// One delegated listener (render() replaces the markup). The cart may have changed
+// elsewhere, so cartAction() re-reads it and never trusts the drawn buttons.
+root.addEventListener('click', e=>{
+  const b = e.target.closest('[data-act]'); if(b) { cartAction(b.dataset); return; }
+  if(e.target.closest('#checkout')){
+    const notice = document.getElementById('checkoutNotice');
+    notice.classList.add('cart-notice');
+    checkout(notice);
+  }
+});
+// Redraw whenever the cart changes: here, in the drawer or in another tab
+// (commerce.js re-emits 'storage' events as cart:change).
+document.addEventListener('cart:change', render);
 render();
 </script>
-<script src="assets/js/sticky-rail.js?v=shared-7"></script>
-<script src="assets/js/translations.js?v=1"></script><script src="assets/js/language.js?v=1"></script></body>
+<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+</body>
 </html>

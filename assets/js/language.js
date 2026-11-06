@@ -1,6 +1,6 @@
-/* Shared EN / ES UI translations; CMS content and submitted values stay intact. */
+/* EN / ES UI translations — only loaded by the booking form. CMS content and submitted values stay intact.
+   The form always opens in English; the EN/SP switch changes the language for the current visit only. */
 (() => {
-  const key = 'nmd-language';
   const normalize = value => value.replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
   const dictionary = new Map();
   (window.NMDTranslations || []).forEach(([en, es]) => {
@@ -9,10 +9,11 @@
     if (!dictionary.has(normalize(es))) dictionary.set(normalize(es), pair);
   });
   let language = 'en';
-  try { language = localStorage.getItem(key) === 'es' ? 'es' : 'en'; } catch {}
   function translate(value, target = language) {
     const pair = dictionary.get(normalize(value));
     if (!pair) return value;
+    // Already in the target language: keep the original text and casing (e.g. "size" mid-sentence stays lowercase).
+    if (normalize(pair[target]) === normalize(value)) return value;
     let result = pair[target];
     if (value.trim() === value.trim().toUpperCase()) result = result.toUpperCase();
     return value.match(/^\s*/)[0] + result + value.match(/\s*$/)[0];
@@ -21,6 +22,8 @@
   const attributes = new WeakMap();
   const bound = new WeakSet();
   const excluded = 'script,style,textarea,[translate="no"],[data-artist="name"],[data-artist="bio"],.team-card h3,.team-card__specialty';
+  // Attributes (placeholder, aria-label) of a textarea are UI text and must translate; only its typed value stays untouched.
+  const excludedAttributes = excluded.replace('textarea,', '');
   let observer;
   function apply() {
     observer?.disconnect();
@@ -37,7 +40,7 @@
       originals.set(node, { original, output });
     }
     document.querySelectorAll('[placeholder],[aria-label]').forEach(el => {
-      if (el.closest(excluded)) return;
+      if (el.closest(excludedAttributes)) return;
       const record = attributes.get(el) || {};
       ['placeholder', 'aria-label'].forEach(name => {
         if (!el.hasAttribute(name)) return;
@@ -76,7 +79,6 @@
   }
   function setLanguage(value) {
     language = value === 'es' ? 'es' : 'en';
-    try { localStorage.setItem(key, language); } catch {}
     apply();
     window.dispatchEvent(new CustomEvent('nmd:language', {detail:language}));
     // Same-origin menu iframe and parent update immediately without reloading.
@@ -86,9 +88,6 @@
     });
   }
   window.NMDLanguage = { t: translate, get: () => language, set: setLanguage };
-  window.addEventListener('storage', event => {
-    if (event.key === key) { language = event.newValue === 'es' ? 'es' : 'en'; apply(); }
-  });
   window.addEventListener('message', event => {
     if (event.origin !== location.origin || event.data?.type !== 'nmd-language') return;
     language = event.data.language === 'es' ? 'es' : 'en'; apply();

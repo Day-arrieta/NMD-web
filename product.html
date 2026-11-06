@@ -4,23 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Product — NMD19®</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="description" content="Apparel, accessories and gift cards from NMD19, a contemporary tattoo studio in Mexico City.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NMD19®"><meta property="og:title" content="Product — NMD19®"><meta property="og:description" content="Apparel, accessories and gift cards from NMD19, a contemporary tattoo studio in Mexico City."><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script src="assets/js/device-route.js?v=a60d8c88"></script>
 <style>
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#262626;--yellow:#FDDE36;--rail:88px;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:'Radio Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
+[hidden]{display:none !important}
 .rail{position:fixed;left:0;top:0;width:var(--rail);height:100vh;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:26px 0;z-index:50}
 .rail__menu{display:flex;flex-direction:column;gap:6px;width:26px;cursor:pointer}.rail__menu span{height:2px;background:#111;width:100%}
 .rail__cart{position:relative}.rail__count{position:absolute;top:-10px;right:-12px;background:#111;color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .main{margin-left:var(--rail)}
-.pdp{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,64px);padding:70px clamp(20px,4vw,60px) 40px;align-items:start}
+.pdp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);padding:70px clamp(20px,4vw,60px) 40px;align-items:start}
 .gallery{position:sticky;top:30px;display:flex;flex-direction:column;gap:14px}
 .gallery__main{aspect-ratio:4/5;background:#fff;overflow:hidden}
 .gallery__main img{width:100%;height:100%;object-fit:cover}
 .gallery__thumbs{display:flex;gap:12px;flex-wrap:wrap}
-.gallery__thumbs img{width:78px;height:96px;object-fit:cover;cursor:pointer;opacity:.5;background:#fff;transition:.2s}
-.gallery__thumbs img.on,.gallery__thumbs img:hover{opacity:1}
+.gallery__thumbs button{padding:0;border:0;background:none;cursor:pointer;line-height:0}
+.gallery__thumbs button:focus-visible{outline:2px solid #FDDE36;outline-offset:3px}
+.gallery__thumbs img{width:78px;height:96px;object-fit:cover;opacity:.5;background:#fff;transition:.2s}
+.gallery__thumbs button.on img,.gallery__thumbs button:hover img{opacity:1}
 .info .sku{color:var(--muted);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
 .info h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(52px,7vw,118px);line-height:.85;margin:6px 0 14px;letter-spacing:0.03em;}
 .info .price{font-size:24px;font-weight:400;margin-bottom:34px}
@@ -32,7 +39,7 @@ a{color:inherit;text-decoration:none}
 .sizes button.on,.sizes button:hover{border-color:var(--yellow);background:var(--yellow);color:#000}
 .buy{display:flex;gap:14px;align-items:stretch;margin-bottom:36px}
 .qty{display:inline-flex;align-items:center;border:1.5px solid #fff;border-radius:100px;overflow:hidden}
-.qty button{background:none;border:none;color:#fff;font-size:18px;padding:0 18px;cursor:pointer}
+.qty button{background:none;border:none;color:#fff;font-size:18px;padding:0 18px;cursor:pointer;align-self:stretch;min-width:44px}
 .qty span{min-width:36px;text-align:center;font-weight:400}
 .add{flex:1;background:#fff;color:#000;border:none;border-radius:100px;font-family:inherit;font-weight:400;letter-spacing:.04em;text-transform:uppercase;font-size:14px;cursor:pointer;transition:.2s var(--ease)}
 .add:hover{background:var(--yellow)}
@@ -48,15 +55,18 @@ a{color:inherit;text-decoration:none}
 .reco-card__img img{width:100%;height:100%;object-fit:cover;transition:.5s var(--ease)}
 .reco-card:hover .reco-card__img img{transform:scale(1.05)}
 .reco-card h3{font-size:17px;font-weight:400;margin-top:12px}.reco-card .sub{color:var(--muted);font-size:13px}
+.notfound{padding:70px clamp(20px,4vw,60px) 40px}
+.notfound h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(52px,9vw,120px);line-height:.85;letter-spacing:0.03em;margin-bottom:18px}
+.notfound p{color:var(--muted);font-size:18px;max-width:40ch}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(18px);background:var(--yellow);color:#000;font-weight:400;padding:14px 28px;border-radius:100px;opacity:0;transition:.3s var(--ease);z-index:80;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:820px){.pdp{grid-template-columns:1fr}.gallery{position:static}}
+@media(max-width:820px){.pdp{grid-template-columns:minmax(0,1fr)}.gallery{position:static}}
 @media(max-width:680px){:root{--rail:0px}.rail{flex-direction:row;width:100%;height:62px;padding:0 20px}.main{margin-top:62px}}
 </style>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=tracking-3">
-<link rel="stylesheet" href="assets/css/typography.css">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=ad9a13ed">
+<link rel="stylesheet" href="assets/css/typography.css?v=877c1af5">
 </head>
 <body class="page-product">
 <div class="main">
@@ -69,17 +79,23 @@ a{color:inherit;text-decoration:none}
       <p class="sku" id="sku"></p>
       <h1 id="name"></h1>
       <p class="price"><span id="price"></span><span class="cur">MXN</span></p>
-      <div class="label"><span>Select a Size:</span><a href="#">Sizeguide</a></div>
-      <div class="sizes" id="sizes"></div>
+      <!-- Sizeguide link stays hidden until there is a size guide to link to. -->
+      <div class="label"><span id="optionLabel">Select a Size:</span><a href="#" hidden>Sizeguide</a></div>
+      <div class="sizes" id="sizes" role="group" aria-labelledby="optionLabel"></div>
       <div class="buy">
-        <div class="qty"><button id="minus">–</button><span id="qty">1</span><button id="plus">+</button></div>
-        <button class="add" id="add">Add to Cart</button>
+        <div class="qty"><button type="button" id="minus" aria-label="Decrease quantity">–</button><span id="qty" aria-live="polite">1</span><button type="button" id="plus" aria-label="Increase quantity">+</button></div>
+        <button type="button" class="add" id="add">Add to Cart</button>
       </div>
       <p class="note" id="note"></p>
       <div class="pinfo"><h2>Product Info</h2><ul id="info"></ul></div>
       <a class="back" href="shop.html">← Return to Shop</a>
     </div>
   </div>
+  <section class="notfound" id="notFound" hidden>
+    <h1>Product not found</h1>
+    <p>We couldn't find this product. The link may be wrong or the product is no longer available.</p>
+    <a class="back" href="shop.html">← Return to Shop</a>
+  </section>
   <div class="reco">
     <h2>Recommended<br>Pickups</h2>
     <div class="reco-grid" id="reco"></div>
@@ -87,43 +103,78 @@ a{color:inherit;text-decoration:none}
 </div>
 <div class="toast" id="toast">Added to cart ✓</div>
 
-<script src="assets/js/catalog.js?v=0052"></script>
-<script src="assets/js/commerce.js?v=shared-2"></script>
+<script src="assets/js/catalog.js?v=bd89d91f"></script>
+<script src="assets/js/commerce.js?v=ef0b2dea"></script>
 <script>
 const P = findProduct(new URLSearchParams(location.search).get('id'));
-let size = P.sizes[0], qty = 1;
-document.getElementById('sku').textContent = P.sku || '';
-document.getElementById('name').textContent = P.name + (P.sub?(' '+P.sub):'');
-document.getElementById('price').textContent = money(P.price);
-const noteEl = document.getElementById('note');
-(P.note || '').split(' · ').forEach((part, index) => {
-  if (index) noteEl.append(document.createTextNode(' · '));
-  const span = document.createElement('span');
-  // Figma uses Lunchtype25 for material and model/size details only.
-  if (/cotton|model reference|^size:/i.test(part)) span.className = 'product-material';
-  span.textContent = part;
-  noteEl.append(span);
-});
-document.getElementById('info').innerHTML = P.info.map(i=>`<li>${i}</li>`).join('');
-const mainImg = document.getElementById('mainImg'); mainImg.src = P.gallery[0]; mainImg.alt = P.name;
-document.getElementById('thumbs').innerHTML = P.gallery.map((g,i)=>`<img src="${g}" class="${i===0?'on':''}" alt="">`).join('');
-document.getElementById('thumbs').onclick = e => { if(e.target.tagName!=='IMG') return; mainImg.src=e.target.src; document.querySelectorAll('#thumbs img').forEach(t=>t.classList.remove('on')); e.target.classList.add('on'); };
-const sizesEl = document.getElementById('sizes');
-sizesEl.innerHTML = P.sizes.map((s,i)=>`<button class="${i===0?'on':''}">${s}</button>`).join('');
-sizesEl.onclick = e => { const b=e.target.closest('button'); if(!b) return; document.querySelectorAll('#sizes button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); size=b.textContent; };
-const qtyEl = document.getElementById('qty');
-document.getElementById('minus').onclick = ()=>{ qty=Math.max(1,qty-1); qtyEl.textContent=qty; };
-document.getElementById('plus').onclick = ()=>{ qty++; qtyEl.textContent=qty; };
-document.getElementById('add').onclick = ()=>{
-  Cart.add({ id:P.id, name:P.name, sub:P.sub, price:P.price, img:P.img, size, qty });
-  if(typeof openCart==='function') openCart();           // abre el drawer (como el Figma)
-  else { const t=document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
-};
-document.getElementById('reco').innerHTML = PRODUCTS.filter(p=>p.id!==P.id).slice(0,4).map(p=>`
+if (P) renderProduct(P);
+else {
+  // Missing or unknown ?id=: say so instead of showing another product.
+  document.querySelector('.pdp').hidden = true;
+  document.getElementById('notFound').hidden = false;
+  document.title = 'Product not found — NMD19®';
+}
+
+function renderProduct(P){
+  let size = P.sizes[0], qty = 1;
+  const option = P.optionLabel || 'Size';   // giftcard: "Amount"
+  document.title = `${P.name}${P.sub && !P.prices ? ' ' + P.sub : ''} — NMD19®`;
+  document.getElementById('sku').textContent = P.sku || '';
+  const nameEl = document.getElementById('name');
+  nameEl.textContent = P.name + (P.sub && !P.prices ? (' '+P.sub) : '');
+  const priceEl = document.getElementById('price');
+  const showPrice = () => { priceEl.textContent = money(priceFor(P, size)); };
+  showPrice();
+  document.getElementById('optionLabel').textContent = `Select ${/^[aeiou]/i.test(option) ? 'an' : 'a'} ${option}:`;
+  const noteEl = document.getElementById('note');
+  (P.note || '').split(' · ').forEach((part, index) => {
+    if (index) noteEl.append(document.createTextNode(' · '));
+    const span = document.createElement('span');
+    // Figma uses Lunchtype25 for material and model/size details only.
+    if (/cotton|model reference|^size:/i.test(part)) span.className = 'product-material';
+    span.textContent = part;
+    noteEl.append(span);
+  });
+  document.getElementById('info').innerHTML = P.info.map(i=>`<li>${i}</li>`).join('');
+  const mainImg = document.getElementById('mainImg'); mainImg.src = P.gallery[0]; mainImg.alt = P.name;
+  // Miniaturas como botones: funcionan con teclado y lector de pantalla.
+  document.getElementById('thumbs').innerHTML = P.gallery.map((g,i)=>`<button type="button" class="${i===0?'on':''}" aria-label="Show image ${i+1} of ${P.gallery.length}" aria-pressed="${i===0}"><img src="${g}" alt=""></button>`).join('');
+  document.getElementById('thumbs').onclick = e => { const b=e.target.closest('button'); if(!b) return; mainImg.src=b.querySelector('img').src; document.querySelectorAll('#thumbs button').forEach(t=>{t.classList.remove('on');t.setAttribute('aria-pressed','false');}); b.classList.add('on'); b.setAttribute('aria-pressed','true'); };
+  const sizesEl = document.getElementById('sizes');
+  sizesEl.innerHTML = P.sizes.map((s,i)=>`<button type="button" class="${i===0?'on':''}" aria-pressed="${i===0}">${s}</button>`).join('');
+  sizesEl.onclick = e => {
+    const b=e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#sizes button').forEach(x=>{ x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
+    b.classList.add('on'); b.setAttribute('aria-pressed','true');
+    size=b.textContent; showPrice();   // a giftcard amount changes the price
+  };
+  const qtyEl = document.getElementById('qty');
+  document.getElementById('minus').onclick = ()=>{ qty=Math.max(1,qty-1); qtyEl.textContent=qty; };
+  document.getElementById('plus').onclick = ()=>{ qty++; qtyEl.textContent=qty; };
+  document.getElementById('add').onclick = ()=>{
+    Cart.add({ id:P.id, name:P.name, sub:P.prices ? '' : P.sub, option, price:priceFor(P, size), img:P.img, size, qty });
+    if(typeof openCart==='function') openCart();           // abre el drawer (como el Figma)
+    else { const t=document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
+  };
+  // A long single word (e.g. WINDBREAKER) is wider than a phone column at the
+  // display size: shrink the title just enough to fit instead of overflowing.
+  function fitTitle(){
+    nameEl.style.fontSize = '';
+    for (let n = 0; n < 3 && nameEl.scrollWidth > nameEl.clientWidth + 1; n++) {
+      const fs = parseFloat(getComputedStyle(nameEl).fontSize);
+      nameEl.style.fontSize = Math.floor(fs * nameEl.clientWidth / nameEl.scrollWidth) + 'px';
+    }
+  }
+  fitTitle();
+  if (document.fonts) document.fonts.ready.then(fitTitle);
+  window.addEventListener('resize', fitTitle);
+}
+
+document.getElementById('reco').innerHTML = PRODUCTS.filter(p=>!P || p.id!==P.id).slice(0,4).map(p=>`
   <a class="reco-card" href="product.html?id=${p.id}">
     <div class="reco-card__img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
     <h3>${p.name}</h3><div class="sub">${p.sub} · ${money(p.price)} MXN</div></a>`).join('');
 </script>
-<script src="assets/js/sticky-rail.js?v=shared-7"></script>
-<script src="assets/js/translations.js?v=1"></script><script src="assets/js/language.js?v=1"></script></body>
+<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+</body>
 </html>

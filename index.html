@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NMD19®</title>
+<title>NMD19® — Contemporary Tattoo Studio in Mexico City</title>
+<meta name="description" content="NMD19 (Nomad Studio) is a contemporary tattoo studio in Roma Norte, Mexico City, with resident and guest artists. Book your appointment online.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NMD19®"><meta property="og:title" content="NMD19® — Contemporary Tattoo Studio in Mexico City"><meta property="og:description" content="NMD19 (Nomad Studio) is a contemporary tattoo studio in Roma Norte, Mexico City, with resident and guest artists. Book your appointment online."><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script src="assets/js/device-route.js?v=a60d8c88"></script>
 <script>
-// Entra a la home según el ancho de pantalla (escritorio / móvil)
-var home = window.innerWidth < 760 ? 'exact-mobile-home.html' : 'exact-desktop-studio-2.html';
-location.replace(home);
+// Entra a la home según el ancho de pantalla (escritorio / móvil).
+// Mismo corte de 1024px que assets/js/device-route.js; conserva ?query y #hash.
+var home = window.matchMedia('(min-width: 1024px)').matches ? 'exact-desktop-studio-2.html' : 'exact-mobile-home.html';
+location.replace(home + location.search + location.hash);
 </script>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=tracking-3">
-</head><body style="background:#1e1e1e"><script src="assets/js/translations.js?v=1"></script><script src="assets/js/language.js?v=1"></script></body></html>
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=ad9a13ed">
+</head><body style="background:#1e1e1e"></body></html>

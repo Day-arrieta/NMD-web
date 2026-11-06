@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Appointments — NMD19®</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Book an Appointment — NMD19®</title>
+<meta name="description" content="Tell us about your tattoo idea and our booking team will recommend an artist, availability and an estimate.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NMD19®"><meta property="og:title" content="Book an Appointment — NMD19®"><meta property="og:description" content="Tell us about your tattoo idea and our booking team will recommend an artist, availability and an estimate."><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script src="assets/js/device-route.js?v=a60d8c88"></script>
 <style>
 
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#2b2b2b;--yellow:#FDDE36;--ease:cubic-bezier(.22,1,.36,1)}
@@ -15,6 +19,13 @@ body{background:var(--bg);color:var(--fg);font-family:'Radio Grotesk',sans-serif
 .brand sup{font-size:.5em;vertical-align:super}
 .top a.home{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
 .top a.home:hover{color:#fff}
+/* selector de idioma (solo en este formulario; la barra .top está oculta en esta página) */
+.lang-switch{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:40px}
+.lang-switch__label{font-family:'Manuka',sans-serif;font-size:16px;line-height:1;letter-spacing:0.03em;color:#fff;margin-right:4px}
+.lang-switch button{position:relative;width:34px;height:22px;border:0;border-radius:6px;box-shadow:inset 0 0 0 1px #fff;background:transparent;color:#fff;font-family:'Radio Grotesk',sans-serif;font-size:11px;line-height:1;cursor:pointer;transition:background .2s var(--ease),color .2s var(--ease)}
+.lang-switch button::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%)}
+.lang-switch button:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+@media (max-width:700px){.lang-switch{margin-bottom:24px}}
 .wrap{max-width:720px;margin:0 auto;padding:120px 28px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
 /* intro */
 .intro{text-align:left;animation:fade .6s var(--ease) both}
@@ -62,9 +73,9 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 </style>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=tracking-3">
-<link rel="stylesheet" href="assets/css/typography.css">
-<link rel="stylesheet" href="assets/css/booking-form.css?v=2"></head>
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=ad9a13ed">
+<link rel="stylesheet" href="assets/css/typography.css?v=877c1af5">
+<link rel="stylesheet" href="assets/css/booking-form.css?v=737ce5a9"></head>
 <body class="page-appointments">
 <div class="top">
   <a class="brand" href="index.html">NMD<sup>19®</sup></a>
@@ -83,6 +94,12 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 </form>
 
 <div class="wrap" id="wrap">
+  <!-- Selector de idioma: el único lugar del sitio con traducción -->
+  <div class="lang-switch" role="group" aria-label="Language">
+    <span class="lang-switch__label">Language</span>
+    <button type="button">EN</button>
+    <button type="button">SP</button>
+  </div>
   <!-- INTRO -->
   <section class="intro" id="intro">
     <h1>Book<br>an<br><span class="y">appointment</span></h1>
@@ -96,6 +113,8 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
     <div class="progress"><div class="progress__bar" id="bar"></div></div>
     <div id="host"></div>
     <div class="err" id="err"></div>
+    <!-- Shown only on the last step (booking-form.js). The F.A.Q. page sends phones to its mobile version. -->
+    <p class="consent" id="consent" hidden>By sending this form you agree to our <a href="exact-desktop-f-a-q.html#privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="exact-desktop-f-a-q.html#terms" target="_blank" rel="noopener">Terms</a>.</p>
     <div class="nav">
       <button class="btn back" id="back">← Back</button>
       <span class="count" id="count"></span>
@@ -105,13 +124,13 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 
   <!-- DONE -->
   <section class="done" id="done">
-    <h2>Thank you</h2>
+    <h2 tabindex="-1">Thank you</h2>
     <p>We've received your request. Our booking team will reach out with artist recommendations, availability and an estimate.</p>
     <a class="btn next" href="index.html" style="display:inline-block;text-decoration:none">Back to Home</a>
   </section>
 </div>
 
 
-<script src="assets/js/sticky-rail.js?v=shared-7"></script>
-<script src="assets/js/content.js"></script><script src="assets/js/booking-form.js?v=1"></script><script src="assets/js/translations.js?v=1"></script><script src="assets/js/language.js?v=1"></script></body>
+<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+<script src="assets/js/content.js?v=b3a3c9e7"></script><script src="assets/js/booking-form.js?v=c6cb5e40"></script><script src="assets/js/translations.js?v=ce6d53e7"></script><script src="assets/js/language.js?v=57df5735"></script></body>
 </html>
