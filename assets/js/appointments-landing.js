@@ -62,6 +62,7 @@
     if (!target) return;
     event.preventDefault();
     if (wrap) wrap.scrollTop = 0;
+    if (window.nmdRevealNow) window.nmdRevealNow(target);   // scroll-reveal.js: medir sin el desplazamiento de la animación
     const top = window.scrollY + target.getBoundingClientRect().top - 24;
     window.scrollTo({ top: Math.max(0, top), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     target.focus({ preventScroll: true });

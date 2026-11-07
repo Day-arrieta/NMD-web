@@ -25,6 +25,7 @@ h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px
 .item h3{font-size:21px;font-weight:400;overflow-wrap:anywhere}.item .sub,.item .sz{color:var(--muted);font-size:13px;margin-top:2px}
 .iq{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:100px;margin-top:14px}
 .iq button{background:none;border:none;color:#fff;padding:6px 14px;cursor:pointer;font-size:16px}.iq span{min-width:30px;text-align:center;font-weight:400}
+.iq button:disabled{opacity:.35;cursor:not-allowed}
 .item-right{text-align:right;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
 .rm{color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit}
 .summary{position:sticky;top:30px;background:#fff;color:#000;border-radius:16px;padding:32px}
@@ -50,6 +51,7 @@ h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px
   /* tap targets >= 40x40 */
   .iq button{min-width:40px;min-height:40px;padding:0 10px}
   .rm{min-width:40px;min-height:40px;padding:0 4px}}
+.sz.soldout{color:#ff8a80}
 </style>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -59,8 +61,10 @@ h1{font-family:'Manuka',sans-serif;text-transform:uppercase;font-size:clamp(56px
 <body class="page-cart">
 <div class="main" id="root"></div>
 
-<script src="assets/js/catalog.js?v=bd89d91f"></script>
-<script src="assets/js/commerce.js?v=ef0b2dea"></script>
+<script src="assets/js/shop-config.js?v=4b79bf26"></script>
+<script src="assets/js/shopify.js?v=55e51fbc"></script>
+<script src="assets/js/catalog.js?v=2a1092bc"></script>
+<script src="assets/js/commerce.js?v=8ffeb7ae"></script>
 <script>
 const root = document.getElementById('root');
 function render(){
@@ -77,16 +81,16 @@ function render(){
     <div>
       <h1>My Cart</h1>
       <div id="items">${items.map(i=>{
-        const data = `data-id="${esc(i.id)}" data-size="${esc(i.size)}"`, n = esc(i.name);
+        const data = `data-id="${esc(i.id)}" data-size="${esc(i.size)}"`, n = esc(i.name), status = lineStatus(i);
         return `
         <div class="item">
           <img src="${esc(i.img)}" alt="">
           <div>
-            <h3>${n}</h3>${i.sub ? `<div class="sub">${esc(i.sub)}</div>` : ''}<div class="sz">${esc(i.option || 'Size')}: ${esc(i.size)}</div>
-            <div class="iq"><button type="button" data-act="minus" ${data} aria-label="Decrease quantity of ${n}">–</button><span>${i.qty}</span><button type="button" data-act="plus" ${data} aria-label="Increase quantity of ${n}">+</button></div>
+            <h3>${n}</h3>${i.sub ? `<div class="sub">${esc(i.sub)}</div>` : ''}<div class="sz">${esc(i.option || 'Size')}: ${esc(i.size)}</div>${status ? `<div class="sz${i.available === false ? ' soldout' : ''}">${esc(status)}</div>` : ''}
+            <div class="iq"><button type="button" data-act="minus" ${data} aria-label="Decrease quantity of ${n}">–</button><span>${i.qty}</span><button type="button" data-act="plus" ${data} aria-label="Increase quantity of ${n}"${i.qty >= lineMax(i) ? ' disabled' : ''}>+</button></div>
           </div>
           <div class="item-right">
-            <strong>${money(i.price*i.qty)} <span style="font-size:11px;color:var(--muted)">MXN</span></strong>
+            <strong>${i.available === false ? '—' : `${money(i.price*i.qty)} <span style="font-size:11px;color:var(--muted)">MXN</span>`}</strong>
             <button type="button" class="rm" data-act="remove" ${data} aria-label="Remove ${n}">Remove</button>
           </div>
         </div>`; }).join('')}</div>
@@ -97,7 +101,7 @@ function render(){
       ${DISCOUNT_RATE > 0 ? `<div class="row"><span>${discountLabel()}</span><span>-${money(t.discount)}<span class="cur">MXN</span></span></div>` : ''}
       <div class="row total"><span>Total</span><span>${money(t.total)}<span class="cur">MXN</span></span></div>
       <button type="button" class="checkout" id="checkout">Checkout Now</button>
-      <p class="small" id="checkoutNotice" role="status">Online payment isn't available yet.</p>
+      <p class="small" id="checkoutNotice" role="status">${Catalog.usesShopify() ? 'Taxes and shipping are calculated at checkout.' : "Online payment isn't available yet."}</p>
     </aside>
   </section>`;
   restoreCartAction(root, keep, root.querySelector('[data-act]'));
@@ -109,14 +113,16 @@ root.addEventListener('click', e=>{
   if(e.target.closest('#checkout')){
     const notice = document.getElementById('checkoutNotice');
     notice.classList.add('cart-notice');
-    checkout(notice);
+    checkout(notice, e.target.closest('#checkout'));
   }
 });
 // Redraw whenever the cart changes: here, in the drawer or in another tab
 // (commerce.js re-emits 'storage' events as cart:change).
 document.addEventListener('cart:change', render);
 render();
+// Con Shopify: precios y existencias al día (Cart.read() usa el catálogo cargado).
+Catalog.load().then(render).catch(() => {});
 </script>
-<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+<script src="assets/js/sticky-rail.js?v=46e33a32"></script>
 </body>
 </html>

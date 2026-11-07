@@ -9,7 +9,10 @@ Este archivo no se publica (está bloqueado en `netlify.toml`).
 - [x] **Correo:** "Mail", "Say hello" y "Contact" (escritorio y móvil) abren un correo a info@nomadttt.com. En Appointments, cada "Ask the studio about this question." abre un correo con la pregunta en el asunto.
 - [x] **Horario:** el reloj de ubicación muestra "Open" o "Closed" según la hora de CDMX (lunes a viernes 11–20 h, sábado 12–18 h, domingo 12–20 h).
 - [x] **F.A.Q.:** correo, contacto de privacidad, horario y anuncio de artistas invitados (Instagram @nomadttt) completados.
-- [x] **Tienda:** se publica visible, con el aviso de que todavía no hay pago en línea.
+- [x] **Tienda:** se publica visible. Mientras no se conecte Shopify, usa los productos de muestra y el botón de pago muestra un aviso (no se cobra nada).
+- [x] **Tienda lista para Shopify:** productos, precios, tallas, existencias y pago salen de Shopify al llenar el dominio y el token público en `assets/js/shop-config.js`. Pasos en `SHOPIFY.md`.
+- [x] **Tarjetas de producto del inicio y del menú** ("New Items", "New In", "Shop"): se llenan con productos del catálogo y llevan a su página.
+- [x] **Créditos del pie:** "Site by: Sabbath" en escritorio y móvil (sin enlace; se agrega si el estudio da la URL).
 - [x] **Licencias de fuentes:** pagadas.
 - [x] **Descuento del 10 %:** quitado (`DISCOUNT_RATE = 0`). Venía del código original importado (commit `0a43101`); el total ahora es igual al subtotal.
 - [x] **Privacy Policy:** quitada la mención al registro REPEP de PROFECO.
@@ -19,10 +22,9 @@ Este archivo no se publica (está bloqueado en `netlify.toml`).
 - [ ] **Instagram del estudio en el sitio.** El diseño no tiene un enlace al Instagram del estudio (solo a los de cada artista). Se puede agregar junto a "Mail".
 - [ ] **Teléfono / WhatsApp.** El F.A.Q. los menciona como pendientes ("Call" no existe en el sitio). Si el estudio no usa teléfono, se reescriben esas frases.
 - [ ] **Artistas en Pages CMS.** Varias fichas siguen como "Zionele", y la mayoría no tiene especialidad, ubicación ni trabajos ("Coming soon").
-- [ ] **Tienda.** Los productos de `assets/js/catalog.js` son los del Figma (nombres, precios, fotos). Las 11 tarjetas "Coral Heart. Totebag $1,229.00" del inicio y del menú son de relleno y no llevan a ningún producto: hay que cambiarlas por productos reales o quitarlas.
+- [ ] **Productos reales.** Los de `assets/js/catalog.js` son los del Figma (nombres, precios, fotos). Se reemplazan solos al conectar Shopify (`SHOPIFY.md`).
 - [ ] **F.A.Q. y políticas.** 65 datos marcados en amarillo; ver `FAQ-PENDIENTES.md`. Conviene que un abogado revise Terms & Conditions y Privacy Policy.
 - [ ] **Preguntas de Appointments.** 11 de 12 respuestas son "Ask the studio about this question." (ahora abren un correo al estudio).
-- [ ] **Créditos del pie.** El escritorio dice "Site by: Sabbath" y el móvil "Site by: Jorge Zamonsett". ¿Cuál es el correcto?
 
 ## 2. Decisiones
 - [ ] **Formulario de citas.** "Yes, I know what I want" y "No, I need help" llevan a los mismos pasos, aunque el texto dice que el formulario se adapta.
@@ -37,7 +39,7 @@ Este archivo no se publica (está bloqueado en `netlify.toml`).
 
 ## 3. Publicación
 
-- [ ] Hacer commit de todos los cambios, incluidos los archivos nuevos (F.A.Q. móvil, scripts nuevos, favicon, 404, robots.txt, imágenes JPG).
+- [ ] Hacer commit de todos los cambios, incluidos los archivos nuevos (`scroll-reveal.js`, `shop-config.js`, `shopify.js`, `shop-teasers.js`, `SHOPIFY.md`).
 - [ ] En Netlify: activar la detección de formularios, configurar el aviso por correo (a info@nomadttt.com) y enviar una cita de prueba real después del despliegue.
 - [ ] Revisar en el sitio publicado: que `/assets/js/faq-page.js` responda 200 y que `/CMS.md` responda 404.
 

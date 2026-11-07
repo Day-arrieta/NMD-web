@@ -33,6 +33,7 @@
     .mt-scroller::-webkit-scrollbar{display:none}
     #stage .mt-card{position:relative;flex:0 0 ${cardWidth}px;display:block;color:inherit;text-decoration:none;scroll-snap-align:center;transition:opacity .3s}
     #stage .mt-card:not(.is-active){opacity:.2}
+    #stage .mt-card:not(.is-active) .mt-view{visibility:hidden}
     #stage .mt-card[hidden]{display:none}
     .mt-card:focus-visible,.mt-arrow:focus-visible,.mt-filter:focus-visible{outline:2px solid #fff;outline-offset:4px}
     .mt-card img{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px}
@@ -169,6 +170,9 @@
     // Name runs up to the role pill (8px gap); fitNames() shrinks it if needed.
     Object.assign(name.style, {width: (matrix(pill)[4] - 8) + 'px', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis'});
     pill.firstElementChild.textContent = artist.role;
+    // "View Profile" bar: shown only on the selected (active) card.
+    const view = [...meta.querySelectorAll('div')].find(el => el.textContent.trim() === 'View Profile');
+    if (view) (view.closest('[style*="inset"]') || view).classList.add('mt-view');
     return card;
   }
   function fitNames() {
@@ -186,7 +190,10 @@
     filterBy('all');
     document.fonts.ready.then(fitNames, fitNames);
     // The heading id is set after load, so the browser's own jump to #team-heading has already been missed.
-    if (location.hash === '#team-heading') window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - 24 });
+    if (location.hash === '#team-heading') {
+      if (window.nmdRevealNow) window.nmdRevealNow(heading);   // scroll-reveal.js: measure without the reveal offset
+      window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - 24 });
+    }
   }).catch(error => {
     console.error(error);
     scroller.append(message('Could not load TEAM. Please reload the page.'));

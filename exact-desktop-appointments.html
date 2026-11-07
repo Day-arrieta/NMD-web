@@ -16,5 +16,5 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 <script>function fit(){var s=document.getElementById('stage'),k=Math.min(1,window.innerWidth/1920);s.style.transform='scale('+k+')';document.querySelector('.wrap').style.height=(1080*k)+'px';}fit();addEventListener('resize',fit);
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(https?:|mailto:|tel:)/.test(h))return;e.preventDefault();document.body.classList.add('is-leaving');setTimeout(function(){location.href=h;},300);});
 addEventListener('pageshow',function(e){if(e.persisted)document.body.classList.remove('is-leaving');});</script>
-<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+<script src="assets/js/sticky-rail.js?v=46e33a32"></script>
 </body></html>

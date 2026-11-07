@@ -16,6 +16,8 @@
    ============================================================ */
 (function(){
   var EMBED = /[?&]embed=1/.test(location.search);
+  // Versión de este script (?v=…): se pasa al iframe del menú para que nunca cargue una copia vieja de caché.
+  var SELF_V = ((document.currentScript && document.currentScript.src || '').match(/[?&]v=([^&#]+)/) || [])[1] || '';
   var RAIL_ID = 'nmd-rail-fixed';
   var BAR_ID = 'nmd-topbar';
   var DESKTOP_MQ = '(min-width: 1024px)';          // mismo corte que device-route.js
@@ -79,6 +81,7 @@
     // ocultar el rail original del menú (barra blanca x≈0, alto completo)
     var kids = [].slice.call(stage.children);
     var vh = window.innerHeight || 800;
+    var stageH = stage.getBoundingClientRect().height || vh;
     var items = [];
     function isWhite(el){
       var bg = el ? getComputedStyle(el).backgroundColor : '';
@@ -87,12 +90,14 @@
     kids.forEach(function(c){
       var r = c.getBoundingClientRect();
       var cs = getComputedStyle(c);
-      var isRail = r.left <= 4 && r.width < 140 && r.height > vh*0.6 && isWhite(c);
+      // Alto comparado con el escenario (no con la ventana): en ventanas altas y angostas el menú mide
+      // menos del 60 % de la pantalla y el rail del Figma no se detectaba (asomaba una franja blanca).
+      var isRail = r.left <= 4 && r.width < 140 && r.height > stageH*0.8 && isWhite(c);
       if (isRail){ c.style.display = 'none'; return; }
-      // El rail del Figma suele ser un contenedor (fondo blanco = primer hijo) que
-      // queda bajo el rail fijo del padre: sus links no deben recibir foco.
-      if (r.left <= 4 && r.width < 140 && r.height > vh*0.6 && isWhite(c.firstElementChild)){
-        c.inert = true; c.setAttribute('aria-hidden','true'); return;
+      // El rail del Figma suele ser un contenedor (fondo blanco = primer hijo). Se oculta del todo:
+      // si solo quedaba debajo del rail fijo del padre, en algunos anchos asomaba una franja blanca.
+      if (r.left <= 4 && r.width < 140 && r.height > stageH*0.8 && isWhite(c.firstElementChild)){
+        c.style.display = 'none'; c.inert = true; c.setAttribute('aria-hidden','true'); return;
       }
       // el fade (opacidad 0→100 + reveal) SOLO en TEXTOS e IMÁGENES,
       // NO en las líneas divisoras / fondo (quedan sólidas desde el inicio).
@@ -296,7 +301,7 @@
     ov.className = 'nmd-ov'; ov.id = 'nmdOverlay';
     var fr = document.createElement('iframe');
     fr.id = 'nmdMenuFrame'; fr.setAttribute('title','Menu'); fr.setAttribute('loading','eager');
-    fr.src = 'exact-desktop-menu.html?embed=1&layout=menu-language-1';
+    fr.src = 'exact-desktop-menu.html?embed=1&layout=menu-language-1' + (SELF_V ? '&v=' + SELF_V : '');
     ov.appendChild(fr);
     document.body.appendChild(ov);
 
@@ -455,6 +460,9 @@
     mobileMenuReady = true;
     btn.setAttribute('aria-label', 'Close menu');
     btn.setAttribute('href', 'exact-mobile-home.html');   // destino si se abre en otra pestaña
+    // Icono: una X (cerrar) en lugar de la hamburguesa del Figma, en la misma caja de 20×18 y con el grosor de sus barras.
+    var icon = btn.querySelector('svg');
+    if (icon) icon.innerHTML = '<path d="M2.5 1.5L17.5 16.5M17.5 1.5L2.5 16.5" fill="none" stroke="#000" stroke-width="2.57" stroke-linecap="square"/>';
     btn.addEventListener('click', function(e){
       if (!plainClick(e)) return;
       e.preventDefault();                                  // la transición inline lo ignora

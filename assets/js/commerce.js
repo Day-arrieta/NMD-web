@@ -6,24 +6,43 @@
    and Total equals Subtotal. The drawer, cart.html and the checkout message all read this one value. */
 const DISCOUNT_RATE = 0;
 
+// Most units a cart line can have (Shopify stock for that size; Infinity when unknown).
+const lineMax = i => { const p = typeof findProduct === 'function' ? findProduct(i.id) : null; return p ? maxQtyFor(p, i.size) : Infinity; };
+
 const Cart = {
   KEY: 'nmd_cart',
   // Always returns a clean array. Lines saved by an older version, edited in
   // another tab or malformed are normalised; known products take their
-  // name, image and price from the catalog (giftcard: price of the amount).
+  // name, image and price from the catalog (giftcard: price of the amount)
+  // and the quantity is capped at the Shopify stock of that size.
   read(){
     let items;
     try { items = JSON.parse(localStorage.getItem(this.KEY) || '[]'); } catch(e){ items = []; }
     if (!Array.isArray(items)) return [];
     return items.filter(i => i && typeof i.id === 'string').map(i => {
-      const size = String(i.size == null ? '' : i.size);
+      let size = String(i.size == null ? '' : i.size);
       const p = typeof findProduct === 'function' ? findProduct(i.id) : null;
       const line = { ...i, size, qty: Math.max(1, Math.floor(Number(i.qty)) || 1) };
-      if (p) Object.assign(line, {
-        name: p.name, img: p.img, price: priceFor(p, size),
-        // a giftcard line reads "Amount: $1,000" instead of "From $500 · Size: $1,000"
-        sub: p.prices ? '' : p.sub, option: p.optionLabel || 'Size'
-      });
+      if (p) {
+        // Variante renombrada en Shopify ("M" → "Medium"): se reconoce por su id.
+        // Si ya no existe, la línea no se puede pagar.
+        let gone = false;
+        if (p.variants && !variantFor(p, size)) {
+          const renamed = Object.keys(p.variants).find(k => p.variants[k].id === line.variantId);
+          if (renamed) line.size = size = renamed; else gone = true;
+        }
+        const v = variantFor(p, size);
+        Object.assign(line, {
+          name: p.name, img: p.thumb || p.img, price: priceFor(p, size),
+          variantId: v ? v.id : (gone ? undefined : line.variantId),
+          available: !gone && isAvailable(p, size),
+          // a giftcard line reads "Amount: $1,000" instead of "From $500 · Size: $1,000"
+          sub: p.giftcard ? '' : p.sub, option: p.optionLabel || 'Size'
+        });
+        line.qty = Math.min(line.qty, maxQtyFor(p, size));   // never more than Shopify has in stock
+      }
+      // Con el catálogo de Shopify cargado, un producto que ya no existe ahí no se puede pagar.
+      if (!p && typeof Catalog !== 'undefined' && Catalog.source === 'shopify') line.available = false;
       if (!Number.isFinite(Number(line.price))) line.price = 0;
       return line;
     });
@@ -41,7 +60,8 @@ const Cart = {
   setQty(id, size, qty){ this.write(this.read().map(i => (i.id===id && i.size===size) ? { ...i, qty: Math.max(1, qty) } : i)); },
   remove(id, size){ this.write(this.read().filter(i => !(i.id===id && i.size===size))); },
   count(){ return this.read().reduce((s, i) => s + i.qty, 0); },
-  subtotal(){ return this.read().reduce((s, i) => s + i.price * i.qty, 0); },
+  // Lines that can no longer be bought are not counted (they show "—" and must be removed to pay).
+  subtotal(){ return this.read().reduce((s, i) => s + (i.available === false ? 0 : i.price * i.qty), 0); },
   // Single source for every total shown (drawer, cart page, checkout message).
   totals(){
     const subtotal = this.subtotal();
@@ -52,7 +72,6 @@ const Cart = {
 const discountPct = () => `${+(DISCOUNT_RATE * 100).toFixed(2)}%`;
 const discountLabel = () => `Discount (${discountPct()})`;
 const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-const SHOPIFY_DOMAIN = ''; // e.g. 'nmd19.myshopify.com' once the store exists → real checkout
 
 /* ---------- estilos del drawer (inyectados) ---------- */
 const CART_CSS = `
@@ -90,6 +109,8 @@ body.nmd-locked{overflow:hidden}
 .cart-it h3{font-size:17px;font-weight:400;overflow-wrap:anywhere}.cart-it .s{color:#6b6b6b;font-size:12px;margin-top:2px}
 .cart-it .q{display:inline-flex;align-items:center;border:1px solid #ddd;border-radius:100px;margin-top:10px}
 .cart-it .q button{background:none;border:none;cursor:pointer;padding:5px 12px;font-size:15px}.cart-it .q span{min-width:24px;text-align:center;font-weight:400;font-size:14px}
+.cart-it .q button:disabled{opacity:.35;cursor:not-allowed}
+.cart-it .s.out{color:#b00020}
 .cart-it .r{text-align:right;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
 .cart-it .r strong{font-size:15px;font-weight:400}.cart-it .x{background:none;border:none;color:#6b6b6b;text-decoration:underline;font-size:11px;cursor:pointer;font-family:inherit}
 .cart-drawer__foot{border-top:1px solid #e6e6e6;padding:18px 30px 26px;background:#fff}
@@ -109,7 +130,11 @@ body.nmd-locked{overflow:hidden}
   /* tap targets >= 40x40 */
   .cart-drawer__close{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin:-8px -10px 0 0}
   .cart-it .q button{min-width:40px;min-height:40px;padding:0 10px}
-  .cart-it .x{min-width:40px;min-height:40px;padding:0 4px}}`;
+  .cart-it .x{min-width:40px;min-height:40px;padding:0 4px}}
+/* phones in landscape: the whole drawer scrolls instead of squeezing the item list */
+@media(max-height:500px){.cart-drawer{overflow-y:auto}.cart-drawer__items{flex:none;overflow:visible}
+  .cart-drawer__head{padding-top:14px;padding-bottom:8px}.cart-drawer .cart-drawer__head h2{font-size:36px}
+  .cart-drawer__foot{padding-top:12px;padding-bottom:12px}}`;
 
 function chromeHTML(){
   // Closed drawer is inert (not focusable, hidden from screen readers) until openCart().
@@ -132,9 +157,10 @@ function focusedCartAction(container){
 }
 function restoreCartAction(container, k, fallback){
   if (!k) return;
-  const el = [...container.querySelectorAll('[data-act]')]
-    .find(b => b.dataset.act === k.act && b.dataset.id === k.id && b.dataset.size === k.size);
-  const target = el || fallback;
+  // same button, or another one of that line if it is now disabled ("+" at the stock limit)
+  const line = [...container.querySelectorAll('[data-act]')]
+    .filter(b => b.dataset.id === k.id && b.dataset.size === k.size && !b.disabled);
+  const target = line.find(b => b.dataset.act === k.act) || line[0] || fallback;
   if (target) target.focus({ preventScroll: true });
 }
 /* +/-/Remove for the drawer and cart.html. The buttons may be stale (cart changed
@@ -143,10 +169,13 @@ function cartAction(d){
   const it = Cart.read().find(i => i.id === d.id && i.size === d.size);
   if (!it) { document.dispatchEvent(new Event('cart:change')); return; }
   if (d.act === 'minus') Cart.setQty(d.id, d.size, it.qty - 1);
-  else if (d.act === 'plus') Cart.setQty(d.id, d.size, it.qty + 1);
+  else if (d.act === 'plus') Cart.setQty(d.id, d.size, Math.min(it.qty + 1, lineMax(it)));
   else if (d.act === 'remove') Cart.remove(d.id, d.size);
 }
 const lineDetails = i => [i.sub, `${i.option || 'Size'}: ${i.size}`].filter(Boolean).join(' · ');
+// Status under a line (shared with cart.html): can't be bought any more, or at the stock limit.
+const lineStatus = i => i.available === false ? 'No longer available — please remove it to check out'
+  : (i.qty >= lineMax(i) ? `Only ${lineMax(i)} left` : '');
 
 function renderDrawer(){
   const items = Cart.read();
@@ -161,15 +190,15 @@ function renderDrawer(){
     return;
   }
   itemsEl.innerHTML = items.map(i=>{
-    const data = `data-id="${esc(i.id)}" data-size="${esc(i.size)}"`, n = esc(i.name);
+    const data = `data-id="${esc(i.id)}" data-size="${esc(i.size)}"`, n = esc(i.name), status = lineStatus(i);
     return `
     <div class="cart-it">
       <img src="${esc(i.img)}" alt="">
       <div>
-        <h3>${n}</h3><div class="s">${esc(lineDetails(i))}</div>
-        <div class="q"><button type="button" data-act="minus" ${data} aria-label="Decrease quantity of ${n}">–</button><span>${i.qty}</span><button type="button" data-act="plus" ${data} aria-label="Increase quantity of ${n}">+</button></div>
+        <h3>${n}</h3><div class="s">${esc(lineDetails(i))}</div>${status ? `<div class="s${i.available === false ? ' out' : ''}">${esc(status)}</div>` : ''}
+        <div class="q"><button type="button" data-act="minus" ${data} aria-label="Decrease quantity of ${n}">–</button><span>${i.qty}</span><button type="button" data-act="plus" ${data} aria-label="Increase quantity of ${n}"${i.qty >= lineMax(i) ? ' disabled' : ''}>+</button></div>
       </div>
-      <div class="r"><strong>${money(i.price*i.qty)} <span style="font-size:11px;color:#6b6b6b">MXN</span></strong>
+      <div class="r"><strong>${i.available === false ? '—' : `${money(i.price*i.qty)} <span style="font-size:11px;color:#6b6b6b">MXN</span>`}</strong>
         <button type="button" class="x" data-act="remove" ${data} aria-label="Remove ${n}">Remove</button></div>
     </div>`; }).join('');
   const t = Cart.totals();
@@ -252,26 +281,91 @@ function mountChrome(){
     const b = e.target.closest('[data-act]'); if(b) cartAction(b.dataset);
   });
   document.getElementById('cartFoot').addEventListener('click', e=>{
-    if(e.target.closest('#cartCheckout')) checkout(document.getElementById('cartNotice'));
+    const b = e.target.closest('#cartCheckout');
+    if(b) checkout(document.getElementById('cartNotice'), b);
   });
 }
 /* Shown instead of a real checkout while no payment provider is connected.
    Uses the same totals as the drawer and cart page. */
+/* ---------- pago ----------
+   Con Shopify (shop-config.js): se crea el carrito en Shopify y se va a su checkout.
+   Sin Shopify: aviso de que el pago en línea aún no está disponible. */
 function checkoutMessage(){
   const t = Cart.totals();
   const note = t.discount > 0 ? `, after the ${discountPct()} discount` : '';
   return `Online payment isn't available yet, so no order was placed and nothing was charged. `
     + `Your cart (total ${money(t.total)} MXN${note}) stays saved on this device.`;
 }
-// `notice`: the role="status" element that receives the message.
-function checkout(notice){
-  const items = Cart.read();
-  if(!items.length) return;
-  if(SHOPIFY_DOMAIN){
-    const line = items.filter(i=>i.variantId).map(i=>`${i.variantId}:${i.qty}`).join(',');
-    location.href = `https://${SHOPIFY_DOMAIN}/cart/${line}`; return;
+// `notice`: the role="status" element that receives the message; `button`: the checkout button (optional).
+// cart.html and the drawer may redraw while this waits (catalog loaded, cart synced), so the
+// notice and the button are looked up again by id before each change.
+let checkingOut = false;
+async function checkout(notice, button){
+  const live = el => (el && !el.isConnected && el.id && document.getElementById(el.id)) || el;
+  const say = msg => { notice = live(notice); if (notice && notice.nodeType === 1) { notice.classList.add('cart-notice'); notice.textContent = msg; } };
+  const busy = (on, text) => {
+    button = live(button); if (!button) return;
+    if (!button.dataset.label) button.dataset.label = button.textContent;   // original label, stored once
+    button.disabled = on; button.textContent = on && text ? text : button.dataset.label;
+  };
+  if(checkingOut || !Cart.read().length) return;
+  if(typeof Catalog === 'undefined' || !Catalog.usesShopify()){ say(checkoutMessage()); return; }
+  // Guard first: a second click while stock is being checked does nothing.
+  checkingOut = true;
+  let leaving = false;
+  busy(true);
+  say('Checking stock…');
+  try {
+    // Con Shopify: precios y existencias al día antes de pagar.
+    try { await Catalog.load(); } catch(e){ say("We couldn't reach the shop. Please try again in a moment."); return; }
+    const lines = Cart.read();
+    if(!lines.length){ say(''); return; }
+    const blocked = lines.filter(i => !i.variantId || i.available === false);
+    if(blocked.length){
+      say(`${blocked.map(i => (i.name || i.id) + (i.size ? ' (' + i.size + ')' : '')).join(', ')} ${blocked.length === 1 ? 'is' : 'are'} no longer available. Please remove ${blocked.length === 1 ? 'it' : 'them'} to continue.`);
+      return;
+    }
+    busy(true, 'Redirecting…');
+    say('Taking you to secure checkout…');
+    const result = await NMDShopify.checkout(lines.map(i => ({ variantId: i.variantId, qty: i.qty })));
+    if (result.adjusted) {
+      // Shopify ajustó cantidades por existencia: el carrito del sitio se iguala al de Shopify, se dice
+      // qué línea cambió y se ofrece seguir. Las existencias se vuelven a pedir en la próxima carga.
+      NMDShopify.clearCache(); Catalog._loading = null;
+      const changed = result.lines ? matchShopifyCart(lines, result.lines) : [];
+      say(changed.length ? `Limited stock: ${changed.join('; ')}. Your cart was updated. `
+        : (result.warnings.join(' ') || 'Some items have limited stock.') + ' Quantities were updated in checkout. ');
+      if (notice && notice.nodeType === 1) {
+        const go = document.createElement('a'); go.href = result.checkoutUrl; go.textContent = 'Continue to checkout →';
+        go.style.cssText = 'color:inherit;text-decoration:underline'; notice.appendChild(go);
+      }
+      return;
+    }
+    leaving = true;
+    location.href = result.checkoutUrl;
+  } catch(e){
+    // Detalle técnico solo en la consola; el cliente ve los mensajes de Shopify pensados para él.
+    console.warn('[shop] checkout failed', e);
+    say(e && e.userFacing ? `${e.message} Please review your cart.` : "We couldn't start checkout. Please try again in a moment.");
+  } finally {
+    checkingOut = false;
+    if (!leaving) busy(false);
   }
-  if(notice && notice.nodeType === 1) notice.textContent = checkoutMessage();
+}
+// Shopify dejó menos unidades (o ninguna) en su carrito: se copian esas cantidades al carrito del
+// sitio para que los totales coincidan con el checkout. Devuelve qué cambió, para el aviso.
+function matchShopifyCart(lines, shopLines){
+  const got = {};
+  shopLines.forEach(l => { got[l.variantId] = (got[l.variantId] || 0) + l.qty; });
+  const changed = [];
+  const next = lines.filter(i => {
+    const q = got[i.variantId] || 0, label = (i.name || i.id) + (i.size ? ` (${i.size})` : '');
+    if (q >= i.qty) return true;
+    if (q <= 0) { changed.push(`${label} is sold out and was removed`); return false; }
+    changed.push(`${label} reduced to ${q}`); i.qty = q; return true;
+  });
+  if (changed.length) Cart.write(next);
+  return changed;
 }
 function updateCount(){ document.querySelectorAll('.rail__count').forEach(el => el.textContent = Cart.count()); }
 document.addEventListener('cart:change', ()=>{ updateCount(); if(isCartOpen()) renderDrawer(); });
@@ -279,3 +373,16 @@ document.addEventListener('cart:change', ()=>{ updateCount(); if(isCartOpen()) r
 // the drawer, the rail badge and cart.html redraw.
 window.addEventListener('storage', e=>{ if(e.key===Cart.KEY || e.key===null) document.dispatchEvent(new Event('cart:change')); });
 document.addEventListener('DOMContentLoaded', mountChrome);
+// Al volver del checkout de Shopify: si ese carrito ya se pagó, se vacía el carrito del sitio.
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof NMDShopify !== 'undefined' && NMDShopify.enabled()) NMDShopify.syncAfterCheckout(() => Cart.write([]));
+});
+// Back from Shopify checkout with the page restored from the back/forward cache (Safari, Chrome):
+// DOMContentLoaded does not run again, so undo "Redirecting…", redraw, and empty a paid cart.
+window.addEventListener('pageshow', e => {
+  if (!e.persisted) return;
+  checkingOut = false;
+  document.querySelectorAll('#checkout, #cartCheckout').forEach(b => { b.disabled = false; b.textContent = b.dataset.label || 'Checkout Now'; });
+  document.dispatchEvent(new Event('cart:change'));   // cart.html and an open drawer redraw (notice cleared)
+  if (typeof NMDShopify !== 'undefined' && NMDShopify.enabled()) NMDShopify.syncAfterCheckout(() => Cart.write([]));
+});

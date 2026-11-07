@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script src="assets/js/device-route.js?v=a60d8c88"></script>
+<script src="assets/js/scroll-reveal.js?v=503d593f" defer></script>
 <style>
 :root{--bg:#0c0c0c;--fg:#fff;--muted:#8a8a8a;--line:#262626;--yellow:#FDDE36;--rail:88px;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -55,6 +56,12 @@ footer a:hover{color:#fff}
   /* Teléfonos de 375–400px: las 4 categorías caben sin cortar "Giftcards" */
   @media (max-width:400px){.submenu button{padding:18px 10px;letter-spacing:.05em}}
 }
+/* Estados del catálogo y productos agotados */
+.shop-msg{grid-column:1/-1;padding:40px 0;color:var(--muted,#8a8a8a);font-size:18px}
+.shop-retry{margin-left:8px;background:none;border:1px solid currentColor;color:#fff;border-radius:100px;padding:8px 16px;font:inherit;cursor:pointer}
+.card__img{position:relative}
+.card__badge{position:absolute;left:12px;top:12px;background:#000;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:100px}
+.card.soldout img{opacity:.55}
 </style>
 <link rel="preload" href="assets/fonts/manuka-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -81,20 +88,36 @@ footer a:hover{color:#fff}
   </footer>
 </div>
 
-<script src="assets/js/catalog.js?v=bd89d91f"></script>
-<script src="assets/js/commerce.js?v=ef0b2dea"></script>
+<script src="assets/js/shop-config.js?v=4b79bf26"></script>
+<script src="assets/js/shopify.js?v=55e51fbc"></script>
+<script src="assets/js/catalog.js?v=2a1092bc"></script>
+<script src="assets/js/commerce.js?v=8ffeb7ae"></script>
 <script>
 const grid = document.getElementById('grid');
+let current = 'all';
 function render(cat){
+  current = cat;
+  // Con Shopify, hasta que llegue su catálogo (o si falló) se deja el aviso de carga o de error:
+  // nunca se muestran los productos de muestra. loadShop() dibuja la categoría elegida al terminar.
+  if (Catalog.usesShopify() && Catalog.source !== 'shopify') return;
   const list = PRODUCTS.filter(p => cat==='all' || p.cat===cat);
+  if (!list.length) { grid.innerHTML = '<p class="shop-msg">No products in this category yet.</p>'; return; }
   grid.innerHTML = list.map((p,i) => `
-    <a class="card ${i%3===1?'tall':''}" href="product.html?id=${p.id}">
-      <div class="card__img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+    <a class="card ${i%3===1?'tall':''}${p.available===false?' soldout':''}" href="product.html?id=${encodeURIComponent(p.id)}">
+      <div class="card__img"><img src="${esc(p.thumb || p.img)}" alt="${esc(p.name)}" loading="lazy">${p.available===false?'<span class="card__badge">Sold out</span>':''}</div>
       <div class="card__row">
-        <div><h3>${p.name}</h3><div class="sub">${p.sub}</div></div>
-        <div class="card__price">${money(p.price)}<span class="cur">MXN</span></div>
+        <div><h3>${esc(p.name)}</h3><div class="sub">${esc(p.sub)}</div></div>
+        <div class="card__price">${p.prices && !p.giftcard ? 'From ' : ''}${money(p.price)}<span class="cur">MXN</span></div>
       </div>
     </a>`).join('');
+}
+// Catálogo local o de Shopify (shop-config.js). Si Shopify no responde, aviso + reintento (nunca productos de muestra).
+function loadShop(){
+  grid.innerHTML = '<p class="shop-msg" role="status">Loading products…</p>';
+  Catalog.load().then(() => render(current)).catch(() => {
+    grid.innerHTML = '<p class="shop-msg" role="alert">We couldn\'t load the shop right now. <button type="button" class="shop-retry">Try again</button></p>';
+    grid.querySelector('.shop-retry').onclick = loadShop;
+  });
 }
 document.getElementById('submenu').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
@@ -102,8 +125,8 @@ document.getElementById('submenu').addEventListener('click', e => {
   b.classList.add('on'); b.setAttribute('aria-pressed','true'); render(b.dataset.cat);
   b.scrollIntoView({ block:'nearest', inline:'nearest' });   // phones: bring a half-hidden tab fully into the bar
 });
-render('all');
+loadShop();
 </script>
-<script src="assets/js/sticky-rail.js?v=ae26dc07"></script>
+<script src="assets/js/sticky-rail.js?v=46e33a32"></script>
 </body>
 </html>

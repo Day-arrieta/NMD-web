@@ -71,6 +71,7 @@
     // No usar scrollIntoView: desplazaría el contenedor .wrap (overflow:hidden) en lugar de la ventana.
     function scrollToPolicy(target, behavior) {
       if (wrap) wrap.scrollTop = 0;
+      if (window.nmdRevealNow) window.nmdRevealNow(target);   // scroll-reveal.js: medir sin el desplazamiento de la animación
       const top = target.getBoundingClientRect().top + window.scrollY - 24;
       window.scrollTo({ top: Math.max(0, top), behavior });
     }

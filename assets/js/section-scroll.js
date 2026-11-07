@@ -8,6 +8,7 @@
       const target = document.getElementById(arrow.dataset.scrollTarget);
       if (!target) return;
       event.preventDefault();event.stopImmediatePropagation();
+      if (window.nmdRevealNow) window.nmdRevealNow(target);   // scroll-reveal.js: medir sin el desplazamiento de la animación
       const top = window.scrollY + target.getBoundingClientRect().top - 24;
       window.scrollTo({top:Math.max(0,top),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
     };

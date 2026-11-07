@@ -9,8 +9,19 @@
 .team-card__meta{display:flex;justify-content:space-between;align-items:center;margin-top:40px}
 .team-card h3{font-family:Manuka,Impact,sans-serif;font-size:42px;line-height:40px;margin:0;font-weight:900;letter-spacing:0.03em;}
 .team-card__role{font:14px/18px 'Radio Grotesk',sans-serif;border:1px solid #727272;border-radius:8px;padding:6px 14px}
+/* Escenario escalado (ventanas de 1024 a 1440px): el rol no baja de unos 10px en pantalla. --k es la escala que pone
+   fit() de la página; la píldora crece con su padding y cabe junto al nombre (alto de línea 40px). */
+.team-card__role{font-size:max(14px,calc(10px / var(--k,1)));line-height:max(18px,calc(13px / var(--k,1)))}
 .team-card a{display:block;color:#999;font:20px/24px 'Radio Grotesk',sans-serif;margin-top:40px;padding:12px 0;border-bottom:1px solid #484848;text-decoration:none}
 .team-card a:hover,.team-card a:focus-visible{color:#fff}
+/* "View Profile": con mouse, solo en la tarjeta con hover (o con foco de teclado); en pantallas táctiles,
+   solo en el artista seleccionado. Se oculta con visibility para no mover el diseño. */
+.team-card__link{transition:opacity .3s,visibility .3s}
+@media (hover:hover){
+  .team-card .team-card__link{visibility:hidden;opacity:0}
+  .team-card:hover .team-card__link,.team-card:focus-within .team-card__link{visibility:visible;opacity:1}
+}
+@media (hover:none){.team-card:not(.is-active) .team-card__link{visibility:hidden;opacity:0}}
 .team-controls{display:flex;justify-content:center;align-items:center;gap:32px;margin-top:40px}
 .team-count{font:900 42px/40px Manuka,Impact,sans-serif;min-width:100px;text-align:center;letter-spacing:0.03em;}
 @media(prefers-reduced-motion:reduce){.team-card,.team-card__inner{transition:none}}

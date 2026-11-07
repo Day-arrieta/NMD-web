@@ -20,7 +20,7 @@
     const name = document.createElement('h3'); name.textContent = artist.name;
     const role = document.createElement('span'); role.className = 'team-card__role'; role.textContent = artist.role;
     meta.append(name, role);
-    const link = document.createElement('a'); link.href = NMDContent.profileURL(artist.id); link.textContent = 'View Profile';
+    const link = document.createElement('a'); link.className = 'team-card__link'; link.href = NMDContent.profileURL(artist.id); link.textContent = 'View Profile';
     const photoLink = document.createElement('a');
     photoLink.className = 'team-card__photo'; photoLink.setAttribute('href', link.getAttribute('href')); photoLink.draggable = false;
     photoLink.setAttribute('aria-label', 'View profile: ' + artist.name);

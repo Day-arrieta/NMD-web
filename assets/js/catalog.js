@@ -1,10 +1,21 @@
 /* ============================================================
    NMD19 — Catálogo de productos.
-   Precios en MXN. Nombres = placeholder del Figma (cámbialos por los reales).
-   Las imágenes ya son las del diseño (assets/fig).
+   ------------------------------------------------------------
+   · Con Shopify configurado (assets/js/shop-config.js) los productos,
+     precios, tallas y existencias salen de Shopify (assets/js/shopify.js).
+   · Sin Shopify se usa LOCAL_PRODUCTS (placeholder del Figma, precios en MXN).
+   Las páginas esperan a Catalog.load() antes de dibujar; PRODUCTS,
+   findProduct() y priceFor() funcionan igual con ambas fuentes.
+
+   Forma de un producto:
+   { id, name, sub, price, cat, img, gallery[], sizes[], prices{talla:precio}?,
+     optionLabel?, sku, note, info[], giftcard?,  ← giftcard: true en tarjetas de regalo
+     thumb?, galleryThumbs[]?,                    ← imágenes reducidas (solo con Shopify)
+     variants{talla:{ id, available, qty, sku }}? ← solo con Shopify
+     available? }                                 ← false si nada se puede comprar
    ============================================================ */
 const IMG = h => 'assets/fig/' + h;
-const PRODUCTS = [
+const LOCAL_PRODUCTS = [
   { id:'emissary-tshirt', name:'Emissary', sub:'T-Shirt', price:1299, cat:'apparel',
     img:IMG('f84d33dd6ed01af8f9863e55ecca9f4ff431240d.jpg'),
     gallery:['f84d33dd6ed01af8f9863e55ecca9f4ff431240d.jpg','75f4f5f504d335d36336992ea33ba483ca3d1625.jpg','bb3295a6ee073df856c71b4d521128216a0e677d.jpg','ec3e557f531118246552b0af9255b67eacf46ab3.jpg','d245fe7d574e8a60ff1308dfa2f87822ae3b1b19.jpg','53f2777f56e5ec781dc86913156cde30466ed316.jpg'].map(IMG),
@@ -41,7 +52,7 @@ const PRODUCTS = [
     gallery:['73a15d683422cc7532d4eaf360e3ba980f99ea3b.jpg'].map(IMG),
     sizes:['S','M','L','XL'], sku:'251AR-01', note:'MADE IN MEXICO',
     info:['Boxy fit','Technical fabric'] },
-  { id:'giftcard', name:'Giftcard', sub:'From $500', price:500, cat:'giftcards',
+  { id:'giftcard', name:'Giftcard', sub:'From $500', price:500, cat:'giftcards', giftcard:true,
     img:IMG('0c37da8ad28cec6dd2dff07d9657a9383059727f.jpg'),
     gallery:['0c37da8ad28cec6dd2dff07d9657a9383059727f.jpg'].map(IMG),
     // Each amount is its own price; optionLabel replaces "Size" in the UI and the cart.
@@ -49,8 +60,38 @@ const PRODUCTS = [
     sku:'251GC', note:'Delivered by email',
     info:['Digital giftcard','Redeemable in studio & shop'] },
 ];
+
+// Catálogo activo: el local hasta que Catalog.load() traiga el de Shopify.
+let PRODUCTS = LOCAL_PRODUCTS;
+
+const Catalog = {
+  source: 'local',          // 'local' | 'shopify'
+  _loading: null,
+  // ¿Shopify configurado? (shopify.js + shop-config.js cargados y con dominio y token)
+  usesShopify(){ return typeof NMDShopify !== 'undefined' && NMDShopify.enabled(); },
+  // Resuelve con la lista de productos. Con Shopify configurado y fallando la conexión,
+  // rechaza (las páginas muestran un aviso): nunca se venden productos de muestra por error.
+  load(){
+    if (this._loading) return this._loading;
+    if (!this.usesShopify()) { this.source = 'local'; return (this._loading = Promise.resolve(PRODUCTS)); }
+    this._loading = NMDShopify.fetchProducts().then(list => {
+      PRODUCTS = list; this.source = 'shopify';
+      document.dispatchEvent(new Event('catalog:ready'));
+      return list;
+    });
+    this._loading.catch(() => { this._loading = null; });   // un reintento posterior vuelve a pedirlo
+    return this._loading;
+  }
+};
+
 // Returns null for a missing or unknown id (product.html shows a "not found" state).
 const findProduct = id => PRODUCTS.find(p => p.id === id) || null;
-// Price of a product for the chosen size/amount (giftcard amounts have their own price).
+// Price of a product for the chosen size/amount (giftcard amounts or Shopify variants have their own price).
 const priceFor = (p, size) => (p.prices && p.prices[size] != null) ? p.prices[size] : p.price;
+// Variante de Shopify para una talla (null en el catálogo local).
+const variantFor = (p, size) => (p && p.variants && p.variants[size]) || null;
+// ¿Se puede comprar esa talla? (catálogo local: siempre)
+const isAvailable = (p, size) => { const v = variantFor(p, size); return v ? v.available !== false : p.available !== false; };
+// Máximo que se puede pedir de esa talla (Infinity si Shopify no informa cantidades o no lleva inventario).
+const maxQtyFor = (p, size) => { const v = variantFor(p, size); return v && Number.isFinite(v.qty) && v.qty > 0 ? v.qty : Infinity; };
 const money = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
