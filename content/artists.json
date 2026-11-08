@@ -1,11 +1,13 @@
 [
   {
     "id": "0db368dd-bf70-4890-846a-a335fcfdea88",
-    "name": "Zionele",
+    "name": "Pamela",
     "image": "/assets/team/DSC05162.jpg",
     "role": "Resident",
     "published": true,
-    "order": 0
+    "order": 0,
+    "location": "cdmx",
+    "bio": "test"
   },
   {
     "id": "558a4313-354e-474b-840e-abb2c03a45a6",
