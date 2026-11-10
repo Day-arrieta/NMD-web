@@ -72,5 +72,16 @@
     "role": "Resident",
     "published": true,
     "order": 7
+  },
+  {
+    "id": "46f05fb2-7c05-45a6-9f7c-8ce94e7e4cb4",
+    "name": "Shinae Park",
+    "image": "/assets/uploads/mwb1fts4-o2og6lkz.png",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "bio": "Fine-line",
+    "instagram": "https://www.instagram.com/shineintheparktattoo/",
+    "description": "I’m Shinae Park. I was born in Korea, but my soul and my heart are deeply Mexican. Mexico is the home where my art blossoms.\n\nI spent a decade working in fashion design. Those years taught me to understand the curves, movement, and harmony of the female body. Today I bring that same sensitivity to the skin, turning it into a canvas where design and intention come together.\n\nI see every tattoo as an amulet: a unique piece of magic, protection, and personal meaning. Through ornaments, mandalas, and botanical compositions in fine line, I seek to adorn and honor each woman’s body, transforming an idea into a symbol of empowerment. It’s not just ink under the skin. It’s a creative ritual between you and me to awaken your inner strength and celebrate your authenticity.\n\nI’m deeply grateful to the Nomad Studio family in Mexico City for opening the door to this wonderful path and allowing me to share this magic with each and every one of you."
   }
 ]
