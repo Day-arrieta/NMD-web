@@ -1,13 +1,15 @@
 [
   {
     "id": "0db368dd-bf70-4890-846a-a335fcfdea88",
-    "name": "Pamela Jiménez",
+    "name": "Pamela",
     "image": "/assets/team/DSC05162.jpg",
     "role": "Resident",
     "published": true,
     "order": 0,
-    "location": "cdmx",
-    "bio": "test"
+    "location": "CDMX",
+    "bio": "Black & Grey",
+    "instagram": "@Lightsout_mx",
+    "description": "Pamela Jiménez is a Mexican tattoo artist whose creative journey began in dance, where she developed a deep connection with movement, expression, and aesthetics. Her passion for the arts led her to study Advertising Illustration, and she later went on to share her knowledge by teaching drawing classes to children, encouraging new generations to keep their creativity alive and not to trade the pencil for a screen.\n\nOver time, she found in tattooing a new form of artistic expression, specializing in Black and Grey. Her work stands out for its elegant compositions, defined contrasts, and careful handling of light, shadow, and texture.\n\nInspired mainly by the animal world, she seeks to capture the strength, movement, and essence of each species, blending artistic sensitivity, technical precision, and visual harmony.\n\nShe is currently based in Mexico City, where she continues to build an artistic identity in which every piece reflects her passion for art, nature, and detail."
   },
   {
     "id": "558a4313-354e-474b-840e-abb2c03a45a6",
