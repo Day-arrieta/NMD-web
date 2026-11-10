@@ -85,9 +85,9 @@
   field('name').textContent = artist.name;
   field('role').textContent = artist.role;
 
-  const details = [artist.location, artist.bio].filter(value => typeof value === 'string' && value.trim()).map(value => value.trim());
-  field('bio').textContent = details.join('\n');
-  if (!details.length) hideBio();
+  // Recuadro de abajo (donde iban ubicación y especialidad): la cuenta de Instagram, enlazada.
+  if (artist.handle) field('bio').replaceChildren(link(artist.handle, artist.instagram, true));
+  else hideBio();
 
   const portrait = field('portrait');
   portrait.style.backgroundImage = `url(${JSON.stringify(artist.image)})`;
@@ -95,7 +95,7 @@
   portrait.setAttribute('aria-label', artist.name);
 
   const socials = field('socials');
-  socials.replaceChildren(...[['Instagram', artist.instagram], ['Website', artist.website]]
+  socials.replaceChildren(...[['Website', artist.website]]
     .filter(([, href]) => href).map(([label, href]) => link(label, href, true)));
 
   // Descripción (Pages CMS → "Descripción"), debajo de las redes. Escritorio: cabe en la columna sobre el nombre

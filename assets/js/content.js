@@ -26,6 +26,14 @@ window.NMDContent = (() => {
     if (handle && !/^(www\.)?instagram\.com$/i.test(handle[1])) return 'https://www.instagram.com/' + handle[1] + '/';
     return externalURL(text);
   }
+  // "@cuenta" de un enlace de Instagram ya normalizado (https://www.instagram.com/cuenta/ → @cuenta).
+  function instagramHandle(url) {
+    try {
+      const u = new URL(url);
+      const user = /(^|\.)instagram\.com$/i.test(u.hostname) && u.pathname.split('/').filter(Boolean)[0];
+      return user ? '@' + user : '';
+    } catch { return ''; }
+  }
   // Desktop profile by default; pass true for the mobile profile page.
   function profileURL(id, mobile) {
     const page = mobile ? 'exact-mobile-work-profile.html' : 'exact-desktop-menu-3.html';
@@ -43,6 +51,7 @@ window.NMDContent = (() => {
         return data.filter(a => a.published !== false && a.id && a.name && safeURL(a.image))
           .map(a => ({...a, image: safeURL(a.image), role: a.role === 'Guest' ? 'Guest' : 'Resident',
             instagram: instagramURL(a.instagram),
+            handle: instagramHandle(instagramURL(a.instagram)),
             website: externalURL(a.website),
             works: (Array.isArray(a.works) ? a.works : []).filter(w => w && w.published !== false && safeURL(w.image)).map(w => ({...w, image: safeURL(w.image)}))}))
           .sort((a,b) => (Number(a.order)||0) - (Number(b.order)||0));

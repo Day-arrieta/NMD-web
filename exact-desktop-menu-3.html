@@ -23,8 +23,13 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 #stage:not([data-profile]) [data-artist]{visibility:hidden}
 #stage [hidden]{display:none!important}
 [data-artist="socials"] a{display:block;color:inherit;text-decoration:underline;white-space:nowrap}
-.artist-about{flex:none;width:520px;margin:28px 0 0;color:#fff;font:18px/1.45 'Radio Grotesk',Arial,sans-serif;white-space:pre-wrap;overflow-wrap:break-word;scrollbar-width:thin}
+.artist-about{flex:none;width:560px;margin:28px 0 0;color:#fff;font:18px/1.45 'Radio Grotesk',Arial,sans-serif;white-space:pre-wrap;overflow-wrap:break-word;scrollbar-width:none}
+.artist-about::-webkit-scrollbar{display:none}
+.artist-about:first-child{margin-top:0}
 [data-artist="bio"]{font-synthesis:none;overflow-wrap:anywhere}
+[data-artist="bio"]{justify-content:center}
+[data-artist="bio"] a{font:900 42px/40px Manuka,Impact,sans-serif;letter-spacing:.03em;color:#fff;text-transform:none;text-decoration:none;transition:color .2s}
+[data-artist="bio"] a:hover,[data-artist="bio"] a:focus-visible{color:#FDDE36}
 #artist-works{position:absolute;left:1582px;top:440px;width:296px;height:620px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
 #artist-works img{display:block;width:100%;border-radius:8px}
 #artist-works p{color:#aaa;font:20px/24px 'Radio Grotesk',sans-serif}
@@ -34,6 +39,6 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(https?:|mailto:|tel:)/.test(h))return;e.preventDefault();document.body.classList.add('is-leaving');setTimeout(function(){location.href=h;},300);});
 addEventListener('pageshow',function(e){if(e.persisted)document.body.classList.remove('is-leaving');});</script>
 <script src="assets/js/sticky-rail.js?v=72309e2b"></script>
-<script src="assets/js/content.js?v=b3a3c9e7"></script>
-<script src="assets/js/artist-profile.js?v=5b4d039c"></script>
+<script src="assets/js/content.js?v=5bfc9ced"></script>
+<script src="assets/js/artist-profile.js?v=731aa378"></script>
 </body></html>

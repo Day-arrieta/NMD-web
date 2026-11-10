@@ -26,12 +26,14 @@
     photoLink.setAttribute('aria-label', 'View profile: ' + artist.name);
     photoLink.append(img);
     inner.append(photoLink, meta);
-    const specialty = typeof artist.bio === 'string' ? artist.bio.trim() : '';
-    if (specialty) {
-      const description = document.createElement('p');
-      description.className = 'team-card__specialty';
-      description.textContent = specialty;
-      inner.append(description);
+    // Bajo el nombre: la cuenta de Instagram (@…), enlazada a su perfil.
+    if (artist.handle) {
+      const handle = document.createElement('a');
+      handle.className = 'team-card__handle';
+      handle.href = artist.instagram; handle.target = '_blank'; handle.rel = 'noopener noreferrer';
+      handle.textContent = artist.handle;
+      handle.setAttribute('aria-label', artist.name + ' on Instagram: ' + artist.handle);
+      inner.append(handle);
     }
     inner.append(link); card.append(inner); track.append(card); return card;
   });

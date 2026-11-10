@@ -24,7 +24,10 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 #stage [hidden]{display:none!important}
 [data-artist="socials"] a{display:block;color:inherit;text-decoration:underline;white-space:nowrap}
 .artist-about{flex:none;width:392px;margin:20px 0 0;color:#fff;font:16px/1.45 'Radio Grotesk',sans-serif;white-space:pre-wrap;overflow-wrap:break-word}
+.artist-about:first-child{margin-top:0}
 [data-artist="bio"]{font-synthesis:none;overflow-wrap:anywhere}
+[data-artist="bio"] a{font:400 26px/26px Manuka,Impact,sans-serif;letter-spacing:.03em;color:#fff;text-transform:none;text-decoration:none;transition:color .2s}
+[data-artist="bio"] a:hover,[data-artist="bio"] a:focus-visible{color:#FDDE36}
 /* Featured work: horizontal scroller inside the 440px stage (Figma cards: 240x195, 32px apart, 24px side margin). */
 #artist-works{display:flex;gap:32px;padding:0 24px;scroll-padding:0 24px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 #artist-works::-webkit-scrollbar{display:none}
@@ -37,4 +40,4 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(https?:|mailto:|tel:)/.test(h))return;e.preventDefault();document.body.classList.add('is-leaving');setTimeout(function(){location.href=h;},300);});
 addEventListener('pageshow',function(e){if(e.persisted)document.body.classList.remove('is-leaving');});</script>
 <script src="assets/js/sticky-rail.js?v=72309e2b"></script>
-<script src="assets/js/content.js?v=b3a3c9e7"></script><script src="assets/js/artist-profile.js?v=5b4d039c"></script></body></html>
+<script src="assets/js/content.js?v=5bfc9ced"></script><script src="assets/js/artist-profile.js?v=731aa378"></script></body></html>

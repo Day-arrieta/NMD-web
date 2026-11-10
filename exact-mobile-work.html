@@ -24,4 +24,4 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(https?:|mailto:|tel:)/.test(h))return;e.preventDefault();document.body.classList.add('is-leaving');setTimeout(function(){location.href=h;},300);});
 addEventListener('pageshow',function(e){if(e.persisted)document.body.classList.remove('is-leaving');});</script>
 <script src="assets/js/sticky-rail.js?v=72309e2b"></script>
-<script src="assets/js/content.js?v=b3a3c9e7"></script><script src="assets/js/mobile-team.js?v=f9b7a7ea"></script><script src="assets/js/section-scroll.js?v=6362a929"></script></body></html>
+<script src="assets/js/content.js?v=5bfc9ced"></script><script src="assets/js/mobile-team.js?v=f9b7a7ea"></script><script src="assets/js/section-scroll.js?v=6362a929"></script></body></html>

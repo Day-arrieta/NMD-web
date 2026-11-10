@@ -60,5 +60,6 @@
 #team-carousel .team-card__photo:focus-visible{outline:2px solid #FDDE36;outline-offset:5px}
 #team-carousel.is-dragging .team-card__photo{cursor:grabbing}
 
-.team-card__specialty{margin:10px 0 0;color:#aaa;font:19px/24px 'Radio Grotesk',sans-serif;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.team-card__specialty + a{margin-top:16px}
+.team-card__handle{display:block;width:max-content;max-width:100%;margin:10px 0 0;color:#aaa;font:19px/24px 'Radio Grotesk',sans-serif;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team-card__handle:hover,.team-card__handle:focus-visible{color:#FDDE36;text-decoration:underline}
+.team-card__handle + a{margin-top:16px}
