@@ -6,7 +6,6 @@
     "role": "Resident",
     "published": true,
     "order": 0,
-    "location": "CDMX",
     "bio": "Black & Grey",
     "instagram": "@lightsout__mx",
     "description": "Pamela Jiménez is a Mexican tattoo artist whose creative journey began in dance, where she developed a deep connection with movement, expression, and aesthetics. Her passion for the arts led her to study Advertising Illustration, and she later went on to share her knowledge by teaching drawing classes to children, encouraging new generations to keep their creativity alive and not to trade the pencil for a screen.\n\nOver time, she found in tattooing a new form of artistic expression, specializing in Black and Grey. Her work stands out for its elegant compositions, defined contrasts, and careful handling of light, shadow, and texture.\n\nInspired mainly by the animal world, she seeks to capture the strength, movement, and essence of each species, blending artistic sensitivity, technical precision, and visual harmony.\n\nShe is currently based in Mexico City, where she continues to build an artistic identity in which every piece reflects her passion for art, nature, and detail."
@@ -22,7 +21,7 @@
   },
   {
     "id": "9a8be660-917f-4a0a-ad74-4de21d446bf1",
-    "name": "Jalil Abragon",
+    "name": "Jalil",
     "image": "/assets/team/DSC05669.jpg",
     "role": "Resident",
     "published": true,
@@ -31,14 +30,15 @@
   },
   {
     "id": "888b9cad-97a3-40bc-b4c7-adcce356bdf2",
-    "name": "Zionele",
+    "name": "Carlos",
     "image": "/assets/team/portrait.jpg",
     "role": "Resident",
     "published": true,
     "order": 3,
     "bio": "Fineline tattoos",
     "instagram": "https://www.instagram.com/zionele/",
-    "website": "Zionele.com"
+    "website": "Zionele.com",
+    "description": "Based in Mexico City, I create bespoke fine line tattoos guided by proportion, balance, and restraint.\n\nEach piece begins with a personal idea and is developed around the body — considered, singular, and made to endure."
   },
   {
     "id": "71dd53fd-b418-4161-8bb8-5ef0758479ba",
