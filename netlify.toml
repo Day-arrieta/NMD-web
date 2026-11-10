@@ -3,6 +3,19 @@
 [build.processing.html]
   pretty_urls = false
 
+# Work is hidden for now (sticky-rail.js, HIDE_WORK): its pages stay in the repo and send visitors to the home page.
+[[redirects]]
+  from = "/exact-desktop-work.html"
+  to = "/exact-desktop-studio-2.html"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/exact-mobile-work.html"
+  to = "/exact-mobile-home.html"
+  status = 302
+  force = true
+
 # Internal docs, unused scripts and unlinked Figma prototypes stay in the repo but are not published.
 # They answer with the 404 page. Remove a line here if a page becomes part of the live site.
 [[redirects]]

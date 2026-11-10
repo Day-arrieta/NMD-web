@@ -8,16 +8,62 @@ body.page-appointments{background:#000;--bg:#000;--muted:#767676}
 .page-appointments .opt{padding:0;border:0;border-radius:0;font-size:clamp(20px,1.875vw,36px);line-height:1;gap:16px;min-height:36px}
 .page-appointments .opt .dot{width:36px;height:36px;border:1px solid #727272}
 .page-appointments .opt.sel .dot{background:#FDDE36;box-shadow:inset 0 0 0 5px #000;border-color:#727272}
-.page-appointments .opt:focus-visible,.artist-choice:focus-visible{outline:2px solid #FDDE36;outline-offset:6px}
+.page-appointments .opt:focus-visible{outline:2px solid #FDDE36;outline-offset:6px}
 .page-appointments .field{background:transparent;border:0;border-bottom:1px solid #727272;border-radius:0;font-size:clamp(20px,1.875vw,36px)}
 .page-appointments .nav{margin-top:72px}.page-appointments .hint{margin-bottom:40px}
 .placement-control{margin-top:104px;position:relative}.placement-input{position:relative}.placement-input input{padding-right:70px}.placement-toggle{position:absolute;right:24px;top:50%;transform:translateY(-50%);border:0;background:none;color:#ddd;font-size:32px;cursor:pointer}
 .placement-options{display:flex;flex-direction:column;gap:16px;margin-top:24px}.placement-options[hidden]{display:none}.placement-option{background:#000;border:1px solid #727272;border-radius:8px;color:#fff;padding:22px;font:36px/1 'Radio Grotesk',sans-serif;text-align:left;cursor:pointer}.placement-option:hover,.placement-option:focus-visible,.placement-option.selected{background:#727272}
-.artist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 48px;max-width:1215px;margin:88px auto 0}.artist-choice{border:0;background:none;color:#fff;text-align:left;cursor:pointer;font:36px/1 'Radio Grotesk',sans-serif}.artist-choice img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center 25%;border-radius:8px;display:block;filter:grayscale(1)}.artist-choice.selected img{filter:none;outline:3px dotted #FDDE36;outline-offset:7px}.artist-label{display:flex;gap:16px;margin-top:18px}.artist-label:before{content:'';width:36px;height:36px;border:1px solid #727272;border-radius:50%;flex-shrink:0}.selected .artist-label:before{background:#FDDE36;box-shadow:inset 0 0 0 5px #000}.artist-placeholder{aspect-ratio:1;display:grid;place-items:center;background:#181818;border-radius:8px;font-size:64px}
-@media(max-width:700px){.page-appointments .wrap{padding-top:28px!important}.page-appointments .q{margin-bottom:32px}.required{margin-bottom:42px}.artist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px;margin-top:40px}.artist-choice{font-size:20px}.artist-label{gap:8px}.artist-label:before{width:24px;height:24px}.placement-control{margin-top:50px}.placement-option{font-size:22px}.page-appointments .opt .dot{width:28px;height:28px}}
+/* Artist step. Computer and tablet: the photos fill the width of the form, five per row.
+   --tile is the photo width; label and selection line scale with it. */
+.artist-grid{--cols:5;--gap-x:32px;--tile:200px;--ring:clamp(3px,calc(var(--tile) * .021),8px);display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:24px var(--gap-x);margin:16px 0 0}
+@media(max-width:899px){.artist-grid{--gap-x:16px}}
+@supports (width:1cqi){#host{container-type:inline-size}.artist-grid{--tile:calc((100cqi - (var(--cols) - 1) * var(--gap-x)) / var(--cols))}}
+.artist-choice{align-self:start;border:0;padding:0;background:none;color:#fff;text-align:left;cursor:pointer;font:clamp(14px,calc(var(--tile) * .1),36px)/1 'Radio Grotesk',sans-serif}
+.artist-choice img,.artist-placeholder{width:100%;aspect-ratio:1;border-radius:8px;display:block}
+.artist-choice img{object-fit:cover;object-position:center 25%;filter:grayscale(1);transition:filter .2s}
+@media(hover:hover){.artist-choice:hover img{filter:grayscale(.5)}}
+.artist-placeholder{display:grid;place-items:center;background:#181818;font-size:calc(var(--tile) * .17)}
+/* Selected: solid yellow line inside the photo (Figma: 8px inset at 373px) and the photo in colour */
+.artist-choice.selected img,.artist-choice.selected .artist-placeholder{outline:var(--ring) solid #FDDE36;outline-offset:calc(var(--ring) * -1)}
+.artist-choice.selected img{filter:none}
+.artist-label{display:block;margin-top:.5em}
+/* No radio dot and no box around the tile: only the photo shows the selection. Keyboard focus underlines the name. */
+.artist-choice:focus-visible{outline:none}
+.artist-choice:focus-visible .artist-label{text-decoration:underline 2px #FDDE36;text-underline-offset:.2em}
+@media(max-width:700px){.page-appointments .wrap{padding-top:28px!important}.page-appointments .q{margin-bottom:32px}.required{margin-bottom:42px}.artist-grid{--cols:2;--gap-x:16px;--tile:clamp(120px,calc((100vh - var(--nmd-topbar-h,0px) - 156px) / 3.75),373px);grid-template-columns:repeat(2,minmax(0,var(--tile)));justify-content:center;row-gap:20px;margin-top:0}.placement-control{margin-top:50px}.placement-option{font-size:22px}.page-appointments .opt .dot{width:28px;height:28px}}
+@supports (width:1cqi) and (height:1svh){@media(max-width:700px){.artist-grid{--tile:min(clamp(120px,calc((100svh - var(--nmd-topbar-h,0px) - 156px) / 3.75),373px),calc((100cqi - 16px) / 2))}}}
 body.page-appointments.nmd-shared-navigation{padding-left:0!important}
+/* "Other" option with its text field beside it (placement step) */
+.page-appointments .opt-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px 32px}
+.page-appointments .opt-row .opt{width:auto}
+.page-appointments .opt-other{flex:1 1 220px;max-width:640px;padding:6px 4px}
+.page-appointments .opt-other[hidden]{display:none}
+/* While the mouse is in use (class set by booking-form.js) no focus ring after a click; the keyboard brings it back. */
+html.nmd-pointer .page-appointments .opt:focus-visible{outline:none}
+html.nmd-pointer .artist-choice:focus-visible .artist-label{text-decoration:none}
+/* Back / step count / Next fixed to the bottom of the window, after the desktop rail; errors show just above
+   the buttons. The form keeps room at the end so its last field is never hidden behind the bar. */
+.page-appointments .form-bar{position:fixed;left:var(--nmd-rail-width,0px);right:0;bottom:0;z-index:20;background:rgba(0,0,0,.5);padding:16px max(6.2vw,24px) calc(16px + env(safe-area-inset-bottom,0px)) 2.2vw}
+body.nmd-topbar-on.page-appointments .form-bar{padding-left:max(6.2vw,24px)}
+.page-appointments .form-bar .nav{margin-top:0}
+.page-appointments .form-bar .btn.back,.page-appointments .form-bar .count{white-space:nowrap}
+@media(max-width:400px){.page-appointments .form-bar .btn{padding-left:20px;padding-right:20px}.page-appointments .form-bar .btn.back{padding-left:0}}
+.page-appointments .form-bar .err{margin:0;min-height:0}
+.page-appointments .form-bar .err:not(:empty){margin-bottom:12px}
+.page-appointments #form{padding-bottom:140px}
+/* A field focused near the bottom (guest name, "Other") scrolls into view above the bar, not behind it */
+html:has(.page-appointments .form-bar){scroll-padding-bottom:150px}
+/* Step 1 has no Back: keep its space so the step count stays centred */
+.page-appointments .btn.back[hidden]{display:inline-block;visibility:hidden}
+/* Name of the guest artist (shown when "Guest Artists" is selected) */
+.guest-field{display:block;margin-top:56px;max-width:900px}.guest-field[hidden]{display:none}
+.field-label{display:block;color:#bdbdbd;font:clamp(16px,1.25vw,24px)/1.2 'Radio Grotesk',sans-serif;margin-bottom:8px}
+@media(max-width:700px){.guest-field{margin-top:36px}}
+/* Contact step: name and email, one under the other */
+.contact-fields{display:flex;flex-direction:column;gap:40px;max-width:900px}.contact-field{display:block}
+@media(max-width:700px){.contact-fields{gap:28px}}
 .page-appointments .q:focus{outline:none}
-/* Step hint under the question (price, multi-select, placement, size, contact) */
+/* Step hint under the question (size, placement) */
 .page-appointments .q+.hint{margin:-32px 0 24px;color:#bdbdbd;max-width:60ch}
 @media(max-width:700px){.page-appointments .q+.hint{margin:-16px 0 20px}}
 /* Multi-select steps: same column layout as single choice, but square checkboxes with a tick */
@@ -28,7 +74,7 @@ body.page-appointments.nmd-shared-navigation{padding-left:0!important}
 .page-appointments .opts.multi .opt.sel .dot:after{content:'';position:absolute;left:50%;top:44%;width:28%;height:52%;border:solid #000;border-width:0 3px 3px 0;transform:translate(-50%,-50%) rotate(45deg)}
 /* Neutral tiles ("Recommend me an Artist", "Guest Artists") */
 .artist-placeholder{color:#727272;font-family:'Radio Grotesk',sans-serif}
-.artist-choice.selected .artist-placeholder{outline:3px dotted #FDDE36;outline-offset:7px;color:#fff}
+.artist-choice.selected .artist-placeholder{color:#fff}
 /* Error / status messages and the contact field error state */
 .page-appointments .err{font:16px/1.4 'Radio Grotesk',sans-serif}
 .page-appointments .field[aria-invalid="true"]{border-bottom-color:#FDDE36}
@@ -37,7 +83,6 @@ body.page-appointments.nmd-shared-navigation{padding-left:0!important}
 .consent a{color:#fff;text-decoration:underline;text-underline-offset:.15em}
 .consent a:hover{color:#FDDE36}
 .consent a:focus-visible{outline:2px solid #FDDE36;outline-offset:2px}
-.page-appointments .consent:not([hidden])+.nav{margin-top:40px}
 .done h2:focus{outline:none}
 /* Long words in the big uppercase questions (e.g. "RECOMMENDATIONS") must not push the page sideways on narrow phones */
 .page-appointments .q{overflow-wrap:break-word;hyphens:auto}

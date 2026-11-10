@@ -4,7 +4,8 @@
    En el diseño son tarjetas de relleno ("Coral Heart. / Totebag / $1,229.00").
    Este script las llena con productos reales del catálogo (local o de Shopify,
    los más nuevos primero, en orden de lectura de la página) y las convierte en
-   enlaces a su producto. Requiere shop-config.js, shopify.js y catalog.js antes.
+   enlaces a su producto. Cada sección empieza por el producto más nuevo; si hay menos
+   productos que tarjetas, las de sobra se ocultan. Requiere shop-config.js, shopify.js y catalog.js antes.
    ============================================================ */
 (() => {
   if (typeof Catalog === 'undefined') return;
@@ -54,6 +55,18 @@
     const ra = union(a.pieces), rb = union(b.pieces);
     return Math.abs(ra.top - rb.top) < Math.min(ra.height, rb.height) / 2 ? ra.left - rb.left : ra.top - rb.top;
   }
+  // Secciones: tarjetas en la misma fila o en filas seguidas (separadas por menos de media tarjeta).
+  // Una sección nueva empieza después de un hueco mayor (otro título, otro bloque de la página).
+  function sections(sorted){
+    const groups = []; let bottom = -Infinity;
+    sorted.forEach(t => {
+      const r = union(t.pieces);
+      if (!groups.length || r.top > bottom + r.height / 2) { groups.push([]); bottom = -Infinity; }
+      groups[groups.length - 1].push(t);
+      bottom = Math.max(bottom, r.top + r.height);
+    });
+    return groups;
+  }
   // La misma caja en px del contenedor (sin la escala del stage), para el enlace de una tarjeta suelta.
   function boxIn(el, pieces){
     const r = el.getBoundingClientRect(), k = (r.width / el.offsetWidth) || 1, u = union(pieces);
@@ -71,8 +84,12 @@
     if (!found.length || !list.length) return;
     // Primero los disponibles (los más nuevos de Shopify llegan primero).
     const order = list.filter(p => p.available !== false).concat(list.filter(p => p.available === false));
-    found.slice().sort(byPosition).forEach((t, i) => {
-      const { root, scope, img, name } = t, p = order[i % order.length];
+    // Cada sección ("New Items", "Shop", "New In"…) empieza por el producto más nuevo y muestra
+    // una tarjeta por producto: con menos productos que tarjetas, las de sobra quedan ocultas.
+    const sorted = found.slice().sort(byPosition), used = [], spare = [];
+    sections(sorted).forEach(group => group.forEach((t, i) => (i < order.length ? used : spare).push([t, order[i]])));
+    used.forEach(([t, p]) => {
+      const { root, scope, img, name } = t;
       const src = p.thumb || p.img;
       if (img) img.style.backgroundImage = src ? `url("${css(src)}")` : 'none';   // nunca la foto de otro producto
       name.textContent = p.name + '.'; oneLine(name);
@@ -102,7 +119,8 @@
       a.setAttribute('aria-label', `${p.name}${p.sub ? ' ' + p.sub : ''}, ${money(p.price)} MXN${p.available === false ? ', sold out' : ''}`);
       root.appendChild(a);
     });
-    show(found, true);
+    show(spare.map(([t]) => t), false);
+    show(used.map(([t]) => t), true);
   }
 
   const style = document.createElement('style');

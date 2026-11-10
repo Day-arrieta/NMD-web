@@ -32,7 +32,7 @@ Terms & Conditions y Privacy Policy son borradores: conviene que los revise un a
 - `[[touch-up period]]` — Do you offer a free touch-up, and within how long after the session? Common: 2 to 6 months (Blacker 2 months, GAR 3 months, Atelier Eva 6 months). Also confirm that another resident artist does it if the original artist has left the studio. If you don't offer free touch-ups, the FAQ and Terms answers need rewriting.
 - `[[areas excluded from free touch-ups]]` — Which body areas are excluded from free touch-ups? Common: hands, fingers, feet, lips and other high-wear or fast-regenerating areas.
 - `[[studio phone]]` — What phone number should clients call? The site's Call link currently dials a dummy number (+52 55 0000 0000, in assets/js/components.js), which must be replaced before the shop or policies go live. Include the +52 country code for international visitors. LFPC Art. 76 Bis requires an online seller to show a real address and phone number.
-- `[[studio WhatsApp]]` — Does the studio use WhatsApp? The booking form asks 'Best email or WhatsApp to reach you?', so the FAQ says the team replies by email or WhatsApp. Give the WhatsApp number with the +52 code. If you don't use WhatsApp, remove it from 'I have more questions', from the booking step, and from the form's contact field.
+- `[[studio WhatsApp]]` — Does the studio use WhatsApp? The booking form now asks only for name and email, and the FAQ says the team replies by email. WhatsApp appears only in 'I have more questions': give the number with the +52 code, or remove it there if you don't use WhatsApp.
 
 ## Shipping
 

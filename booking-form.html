@@ -75,7 +75,7 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 <link rel="preload" href="assets/fonts/PPRadioGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=ad9a13ed">
 <link rel="stylesheet" href="assets/css/typography.css?v=877c1af5">
-<link rel="stylesheet" href="assets/css/booking-form.css?v=737ce5a9"></head>
+<link rel="stylesheet" href="assets/css/booking-form.css?v=7e3b38cd"></head>
 <body class="page-appointments">
 <div class="top">
   <a class="brand" href="index.html">NMD<sup>19®</sup></a>
@@ -87,10 +87,9 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
   <input type="hidden" name="form-name" value="appointments">
   <p hidden><label>No llenar: <input name="bot-field"></label></p>
   <input type="hidden" name="idea"><input type="hidden" name="when"><input type="hidden" name="artist">
-  <input type="hidden" name="price"><input type="hidden" name="description"><input type="hidden" name="styles">
-  <input type="hidden" name="elements"><input type="hidden" name="color"><input type="hidden" name="placement">
-  <input type="hidden" name="placement_detail"><input type="hidden" name="size"><input type="hidden" name="travel">
-  <input type="hidden" name="name"><input type="hidden" name="contact">
+  <input type="hidden" name="description"><input type="hidden" name="placement">
+  <input type="hidden" name="placement_detail"><input type="hidden" name="size">
+  <input type="hidden" name="name"><input type="hidden" name="email">
 </form>
 
 <div class="wrap" id="wrap">
@@ -112,13 +111,16 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
   <section id="form" style="display:none">
     <div class="progress"><div class="progress__bar" id="bar"></div></div>
     <div id="host"></div>
-    <div class="err" id="err"></div>
     <!-- Shown only on the last step (booking-form.js). The F.A.Q. page sends phones to its mobile version. -->
     <p class="consent" id="consent" hidden>By sending this form you agree to our <a href="exact-desktop-f-a-q.html#privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="exact-desktop-f-a-q.html#terms" target="_blank" rel="noopener">Terms</a>.</p>
-    <div class="nav">
-      <button class="btn back" id="back">← Back</button>
-      <span class="count" id="count"></span>
-      <button class="btn next" id="next">Next →</button>
+    <!-- Fixed to the bottom of the window (booking-form.css): error message above Back / step count / Next -->
+    <div class="form-bar">
+      <div class="err" id="err"></div>
+      <div class="nav">
+        <button class="btn back" id="back">← Back</button>
+        <span class="count" id="count"></span>
+        <button class="btn next" id="next">Next →</button>
+      </div>
     </div>
   </section>
 
@@ -131,6 +133,6 @@ textarea.field{min-height:140px;resize:vertical;line-height:1.5}
 </div>
 
 
-<script src="assets/js/sticky-rail.js?v=46e33a32"></script>
-<script src="assets/js/content.js?v=b3a3c9e7"></script><script src="assets/js/booking-form.js?v=c6cb5e40"></script><script src="assets/js/translations.js?v=ce6d53e7"></script><script src="assets/js/language.js?v=57df5735"></script></body>
+<script src="assets/js/sticky-rail.js?v=72309e2b"></script>
+<script src="assets/js/content.js?v=b3a3c9e7"></script><script src="assets/js/booking-form.js?v=f0f9f37d"></script><script src="assets/js/translations.js?v=888947ff"></script><script src="assets/js/language.js?v=57df5735"></script></body>
 </html>

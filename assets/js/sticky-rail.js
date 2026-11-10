@@ -473,6 +473,43 @@
     });
     window.addEventListener('pagehide', function(){ clearTimeout(closeTimer); closing = false; });
   }
+  /* Entrada del menú móvil: en vez del fundido de página, el contenido se revela de izquierda a
+     derecha y de arriba abajo, como el menú de escritorio. La cabecera (con la X) queda fija. */
+  var menuIntroDone = false;
+  function mobileMenuIntro(){
+    if (menuIntroDone || PAGE !== 'exact-mobile-menu-expanded' || EMBED) return;
+    menuIntroDone = true;
+    var stage = document.getElementById('stage');
+    if (!stage) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var vh = window.innerHeight || 800, items = [];
+    [].forEach.call(stage.children, function(c){
+      if (c.querySelector('a[href="exact-mobile-home.html"][aria-label="Close menu"]')) return;   // cabecera con la X
+      var cs = getComputedStyle(c);
+      var hasText = (c.textContent || '').trim().length > 0;
+      var hasImg = cs.backgroundImage !== 'none' || !!c.querySelector('img,svg,[style*="background-image"]');
+      if (!hasText && !hasImg) return;                   // líneas y fondos: sólidos desde el inicio
+      var r = c.getBoundingClientRect();
+      if (r.top > vh * 1.2) return;                        // fuera de la primera pantalla: sin animación
+      items.push({ el: c, d: Math.round(Math.max(0, Math.min(1, r.top / vh)) * 260 + Math.max(0, Math.min(1, r.left / (window.innerWidth || 400))) * 80) });
+    });
+    items.forEach(function(it){
+      it.prev = { opacity: it.el.style.opacity, clipPath: it.el.style.clipPath, transition: it.el.style.transition, willChange: it.el.style.willChange };
+      it.el.style.opacity = '0';
+      it.el.style.clipPath = 'inset(0 100% 0 0)';
+      it.el.style.willChange = 'opacity,clip-path';
+    });
+    stage.style.animation = 'none';                        // sin el fundido general de la página
+    void stage.offsetWidth;
+    requestAnimationFrame(function(){
+      items.forEach(function(it){
+        it.el.style.transition = 'opacity .45s ease ' + it.d + 'ms, clip-path .6s cubic-bezier(.22,1,.36,1) ' + it.d + 'ms';
+        it.el.style.opacity = it.prev.opacity || '1';
+        it.el.style.clipPath = 'inset(0 0 0 0)';
+        setTimeout(function(){ Object.keys(it.prev).forEach(function(k){ it.el.style[k] = it.prev[k]; }); }, it.d + 700);
+      });
+    });
+  }
   function cameFromSite(){
     try {
       if (!document.referrer || history.length < 2) return false;
@@ -545,7 +582,7 @@
   function run(){
     layoutFix();
     // Páginas móviles: nunca el rail de escritorio.
-    if (MOBILE_PAGE){ setupMobileMenuClose(); return; }
+    if (MOBILE_PAGE){ setupMobileMenuClose(); mobileMenuIntro(); return; }
     var stage = document.getElementById('stage');
     if (stage && stage.offsetWidth < 600) return;   // stage móvil (440px) con otro nombre
     if (!stage){
@@ -573,6 +610,81 @@
     requestAnimationFrame(go);
     setTimeout(go, 150);
   }
+
+  /* ======================================================
+     WORK OCULTO (por ahora). Las páginas exact-desktop-work.html y exact-mobile-work.html siguen en el
+     repositorio; netlify.toml manda al inicio a quien entre directo. Para volver a mostrar Work:
+     HIDE_WORK = false y quitar esas dos reglas de netlify.toml.
+     · Menús (escritorio, pie del inicio/F.A.Q., móvil): se quita la fila WORK y las demás se reparten
+       en el mismo espacio, renumeradas (01.–04.).
+     · Botones "View Our Work": en el inicio ahora son "View Shop" (llevan a shop.html); si queda alguno, se oculta.
+     ====================================================== */
+  var HIDE_WORK = true;
+  var NAV_WORDS = ['home', 'studio', 'work', 'appointments', 'shop'];
+  function matrixOf(el){ var m = (el.style.transform || '').match(/matrix\(([^)]*)\)/); return m ? m[1].split(',').map(parseFloat) : null; }
+  function topOf(el){ var m = matrixOf(el); return m ? m[5] : 0; }
+  function setTop(el, y){ var m = matrixOf(el); if (!m) return; m[5] = +y.toFixed(3); el.style.transform = 'matrix(' + m.join(',') + ')'; }
+  function navText(el){ return (el.textContent || '').trim().toLowerCase(); }
+  function isNum(el){ return /^0\d\.$/.test((el.textContent || '').trim()); }
+  function hideWork(){
+    if (!HIDE_WORK) return;
+    var stage = document.getElementById('stage');
+    if (!stage) return;
+    [].slice.call(stage.querySelectorAll('a[href="exact-desktop-work.html"],a[href="exact-mobile-work.html"]')).forEach(function(a){
+      if (a.dataset.nmdHidden) return;
+      a.dataset.nmdHidden = '1';
+      if (navText(a) === 'work') { hideMenuRow(a); return; }
+      // "View Our Work": si su bloque solo tiene el botón y líneas, se oculta el bloque entero
+      var box = a.parentElement;
+      var onlyLines = box && box !== stage && [].every.call(box.children, function(c){ return c === a || !(c.textContent || '').trim(); });
+      (onlyLines ? box : a).style.display = 'none';
+    });
+  }
+  function hideMenuRow(a){
+    var parent = a.parentElement;
+    var siblingsNav = [].filter.call(parent.children, function(c){ return c.tagName === 'A' && NAV_WORDS.indexOf(navText(c)) > -1; });
+    if (siblingsNav.length >= 3){
+      // Escritorio: filas = enlaces sueltos; números y líneas divisorias son hermanos aparte.
+      var rows = siblingsNav.sort(function(x, y){ return topOf(x) - topOf(y); });
+      var first = topOf(rows[0]), last = topOf(rows[rows.length - 1]);
+      var nums = [].filter.call(parent.children, isNum);
+      var numFor = function(row){ return nums.filter(function(n){ var d = topOf(n) - topOf(row); return d >= 0 && d < 60; })[0]; };
+      var lines = [].filter.call(parent.children, function(c){
+        var m = matrixOf(c), x = m ? m[4] : 0, rowX = (matrixOf(rows[0]) || [0,0,0,0,0])[4];
+        // solo las líneas de la columna del menú (no, p. ej., la de "New In" a la derecha)
+        return !(c.textContent || '').trim() && parseFloat(c.style.height) <= 2 && parseFloat(c.style.width) > 200
+          && x <= rowX && x + parseFloat(c.style.width) > rowX && topOf(c) > first && topOf(c) < last;
+      }).sort(function(x, y){ return topOf(x) - topOf(y); });
+      var lineGap = lines.length ? topOf(rows[1]) - topOf(lines[0]) : 0;    // línea → fila siguiente
+      var workNum = numFor(a);
+      a.style.display = 'none'; if (workNum) workNum.style.display = 'none';
+      var keep = rows.filter(function(r){ return r !== a; });
+      var pitch = (last - first) / (keep.length - 1);
+      keep.forEach(function(r, i){
+        var n = numFor(r), dy = n ? topOf(n) - topOf(r) : 0;
+        setTop(r, first + i * pitch);
+        if (n){ setTop(n, first + i * pitch + dy); n.textContent = '0' + (i + 1) + '.'; }
+      });
+      lines.forEach(function(l, i){
+        if (i < keep.length - 1) setTop(l, first + (i + 1) * pitch - lineGap);
+        else l.style.display = 'none';
+      });
+    } else {
+      // Móvil: cada fila es un bloque (número + enlace) dentro de la lista.
+      var row = parent, list = row.parentElement;
+      var all = [].filter.call(list.children, function(c){ return !!c.querySelector('a'); }).sort(function(x, y){ return topOf(x) - topOf(y); });
+      var f = topOf(all[0]), l = topOf(all[all.length - 1]);
+      row.style.display = 'none';
+      var rest = all.filter(function(r){ return r !== row; });
+      var step = (l - f) / (rest.length - 1);
+      rest.forEach(function(r, i){
+        setTop(r, f + i * step);
+        [].forEach.call(r.querySelectorAll('div'), function(d){ if (!d.children.length && isNum(d)) d.textContent = '0' + (i + 1) + '.'; });
+      });
+    }
+  }
+  hideWork();                                       // el script va al final del <body>: antes del primer pintado
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hideWork);
 
   // ---------- arranque ----------
   if (EMBED){

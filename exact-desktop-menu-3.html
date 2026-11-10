@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script src="assets/js/device-route.js?v=a60d8c88"></script>
-<script src="assets/js/scroll-reveal.js?v=503d593f" defer></script>
+<script src="assets/js/scroll-reveal.js?v=1994279d" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{background:#1e1e1e}
 .stage{position:relative;width:1920px;height:1080px;background:rgba(0,0,0,1.0);transform-origin:top left;margin:0 auto}
 .wrap{width:100%;overflow:hidden;overflow:clip}
@@ -23,6 +23,7 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 #stage:not([data-profile]) [data-artist]{visibility:hidden}
 #stage [hidden]{display:none!important}
 [data-artist="socials"] a{display:block;color:inherit;text-decoration:underline;white-space:nowrap}
+.artist-about{flex:none;width:520px;margin:28px 0 0;color:#fff;font:18px/1.45 'Radio Grotesk',Arial,sans-serif;white-space:pre-wrap;overflow-wrap:break-word;scrollbar-width:thin}
 [data-artist="bio"]{font-synthesis:none;overflow-wrap:anywhere}
 #artist-works{position:absolute;left:1582px;top:440px;width:296px;height:620px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
 #artist-works img{display:block;width:100%;border-radius:8px}
@@ -32,7 +33,7 @@ body.is-leaving .stage{animation:none;opacity:0;transition:opacity .32s cubic-be
 <script>function fit(){var s=document.getElementById('stage'),k=Math.min(1,window.innerWidth/1920);s.style.transform='scale('+k+')';document.querySelector('.wrap').style.height=(1080*k)+'px';}fit();addEventListener('resize',fit);
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(https?:|mailto:|tel:)/.test(h))return;e.preventDefault();document.body.classList.add('is-leaving');setTimeout(function(){location.href=h;},300);});
 addEventListener('pageshow',function(e){if(e.persisted)document.body.classList.remove('is-leaving');});</script>
-<script src="assets/js/sticky-rail.js?v=46e33a32"></script>
+<script src="assets/js/sticky-rail.js?v=72309e2b"></script>
 <script src="assets/js/content.js?v=b3a3c9e7"></script>
-<script src="assets/js/artist-profile.js?v=400fb082"></script>
+<script src="assets/js/artist-profile.js?v=5b4d039c"></script>
 </body></html>

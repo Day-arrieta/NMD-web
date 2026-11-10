@@ -560,40 +560,8 @@ window.NMDTranslations = [
     "¿Qué artista prefieres?"
   ],
   [
-    "Not sure which artist you'd like to work with?",
-    "¿No sabes con qué artista te gustaría trabajar?"
-  ],
-  [
-    "Don't worry",
-    "No te preocupes"
-  ],
-  [
-    ", our experienced studio booking team",
-    ", nuestro equipo de reservas"
-  ],
-  [
-    "will gladly make recommendations based on your design details",
-    "con gusto te recomendará artistas según los detalles de tu diseño"
-  ],
-  [
-    "Recommend me an Artist",
-    "Recomiéndenme un artista"
-  ],
-  [
-    "Do you have a preferred price range in mind?",
-    "¿Tienes un presupuesto en mente?"
-  ],
-  [
-    "Yes, I do",
-    "Sí, lo tengo"
-  ],
-  [
-    "No, I don't",
-    "No, no lo tengo"
-  ],
-  [
-    "I'm Flexible",
-    "Soy flexible"
+    "Recommend me",
+    "Recomién\u00ADdenme"
   ],
   [
     "Please share a brief description of your tattoo idea and any thoughts you have on your inspirations.",
@@ -602,94 +570,6 @@ window.NMDTranslations = [
   [
     "Tell us about your idea, references, story…",
     "Cuéntanos tu idea, referencias, historia…"
-  ],
-  [
-    "What tattoo styles do you like?",
-    "¿Qué estilos de tatuaje te gustan?"
-  ],
-  [
-    "Select all that apply.",
-    "Selecciona todas las opciones que correspondan."
-  ],
-  [
-    "Fine line",
-    "Línea fina"
-  ],
-  [
-    "Black & grey",
-    "Negro y gris"
-  ],
-  [
-    "Traditional",
-    "Tradicional"
-  ],
-  [
-    "Neo-traditional",
-    "Neotradicional"
-  ],
-  [
-    "Realism",
-    "Realismo"
-  ],
-  [
-    "Lettering",
-    "Letras"
-  ],
-  [
-    "Ornamental",
-    "Ornamental"
-  ],
-  [
-    "Blackwork",
-    "Blackwork"
-  ],
-  [
-    "Japanese",
-    "Japonés"
-  ],
-  [
-    "Illustrative",
-    "Ilustrativo"
-  ],
-  [
-    "What elements do you want in your tattoo?",
-    "¿Qué elementos quieres en tu tatuaje?"
-  ],
-  [
-    "Florals",
-    "Flores"
-  ],
-  [
-    "Animals",
-    "Animales"
-  ],
-  [
-    "Figures",
-    "Figuras"
-  ],
-  [
-    "Geometry",
-    "Geometría"
-  ],
-  [
-    "Symbols",
-    "Símbolos"
-  ],
-  [
-    "Abstract",
-    "Abstracto"
-  ],
-  [
-    "Do you want your tattoo in color or black/grey?",
-    "¿Quieres tu tatuaje a color o en negro y gris?"
-  ],
-  [
-    "Color",
-    "Color"
-  ],
-  [
-    "Black and grey",
-    "Negro y gris"
   ],
   [
     "Where on your body do you want the tattoo?",
@@ -780,48 +660,24 @@ window.NMDTranslations = [
     "Elige el rango que más se acerque a tu idea."
   ],
   [
-    "Small (under 8 cm)",
-    "Pequeño (menos de 8 cm)"
+    "Small — up to 5 cm",
+    "Pequeño — hasta 5 cm"
   ],
   [
-    "Medium (8–15 cm)",
-    "Mediano (8–15 cm)"
+    "Medium — 5–15 cm",
+    "Mediano — 5–15 cm"
   ],
   [
-    "Large (15–25 cm)",
-    "Grande (15–25 cm)"
+    "Large — 15 cm +",
+    "Grande — 15 cm +"
   ],
   [
-    "Extra large / sleeve or back",
-    "Extragrande / manga o espalda"
-  ],
-  [
-    "Will you be traveling for this appointment?",
-    "¿Viajarás para esta cita?"
-  ],
-  [
-    "No, I'm local to CDMX",
-    "No, vivo en CDMX"
-  ],
-  [
-    "Yes, I'm from elsewhere in Mexico",
-    "Sí, vengo de otra parte de México"
-  ],
-  [
-    "Yes, I'm from out of the country",
-    "Sí, vengo de otro país"
-  ],
-  [
-    "What should we call you?",
-    "¿Cómo quieres que te llamemos?"
+    "Full piece / sleeve",
+    "Pieza completa / manga"
   ],
   [
     "Your name",
     "Tu nombre"
-  ],
-  [
-    "Last step — what's the best email or WhatsApp number to reach you?",
-    "Último paso: ¿a qué correo o número de WhatsApp podemos contactarte?"
   ],
   [
     "Next →",
@@ -1028,10 +884,6 @@ window.NMDTranslations = [
     "No se pudieron cargar los artistas. Puedes elegir que el estudio te recomiende uno."
   ],
   [
-    "Not sure which artist you'd like to work with? Don't worry, our experienced studio booking team will gladly make recommendations based on your design details.",
-    "¿No sabes con qué artista trabajar? Nuestro equipo de reservas te recomendará artistas según los detalles de tu diseño."
-  ],
-  [
     "CENTERED ON THE FIELDS OF: TATTOO, ARTS, DESIGN, URBAN CULTURE AND FASHION. WE GATHER NATIONAL AND INTERNATIONAL TALENTS TO DRIVE US TO EXCELLENCE AND MASTER OUR CRAFT.",
     "ENFOCADOS EN TATUAJE, ARTES, DISEÑO, CULTURA URBANA Y MODA. REUNIMOS TALENTOS NACIONALES E INTERNACIONALES PARA ALCANZAR LA EXCELENCIA Y DOMINAR NUESTRO OFICIO."
   ],
@@ -1060,24 +912,12 @@ window.NMDTranslations = [
     "Indica cualquier condición de salud o de la piel, tu lugar de residencia si vas a viajar y cualquier necesidad o preferencia especial."
   ],
   [
-    "If you have a range in mind, you can mention it in your description on the next step.",
-    "Si tienes un rango en mente, puedes mencionarlo en tu descripción en el siguiente paso."
-  ],
-  [
     "Choose the closest area. Placement can be reviewed and adjusted before your session begins.",
     "Elige la zona más cercana. La ubicación puede revisarse y ajustarse antes de comenzar tu sesión."
   ],
   [
-    "Enter an email address or a phone/WhatsApp number, including country code.",
-    "Escribe un correo electrónico o un número de teléfono/WhatsApp con código de país."
-  ],
-  [
     "Please answer this question to continue.",
     "Responde esta pregunta para continuar."
-  ],
-  [
-    "Please enter a valid email or a phone/WhatsApp number (at least 8 digits).",
-    "Escribe un correo válido o un número de teléfono/WhatsApp (mínimo 8 dígitos)."
   ],
   [
     "By sending this form you agree to our",
@@ -1094,5 +934,45 @@ window.NMDTranslations = [
   [
     "NMD19 home",
     "Inicio de NMD19"
+  ],
+  [
+    "Guest artist's name",
+    "Nombre del artista invitado"
+  ],
+  [
+    "Name or Instagram",
+    "Nombre o Instagram"
+  ],
+  [
+    "Please write the guest artist's name or Instagram.",
+    "Escribe el nombre o el Instagram del artista invitado."
+  ],
+  [
+    "Where exactly?",
+    "¿Dónde exactamente?"
+  ],
+  [
+    "Other placement",
+    "Otra zona del cuerpo"
+  ],
+  [
+    "Please tell us where on your body.",
+    "Cuéntanos en qué parte del cuerpo."
+  ],
+  [
+    "Add your contact info",
+    "Agrega tus datos de contacto"
+  ],
+  [
+    "Email",
+    "Correo"
+  ],
+  [
+    "Please write your name.",
+    "Escribe tu nombre."
+  ],
+  [
+    "Please enter a valid email address.",
+    "Escribe un correo válido."
   ]
 ];

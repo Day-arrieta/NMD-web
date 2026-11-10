@@ -54,6 +54,10 @@ content:
       - name: website
         label: Otra red o página web
         type: string
+      - name: description
+        label: Descripción
+        type: text
+        description: Texto libre sobre el artista. Aparece en su perfil, debajo de Instagram y la página web. Déjalo vacío para no mostrar nada.
       - name: works
         label: Trabajos del artista
         type: object

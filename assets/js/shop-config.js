@@ -15,8 +15,8 @@
    ============================================================ */
 window.NMD_SHOP = {
   shopify: {
-    domain: '',               // p. ej. 'nomadttt.myshopify.com'
-    storefrontToken: '',      // token público de la Storefront API
+    domain: 'nomadttt.myshopify.com',
+    storefrontToken: '80a75a63863dc00b8f4d1c2e84aac89a', // token público de la Storefront API
     apiVersion: '2026-10',    // versión estable de la Storefront API (revisar 1 vez al año)
     country: 'MX',            // precios y disponibilidad para México (MXN)
     language: 'EN',

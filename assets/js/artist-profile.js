@@ -33,6 +33,32 @@
     el.style.overflow = overflow;
   }
 
+  const topOf = el => { const m = (el.style.transform || '').match(/matrix\(([^)]*)\)/); return m ? parseFloat(m[1].split(',')[5]) : 0; };
+  function makeRoomForAbout(socials, p) {
+    if (stage.dataset.about === 'push') {
+      let group = socials; while (group.parentElement && group.parentElement !== stage) group = group.parentElement;
+      const needed = topOf(socials) + p.offsetTop + p.offsetHeight + 16;          // en px del diseño (sin escala)
+      const extra = Math.ceil(needed - (parseFloat(group.style.height) || needed));
+      if (extra <= 0) return;
+      group.style.height = (parseFloat(group.style.height) + extra) + 'px';
+      [].forEach.call(stage.children, el => {
+        if (el === group || topOf(el) <= topOf(group)) return;
+        const m = el.style.transform.match(/matrix\(([^)]*)\)/);
+        if (!m) return;
+        const v = m[1].split(','); v[5] = String(parseFloat(v[5]) + extra);
+        el.style.transform = 'matrix(' + v.join(',') + ')';
+      });
+      stage.style.height = (stage.offsetHeight + extra) + 'px';
+      if (typeof window.fit === 'function') window.fit();
+    } else {
+      const name = field('name');
+      if (!name) return;
+      const k = (stage.getBoundingClientRect().width / stage.offsetWidth) || 1;
+      const room = (name.getBoundingClientRect().top - p.getBoundingClientRect().top) / k - 32;
+      if (room > 40) { p.style.maxHeight = room + 'px'; p.style.overflowY = 'auto'; }
+    }
+  }
+
   async function unavailable(message) {
     document.title = 'Profile unavailable — NMD19®';
     field('name').textContent = message;
@@ -71,6 +97,17 @@
   const socials = field('socials');
   socials.replaceChildren(...[['Instagram', artist.instagram], ['Website', artist.website]]
     .filter(([, href]) => href).map(([label, href]) => link(label, href, true)));
+
+  // Descripción (Pages CMS → "Descripción"), debajo de las redes. Escritorio: cabe en la columna sobre el nombre
+  // (si es muy larga, se desplaza dentro). Móvil (#stage[data-about="push"]): lo de abajo baja para dejarle espacio.
+  const about = typeof artist.description === 'string' ? artist.description.trim() : '';
+  if (about) {
+    const p = document.createElement('p');
+    p.className = 'artist-about';
+    p.textContent = about;
+    socials.append(p);
+    makeRoomForAbout(socials, p);
+  }
 
   const instagram = field('instagram'); // mobile "View Instagram" bar
   if (instagram) {

@@ -3,46 +3,40 @@ const STEPS=[
   options:['Yes, I know what I want','No, I need help & guidance']},
  {key:'when',req:1,type:'single',q:'When do you want your new tattoo?',
   options:['As soon as possible','Within the next few weeks','Within the next 2-3 months','Within the next 4-5 months','More than 6 months from now']},
- // The artist and torso-placement hints are part of the Figma heading (see heading()), so they have no separate hint.
+ // The torso-placement hint is part of the Figma heading (see heading()), so it has no separate hint.
  {key:'artist',req:1,type:'single',q:'Which artist do you prefer?',
-  options:['Recommend me an Artist','Rubén','Zionele','Marisa','Guest Artists']},
- {key:'price',req:1,type:'single',q:'Do you have a preferred price range in mind?',
-  hint:'If you have a range in mind, you can mention it in your description on the next step.',
-  options:['Yes, I do',"No, I don't","I'm Flexible"]},
- {key:'description',req:1,type:'textarea',q:'Please share a brief description of your tattoo idea and any thoughts you have on your inspirations.',
-  placeholder:'Tell us about your idea, references, story…'},
- {key:'styles',type:'multi',q:'What tattoo styles do you like?',hint:'Select all that apply.',
-  options:['Fine line','Black & grey','Traditional','Neo-traditional','Realism','Lettering','Ornamental','Blackwork','Japanese','Illustrative']},
- {key:'elements',type:'multi',q:'What elements do you want in your tattoo?',hint:'Select all that apply.',
-  options:['Florals','Animals','Figures','Geometry','Lettering','Symbols','Abstract']},
- {key:'color',req:1,type:'single',q:'Do you want your tattoo in color or black/grey?',
-  options:['Color','Black and grey']},
- {key:'placement',req:1,type:'single',q:'Where on your body do you want the tattoo?',
-  hint:'Choose the closest area. Placement can be reviewed and adjusted before your session begins.',
-  options:['Arm','Leg','Torso','Back','Chest','Hand','Neck','Other']},
- {key:'placement_detail',req:1,type:'single',q:'Where exactly on your Torso?',
-  options:['Upper abdomen (just below ribs)','Upper abdomen (near to the hip bone)','Ribs (left side)','Ribs (right side)']},
+  options:['Recommend me','Rubén','Zionele','Marisa','Guest Artists']},
  {key:'size',req:1,type:'single',q:'What approximate size are you thinking?',
   hint:'Choose the range that most closely matches your idea.',
-  options:['Small (under 8 cm)','Medium (8–15 cm)','Large (15–25 cm)','Extra large / sleeve or back']},
- {key:'travel',req:1,type:'single',q:'Will you be traveling for this appointment?',
-  options:["No, I'm local to CDMX","Yes, I'm from elsewhere in Mexico","Yes, I'm from out of the country"]},
- {key:'name',req:1,type:'text',q:'What should we call you?',placeholder:'Your name',autocomplete:'name'},
- {key:'contact',req:1,type:'text',q:"Last step — what's the best email or WhatsApp number to reach you?",
-  hint:'Enter an email address or a phone/WhatsApp number, including country code.',
-  placeholder:'email@example.com  /  +52…',autocomplete:'email'},
+  options:['Small — up to 5 cm','Medium — 5–15 cm','Large — 15 cm +','Full piece / sleeve']},
+ {key:'description',req:1,type:'textarea',q:'Please share a brief description of your tattoo idea and any thoughts you have on your inspirations.',
+  placeholder:'Tell us about your idea, references, story…'},
+ {key:'placement',req:1,type:'single',q:'Where on your body do you want the tattoo?',
+  hint:'Choose the closest area. Placement can be reviewed and adjusted before your session begins.',
+  options:['Arm','Leg','Torso','Back','Chest','Hand','Neck','Other'],
+  // "Other" opens a text field beside it; the answer is sent as "Other — <text>".
+  other:'Other',otherLabel:'Other placement',otherPlaceholder:'Where exactly?'},
+ {key:'placement_detail',req:1,type:'single',q:'Where exactly on your Torso?',
+  options:['Upper abdomen (just below ribs)','Upper abdomen (near to the hip bone)','Ribs (left side)','Ribs (right side)']},
+ // Last step: name and email together. Each field is sent under its own key (name, email).
+ {key:'contact',req:1,type:'contact',q:'Add your contact info',fields:[
+  {key:'name',type:'text',label:'Name',placeholder:'Your name',autocomplete:'name'},
+  {key:'email',type:'email',label:'Email',placeholder:'email@example.com',autocomplete:'email'}]},
 ];
 
 // Status messages are written in English; language.js translates them (translations.js) while SP is active.
 const MESSAGES={
  required:'Please answer this question to continue.',
- contact:'Please enter a valid email or a phone/WhatsApp number (at least 8 digits).',
+ name:'Please write your name.',
+ email:'Please enter a valid email address.',
  local:'Local preview: your answers have not been sent. Submission will be available after publishing and enabling Netlify Forms.',
  network:'Could not send. Your answers are still here; please try again.',
  artists:'Could not load artists. You can ask the studio to recommend one.',
+ guest:"Please write the guest artist's name or Instagram.",
+ other:'Please tell us where on your body.',
 };
 // Fixed artist tiles: labels shown in the grid and sent to Netlify instead of the internal ids.
-const ARTIST_CHOICES={recommend:'Recommend me an Artist',guest:'Guest Artists'};
+const ARTIST_CHOICES={recommend:'Recommend me',guest:'Guest Artists'};
 
 let index = 0, artists = [], submitting = false;
 const answers = {};
@@ -52,17 +46,11 @@ const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;'
 function availableSteps(){return STEPS.filter(s => s.key !== 'placement_detail' || answers.placement === 'Torso');}
 function heading(s){
  if(s.key==='idea')return 'Do you already have a clear idea of your tattoo, including: <u>design</u>, <u>size</u>, and <u>placement</u>?';
- if(s.key==='artist')return "Which artist do you prefer?<br>Not sure which artist you'd like to work with? <u>Don't worry</u>, our experienced studio booking team <u>will gladly make recommendations based on your design details</u>.";
  if(s.key==='placement_detail')return 'Where exactly on your Torso?<br>(Placement can be <u>reviewed</u> and <u>adjusted</u> before your session begins)';
  return escapeHTML(s.q);
 }
-// Email, or a phone/WhatsApp number using only digits, a leading +, spaces, dashes, dots or parentheses (8–15 digits).
-function validContact(value){
- const v=String(value||'').trim();
- if(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))return true;
- const digits=v.replace(/\D/g,'').length;
- return /^\+?[\d\s().-]+$/.test(v)&&digits>=8&&digits<=15;
-}
+// Contact step: a plain email check (something@domain.tld).
+const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value||'').trim());
 function showError(message,invalid){
  error.textContent=message;
  const field=host.querySelector('.field');
@@ -78,12 +66,20 @@ function draw(){
   const grid=document.createElement('div');grid.className='artist-grid';grid.setAttribute('role','radiogroup');grid.setAttribute('aria-label','Preferred artist');
   // "Recommend" and "Guest" are not specific people, so both use a neutral placeholder tile instead of a photo.
   const options=[{id:'recommend',name:ARTIST_CHOICES.recommend,glyph:'?'},...artists,{id:'guest',name:ARTIST_CHOICES.guest,glyph:'G'}];
+  // "Guest Artists" opens a field below the grid for which guest (name or Instagram); it is sent inside the artist field.
+  const guest=document.createElement('label');guest.className='guest-field';guest.hidden=answers.artist!=='guest';
+  const guestLabel=document.createElement('span');guestLabel.className='field-label';guestLabel.textContent="Guest artist's name";
+  const guestInput=document.createElement('input');guestInput.className='field';guestInput.placeholder='Name or Instagram';guestInput.autocomplete='off';guestInput.spellcheck=false;
+  guestInput.setAttribute('aria-describedby','err');guestInput.value=answers.guest_artist||'';
+  guestInput.oninput=()=>{answers.guest_artist=guestInput.value;error.textContent='';guestInput.removeAttribute('aria-invalid');};
+  guestInput.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();next.click();}};
+  guest.append(guestLabel,guestInput);
   options.forEach(a=>{
    const b=document.createElement('button');b.type='button';b.className='artist-choice';b.classList.toggle('selected',answers.artist===a.id);b.setAttribute('role','radio');b.setAttribute('aria-checked',String(answers.artist===a.id));
    if(a.image){const img=document.createElement('img');img.src=a.image;img.alt='';b.append(img);}else{const box=document.createElement('span');box.className='artist-placeholder';box.setAttribute('aria-hidden','true');box.textContent=a.glyph||'';b.append(box);}
    const label=document.createElement('span');label.className='artist-label';label.textContent=a.name;if(!ARTIST_CHOICES[a.id])label.setAttribute('translate','no');b.append(label);
-   b.onclick=()=>{select(a.id);grid.querySelectorAll('button').forEach(el=>{el.classList.remove('selected');el.setAttribute('aria-checked','false');});b.classList.add('selected');b.setAttribute('aria-checked','true');};grid.append(b);
-  });host.append(grid);
+   b.onclick=()=>{select(a.id);grid.querySelectorAll('button').forEach(el=>{el.classList.remove('selected');el.setAttribute('aria-checked','false');});b.classList.add('selected');b.setAttribute('aria-checked','true');guest.hidden=a.id!=='guest';if(a.id==='guest')guestInput.focus();};grid.append(b);
+  });host.append(grid,guest);
  }else if(s.key==='placement_detail'){
   const control=document.createElement('div');control.className='placement-control';
   control.innerHTML='<div class="placement-input"><input class="field" aria-label="Specific torso placement" placeholder="Type or Select an option" autocomplete="off"><button class="placement-toggle" type="button" aria-label="Show placement options" aria-expanded="false">▼</button></div><div class="placement-options" hidden></div>';
@@ -107,12 +103,32 @@ function draw(){
   const multi=s.type==='multi';
   // "multi" switches the round radio dots to square checkboxes (booking-form.css).
   const opts=document.createElement('div');opts.className=multi?'opts multi':'opts';opts.setAttribute('role',multi?'group':'radiogroup');opts.setAttribute('aria-labelledby',s.hint?'question hint':'question');
-  s.options.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span class="dot" aria-hidden="true"></span><span>'+escapeHTML(o)+'</span>';const on=multi?(answers[s.key]||[]).includes(o):answers[s.key]===o;b.classList.toggle('sel',on);b.setAttribute('role',multi?'checkbox':'radio');b.setAttribute('aria-checked',String(on));b.onclick=()=>{if(multi){const values=answers[s.key]||[];answers[s.key]=values.includes(o)?values.filter(v=>v!==o):[...values,o];b.classList.toggle('sel');b.setAttribute('aria-checked',String(b.classList.contains('sel')));}else{select(o);opts.querySelectorAll('button').forEach(el=>{el.classList.remove('sel');el.setAttribute('aria-checked','false');});b.classList.add('sel');b.setAttribute('aria-checked','true');if(s.key==='placement'&&o!=='Torso')delete answers.placement_detail;if(s.key==='placement')$('count').textContent=`${index+1} / ${availableSteps().length}`;}};opts.append(b);});host.append(opts);
+  s.options.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span class="dot" aria-hidden="true"></span><span>'+escapeHTML(o)+'</span>';const on=multi?(answers[s.key]||[]).includes(o):answers[s.key]===o;b.classList.toggle('sel',on);b.setAttribute('role',multi?'checkbox':'radio');b.setAttribute('aria-checked',String(on));b.onclick=()=>{if(multi){const values=answers[s.key]||[];answers[s.key]=values.includes(o)?values.filter(v=>v!==o):[...values,o];b.classList.toggle('sel');b.setAttribute('aria-checked',String(b.classList.contains('sel')));}else{select(o);opts.querySelectorAll('button').forEach(el=>{el.classList.remove('sel');el.setAttribute('aria-checked','false');});b.classList.add('sel');b.setAttribute('aria-checked','true');const other=opts.querySelector('.opt-other');if(other){other.hidden=o!==s.other;if(o===s.other)other.focus();}if(s.key==='placement'&&o!=='Torso')delete answers.placement_detail;if(s.key==='placement')$('count').textContent=`${index+1} / ${availableSteps().length}`;}};
+   if(o!==s.other){opts.append(b);return;}
+   const row=document.createElement('div');row.className='opt-row';
+   const other=document.createElement('input');other.className='field opt-other';other.placeholder=s.otherPlaceholder;other.autocomplete='off';
+   other.setAttribute('aria-label',s.otherLabel);other.setAttribute('aria-describedby','err');other.hidden=answers[s.key]!==o;other.value=answers[s.key+'_other']||'';
+   other.oninput=()=>{answers[s.key+'_other']=other.value;error.textContent='';other.removeAttribute('aria-invalid');};
+   other.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();next.click();}};
+   row.append(b,other);opts.append(row);
+  });host.append(opts);
+ }else if(s.type==='contact'){
+  const box=document.createElement('div');box.className='contact-fields';
+  s.fields.forEach(f=>{
+   const label=document.createElement('label');label.className='contact-field';
+   const text=document.createElement('span');text.className='field-label';text.textContent=f.label;
+   const input=document.createElement('input');input.className='field';input.type=f.type;input.name=f.key;input.placeholder=f.placeholder;input.autocomplete=f.autocomplete;
+   input.setAttribute('aria-describedby','err');input.value=answers[f.key]||'';
+   if(f.type==='email'){input.spellcheck=false;input.setAttribute('autocapitalize','off');}
+   input.oninput=()=>{answers[f.key]=input.value;error.textContent='';input.removeAttribute('aria-invalid');};
+   // Enter acts like Submit (which checks both fields).
+   input.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();next.click();}};
+   label.append(text,input);box.append(label);
+  });host.append(box);
  }else{
   const input=document.createElement(s.type==='textarea'?'textarea':'input');input.className='field';input.placeholder=s.placeholder||'';
   input.setAttribute('aria-labelledby','question');input.setAttribute('aria-describedby',s.hint?'hint err':'err');
   if(s.autocomplete)input.autocomplete=s.autocomplete;
-  if(s.key==='contact'){input.spellcheck=false;input.setAttribute('autocapitalize','off');}
   // Typed answers are shown exactly as written; only the fixed options are translated.
   input.value=answers[s.key]||'';input.oninput=()=>select(input.value);
   // Enter on a single-line field acts like the Next / Submit button.
@@ -126,16 +142,26 @@ function draw(){
 // Netlify Forms payload: "form-name" plus one field per answered step. Every name here is declared in the hidden form in booking-form.html.
 function payload(){
  const data=new URLSearchParams({'form-name':'appointments'});
- availableSteps().forEach(s=>{const v=answers[s.key];if(v==null)return;data.set(s.key,(Array.isArray(v)?v.join(', '):String(v)).trim());});
+ availableSteps().forEach(s=>{
+  if(s.fields){s.fields.forEach(f=>{const fv=String(answers[f.key]||'').trim();if(fv)data.set(f.key,fv);});return;}
+  const v=answers[s.key];if(v==null)return;data.set(s.key,(Array.isArray(v)?v.join(', '):String(v)).trim());
+  if(s.other&&v===s.other)data.set(s.key,s.other+' — '+String(answers[s.key+'_other']||'').trim());});
  const a=artists.find(a=>a.id===answers.artist);
- if(a)data.set('artist',a.name+' ('+a.id+')');else if(ARTIST_CHOICES[answers.artist])data.set('artist',ARTIST_CHOICES[answers.artist]);
+ if(a)data.set('artist',a.name+' ('+a.id+')');
+ else if(answers.artist==='guest')data.set('artist',ARTIST_CHOICES.guest+' — '+String(answers.guest_artist||'').trim());
+ else if(ARTIST_CHOICES[answers.artist])data.set('artist',ARTIST_CHOICES[answers.artist]);
  return data;
 }
 next.onclick=async()=>{
  if(submitting)return;
  const steps=availableSteps(),s=steps[index];
- if(s.req&&!String(answers[s.key]||'').trim()){showError(MESSAGES.required,true);return;}
- if(s.key==='contact'&&!validContact(answers.contact)){showError(MESSAGES.contact,true);return;}
+ if(s.req&&!s.fields&&!String(answers[s.key]||'').trim()){showError(MESSAGES.required,true);return;}
+ if(s.fields){const inputs=host.querySelectorAll('.contact-field .field');
+  for(const [i,f] of s.fields.entries()){const v=String(answers[f.key]||'').trim();
+   const message=f.type==='email'?(validEmail(v)?'':MESSAGES.email):(v?'':MESSAGES[f.key]);
+   if(message){error.textContent=message;inputs[i].setAttribute('aria-invalid','true');inputs[i].focus();return;}}}
+ if(s.key==='artist'&&answers.artist==='guest'&&!String(answers.guest_artist||'').trim()){showError(MESSAGES.guest,true);return;}
+ if(s.other&&answers[s.key]===s.other&&!String(answers[s.key+'_other']||'').trim()){showError(MESSAGES.other,true);return;}
  if(index<steps.length-1){index++;draw();return;}
  if(['127.0.0.1','localhost'].includes(location.hostname)){showError(MESSAGES.local);return;}
  submitting=true;next.disabled=true;next.textContent='Sending…';
@@ -154,5 +180,9 @@ window.addEventListener('nmd:language',()=>{
  const input=host.querySelector('.placement-input input');
  if(input)input.value=window.NMDLanguage?.t(answers.placement_detail||'')||answers.placement_detail||'';
 });
+// Some browsers (Dia) draw the keyboard focus ring after a mouse click: booking-form.css hides it while the
+// mouse is in use; Tab, arrows, Space or Enter bring it back.
+document.addEventListener('pointerdown',()=>document.documentElement.classList.add('nmd-pointer'),true);
+document.addEventListener('keydown',e=>{if(['Tab',' ','Enter','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))document.documentElement.classList.remove('nmd-pointer');},true);
 $('form').style.display='block';error.setAttribute('role','alert');draw();
 NMDContent.artists().then(data=>{artists=data;if(availableSteps()[index].key==='artist')draw();}).catch(()=>{error.textContent=MESSAGES.artists;});

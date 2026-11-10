@@ -14,6 +14,7 @@
 (() => {
   if (/[?&]embed=1(&|$)/.test(location.search)) return;              // el menú del iframe tiene su propia animación
   if (!('IntersectionObserver' in window)) return;
+  if (/exact-mobile-menu-expanded(\.html)?$/.test(location.pathname)) return;   // el menú móvil tiene su propia entrada (sticky-rail.js)
   const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced && reduced.matches) return;
 
