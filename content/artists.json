@@ -21,7 +21,7 @@
   },
   {
     "id": "9a8be660-917f-4a0a-ad74-4de21d446bf1",
-    "name": "Jalil",
+    "name": "Jalil Abragón",
     "image": "/assets/team/DSC05669.jpg",
     "role": "Resident",
     "published": true,
@@ -42,7 +42,7 @@
   },
   {
     "id": "71dd53fd-b418-4161-8bb8-5ef0758479ba",
-    "name": "Zionele",
+    "name": "?",
     "image": "/assets/team/DSC05468.jpg",
     "role": "Resident",
     "published": true,
@@ -50,7 +50,7 @@
   },
   {
     "id": "6865bb80-2953-4119-bc22-9cae38dbbc78",
-    "name": "Zionele",
+    "name": "?",
     "image": "/assets/team/DSC05726.jpg",
     "role": "Resident",
     "published": true,
@@ -93,5 +93,32 @@
     "published": true,
     "order": 0,
     "instagram": "https://www.instagram.com/rbn_says/"
+  },
+  {
+    "id": "c28946d8-7524-4930-8894-9d036abc072e",
+    "name": "Roberto Fernández",
+    "image": "/assets/uploads/mwl1dqfi-124qe4tx.png",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "instagram": "https://www.instagram.com/robertt_fernand/"
+  },
+  {
+    "id": "6ca4c149-fa35-48dc-a3e6-3fe53a0893d4",
+    "name": "Alejandro Saucedo",
+    "image": "/assets/uploads/mwl1ehcn-5d8v4pv6.png",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "instagram": "https://www.instagram.com/torottt_/"
+  },
+  {
+    "id": "d1987bd4-1a24-4d7d-b176-ad489545e3f2",
+    "name": "Mario Palomino",
+    "image": "/assets/uploads/mwl1f8bu-tt174jxv.png",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "instagram": "https://www.instagram.com/mario.palomino_/"
   }
 ]
