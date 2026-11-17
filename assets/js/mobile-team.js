@@ -36,7 +36,7 @@
     #stage .mt-card:not(.is-active) .mt-view{visibility:hidden}
     #stage .mt-card[hidden]{display:none}
     .mt-card:focus-visible,.mt-arrow:focus-visible,.mt-filter:focus-visible{outline:2px solid #fff;outline-offset:4px}
-    .mt-card img{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .mt-card img{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;filter:grayscale(1)}
     .mt-empty{flex:0 0 ${cardWidth}px;align-self:center;text-align:center;color:#727272;font:20px/24px 'Radio Grotesk',sans-serif}
     .mt-arrow,.mt-filter{cursor:pointer;-webkit-tap-highlight-color:transparent}
     .mt-arrow{z-index:2;overflow:visible!important}.mt-arrow::before{content:'';position:absolute;inset:-6px}

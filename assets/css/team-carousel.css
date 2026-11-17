@@ -26,7 +26,6 @@
 .team-count{font:900 42px/40px Manuka,Impact,sans-serif;min-width:100px;text-align:center;letter-spacing:0.03em;}
 @media(prefers-reduced-motion:reduce){.team-card,.team-card__inner{transition:none}}
 
-.team-card:hover img,.team-card:focus-within img{filter:grayscale(0)}
 @media(prefers-reduced-motion:reduce){.team-card img{transition:none}}
 
 .team-track{cursor:grab;user-select:none}
