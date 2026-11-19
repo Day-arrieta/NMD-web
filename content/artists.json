@@ -42,19 +42,21 @@
   },
   {
     "id": "71dd53fd-b418-4161-8bb8-5ef0758479ba",
-    "name": "?",
+    "name": "Darian",
     "image": "/assets/team/DSC05468.jpg",
     "role": "Resident",
     "published": true,
-    "order": 4
+    "order": 50,
+    "instagram": "https://www.instagram.com/darian_ink/"
   },
   {
     "id": "6865bb80-2953-4119-bc22-9cae38dbbc78",
-    "name": "?",
+    "name": "Giancarlo Guevara",
     "image": "/assets/team/DSC05726.jpg",
     "role": "Resident",
     "published": true,
-    "order": 5
+    "order": 5,
+    "instagram": "https://www.instagram.com/dinamo.ink/"
   },
   {
     "id": "5bc4ae72-4e8d-4fd5-86d6-8542635f7708",
