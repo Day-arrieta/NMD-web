@@ -40,9 +40,6 @@ content:
         description: Los números menores aparecen primero.
         type: number
         default: 0
-      - name: bio
-        label: Especialidad
-        type: text
       - name: instagram
         label: Enlace de Instagram
         type: string
