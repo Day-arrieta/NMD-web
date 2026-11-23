@@ -32,6 +32,7 @@
   css.textContent =
     '#stage .nmd-reveal,.nmd-reveal{opacity:0;translate:0 28px;transition:opacity ' + DURATION + 'ms cubic-bezier(.22,1,.36,1),translate ' + DURATION + 'ms cubic-bezier(.22,1,.36,1);transition-delay:var(--nmd-reveal-delay,0ms)}' +
     '#stage .nmd-reveal.is-in,.nmd-reveal.is-in{opacity:1;translate:0 0}' +
+    '#stage.nmd-reveal-wait>*{opacity:0}' +
     '@media print{#stage .nmd-reveal,.nmd-reveal{opacity:1!important;translate:none!important}}';
   document.head.appendChild(css);
 
@@ -144,8 +145,20 @@
     setTimeout(catchUp, 300);
     if (document.readyState !== 'complete') window.addEventListener('load', () => setTimeout(catchUp, 300), { once: true });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
-  else start();
+  // Perfil de artista: sus datos llegan del CMS un momento después. Se espera a que estén (#stage[data-profile],
+  // artist-profile.js) para que cada bloque entre completo: la @cuenta al mismo tiempo que "Contact".
+  function startWhenReady() {
+    const stage = document.getElementById('stage');
+    if (!stage || stage.dataset.profile || !stage.querySelector('[data-artist]')) return start();
+    let started = false;
+    stage.classList.add('nmd-reveal-wait');                // mientras tanto nada se ve (sin parpadeo antes de animar)
+    const go = () => { if (started) return; started = true; mo2.disconnect(); clearTimeout(timer); stage.classList.remove('nmd-reveal-wait'); start(); };
+    const mo2 = new MutationObserver(() => { if (stage.dataset.profile) go(); });
+    mo2.observe(stage, { attributes: true, attributeFilter: ['data-profile'] });
+    const timer = setTimeout(go, 2500);                       // si el CMS tarda, la página no se queda sin animar
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startWhenReady);
+  else startWhenReady();
 
   // Imprimir: todo visible.
   window.addEventListener('beforeprint', () => document.querySelectorAll('.nmd-reveal').forEach(el => el.classList.add('is-in')));

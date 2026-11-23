@@ -101,7 +101,10 @@
   });
   track.addEventListener('scroll', render, { passive: true });
   // Keyboard focus: centre the focused card (Chrome won't scroll a partly visible element into view).
+  // Only for keyboard focus: a mouse press also focuses the link, and moving the card then made the click land on
+  // the next card instead of opening the profile.
   track.addEventListener('focusin', event => {
+    if (!event.target.matches(':focus-visible')) return;
     const i = renderedCards.findIndex(card => card.contains(event.target));
     if (i > -1 && Math.round(track.scrollLeft / step) !== i) track.scrollLeft = i * step;
   });
