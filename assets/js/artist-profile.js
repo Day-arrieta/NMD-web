@@ -56,7 +56,55 @@
       const k = (stage.getBoundingClientRect().width / stage.offsetWidth) || 1;
       const room = (name.getBoundingClientRect().top - p.getBoundingClientRect().top) / k - 32;
       if (room > 40) { p.style.maxHeight = room + 'px'; p.style.overflowY = 'auto'; }
+      // Si el texto no cabe, se desvanece abajo (hay más al desplazar); el fundido se quita al llegar al final.
+      const edge = () => p.classList.toggle('has-more', p.scrollHeight - p.clientHeight - p.scrollTop > 2);
+      edge(); p.addEventListener('scroll', edge, { passive: true });
     }
+  }
+
+  // Franja inferior fija: "Contact" y la @cuenta. Se dibuja en la escala del escenario y se queda pegada al borde
+  // de abajo de la ventana; si la página termina antes, se queda donde iba en el diseño (como un sticky).
+  // Escritorio: fila de 96px desde el riel hasta "Featured Work". Celular: una barra de 80px partida en dos.
+  function contactBar() {
+    const desktop = stage.offsetWidth > 600;
+    const L = desktop ? { x: 107, w: 1430, h: 96, split: 604, font: "900 42px/40px Manuka,Impact,sans-serif" }
+                      : { x: 0, w: 440, h: 80, split: 220, font: "400 26px/26px Manuka,Impact,sans-serif" };
+    const mail = stage.querySelector('a[href^="mailto:"]');
+    const style = document.createElement('style');
+    style.textContent = '.profile-bar{position:fixed;left:0;bottom:0;width:100%;z-index:60;pointer-events:none;animation:profile-bar-in .8s cubic-bezier(.22,1,.36,1) both}'
+      + '@keyframes profile-bar-in{from{opacity:0;translate:0 28px}to{opacity:1;translate:0 0}}'
+      + '@media (prefers-reduced-motion:reduce){.profile-bar{animation:none}}'
+      + '.profile-bar__inner{position:absolute;top:0;transform-origin:0 0}'
+      + '.profile-bar a{position:absolute;top:0;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:0 16px;'
+      +   'background:#000;border-top:1px solid #484848;color:#fff;text-decoration:none;white-space:nowrap;overflow:hidden;letter-spacing:.03em;'
+      +   'pointer-events:auto;transition:opacity .4s cubic-bezier(.22,1,.36,1)}'
+      + '.profile-bar a:hover{opacity:.86}.profile-bar a:active{opacity:.5;transition:opacity .06s}'
+      + '.profile-bar a:focus-visible{outline:2px solid #FDDE36;outline-offset:-4px}'
+      + '.profile-bar a + a{border-left:1px solid #484848}';
+    document.head.appendChild(style);
+    const bar = document.createElement('div'); bar.className = 'profile-bar';
+    const inner = document.createElement('div'); inner.className = 'profile-bar__inner';
+    inner.style.cssText = `width:${stage.offsetWidth}px;height:${L.h}px`;
+    const cell = (label, href, left, width, external) => {
+      const a = link(label, href, external);
+      a.style.cssText = `left:${left}px;width:${width}px;height:${L.h}px;font:${L.font}`;
+      inner.append(a); return a;
+    };
+    cell('Contact', mail ? mail.getAttribute('href') : 'mailto:info@nomadttt.com', L.x, L.split);
+    const handle = artist.handle ? cell(artist.handle, artist.instagram, L.x + L.split, L.w - L.split, true) : null;
+    bar.append(inner); document.body.append(bar);
+    // la @cuenta larga se achica para caber en su mitad
+    if (handle) for (let size = parseFloat(getComputedStyle(handle).fontSize); size > 14 && handle.scrollWidth > handle.clientWidth; size -= 1) handle.style.fontSize = (size - 1) + 'px';
+    const place = () => {
+      const r = stage.getBoundingClientRect(), k = (r.width / stage.offsetWidth) || 1;
+      bar.style.height = (L.h * k) + 'px';
+      inner.style.left = r.left + 'px';
+      inner.style.transform = `scale(${k})`;
+      bar.style.bottom = Math.max(0, innerHeight - r.bottom) + 'px';   // nunca más abajo del final del diseño
+    };
+    place();
+    addEventListener('scroll', place, { passive: true });
+    addEventListener('resize', place);
   }
 
   async function unavailable(message) {
@@ -125,5 +173,6 @@
   if (!works.length) { const p = document.createElement('p'); p.textContent = 'Coming soon'; gallery.append(p); }
 
   await fitName();
+  contactBar();
   stage.dataset.profile = 'ready';
 })();
