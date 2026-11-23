@@ -80,7 +80,8 @@
       +   'pointer-events:auto;transition:opacity .4s cubic-bezier(.22,1,.36,1)}'
       + '.profile-bar a:hover{opacity:.86}.profile-bar a:active{opacity:.5;transition:opacity .06s}'
       + '.profile-bar a:focus-visible{outline:2px solid #FDDE36;outline-offset:-4px}'
-      + '.profile-bar a + a{border-left:1px solid #484848}';
+      + '.profile-bar a + a{border-left:1px solid #484848}'
+      + (desktop ? '.profile-bar a:last-child{border-right:1px solid #484848}' : '');
     document.head.appendChild(style);
     const bar = document.createElement('div'); bar.className = 'profile-bar';
     const inner = document.createElement('div'); inner.className = 'profile-bar__inner';
