@@ -152,5 +152,22 @@
     "published": true,
     "order": 0,
     "description": "Zando is a tattoo artist from Mexico City with 6 years of experience. He studied at the Faculty of Arts and Design at UNAM, and his background in photography has influenced the way he observes and creates images.\n\nHis work focuses on fine line, blackwork, and microrealism. Through delicate lines, textures, and contrasts, he transforms personal ideas into pieces thoughtfully designed for each body. He believes a tattoo should not only be visually precise but also capture something meaningful about the person wearing it."
+  },
+  {
+    "id": "d917337c-2fb2-4bd9-a403-07da80dd5f2b",
+    "name": "SauceNegro.ttt",
+    "image": "/assets/uploads/mwtjq3gu-rlfrr3c3.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 0,
+    "instagram": "https://www.instagram.com/saucenegro.ttt/"
+  },
+  {
+    "id": "52b093ee-f272-4496-acbd-09a6dc1498ad",
+    "name": "?",
+    "image": "/assets/uploads/mwtjqtul-0aiqzvu3.jpg",
+    "role": "Resident",
+    "published": true,
+    "order": 0
   }
 ]
