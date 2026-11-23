@@ -137,7 +137,7 @@
   {
     "id": "1cefbc8b-a451-49ba-9bae-b5034de3491c",
     "name": "Milo",
-    "image": "/assets/uploads/mwr9un37-yzzlpmnf.png",
+    "image": "/assets/uploads/mwtk3g3c-7e5zrex2.jpg",
     "role": "Resident",
     "published": true,
     "order": 0,
@@ -161,13 +161,5 @@
     "published": true,
     "order": 0,
     "instagram": "https://www.instagram.com/saucenegro.ttt/"
-  },
-  {
-    "id": "52b093ee-f272-4496-acbd-09a6dc1498ad",
-    "name": "?",
-    "image": "/assets/uploads/mwtjqtul-0aiqzvu3.jpg",
-    "role": "Resident",
-    "published": true,
-    "order": 0
   }
 ]
